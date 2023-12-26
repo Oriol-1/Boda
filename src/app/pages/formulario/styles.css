@@ -1,70 +1,88 @@
-/* styles.css */
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-family: 'Georgia', serif;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .heading {
-  color: #444;
-  margin-bottom: 20px;
+  text-align: center;
+  color: #6d6875;
+  margin-bottom: 40px;
+  font-size: 30px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  width: 300px;
-}
-
-.input {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.checkbox-section {
-  margin: 10px 0;
 }
 
 .label {
-  display: block;
-  margin-bottom: 5px;
-   margin-left: 10px;
-    /* Ajusta el valor según tus necesidades */
-    font-size: 16px;
-    font-weight: bold;
-    color: #444;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #4a4e69;
 }
-.label-text {
-    margin-left: 10px;
-  /* Ajusta el valor según tus necesidades */
+
+.input, .select {
+  padding: 12px 15px;
+  margin-bottom: 25px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 17px;
+  background-color: #fff;
 }
 
 .button {
-  
-  background-color: #68c7d0;
-  
-
-
+  background-color: #4a4e69;
   color: white;
-  padding: 10px;
+  padding: 12px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  /* espacio entre button */
-    margin-top: 10px;
-   
-    margin-left: 10px;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
 }
 
-.greenMessage {
-  color: green;
+.button:hover {
+  background-color: #373a40;
+}
+
+.checkbox-section, .select-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.select-section > select, .select-section > input {
+  margin-top: 10px;
 }
 
 .boldText {
-/* quitar estilos */
   font-weight: bold;
 }
 
+.greenMessage {
+  color: #2f855a;
+  text-align: center;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .heading {
+    font-size: 26px;
+  }
+
+  .label, .input, .select, .button {
+    font-size: 16px;
+  }
+}
