@@ -14,15 +14,21 @@ interface ChildWithMenuType {
 
 interface GuestFormState {
   name: string;
+  menuType: 'estandar' | 'especial';
+  specialMenuType: 'vegano' | 'celiaco' | 'otro';
+  customMenuType: string;
   hasCompanion: boolean;
   companionName: string;
+  companionMenuType: 'estandar' | 'especial';
+  companionSpecialMenuType: 'vegano' | 'celiaco' | 'otro';
+  companionCustomMenuType: string;
   hasChildren: boolean;
   childrenCount: number;
+  childrenDetails: ChildWithMenuType[];
   hasFoodAllergy: boolean;
   allergyDetails: string;
   specialMenuAdults: SpecialMenuSelection[];
   specialMenuChildren: SpecialMenuSelection[];
-  childrenDetails: ChildWithMenuType[];
 }
 
 export default function FormularioPage() {
@@ -81,15 +87,21 @@ export default function FormularioPage() {
 function WeddingInvitationForm() {
   const [guest, setGuest] = useState<GuestFormState>({
     name: '',
+    menuType: 'estandar', // Incluye esta propiedad
+    specialMenuType: 'vegano', // Incluye esta propiedad
+    customMenuType: '', // Incluye esta propiedad
     hasCompanion: false,
     companionName: '',
+    companionMenuType: 'estandar', // Incluye esta propiedad
+    companionSpecialMenuType: 'vegano', // Incluye esta propiedad
+    companionCustomMenuType: '', // Incluye esta propiedad
     hasChildren: false,
     childrenCount: 0,
     hasFoodAllergy: false,
     allergyDetails: '',
     specialMenuAdults: [],
     specialMenuChildren: [],
-    childrenDetails: [],
+    childrenDetails: []
   });
 
   const [specialAdultMenuCount, setSpecialAdultMenuCount] = useState(0);
@@ -115,11 +127,30 @@ function WeddingInvitationForm() {
   }, [guest]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    setGuest(prev => ({ ...prev, [name]: newValue }));
+    const target = e.target as HTMLInputElement; // Aserción de tipo para HTMLInputElement
+    const { name, value, type } = target;
+    const checked = type === 'checkbox' ? target.checked : false; // Asignar false como valor predeterminado
+  
+    if (name === 'hasChildren') {
+      setGuest(prev => ({
+        ...prev,
+        [name]: checked,
+        childrenDetails: checked ? prev.childrenDetails : [],
+        childrenCount: checked ? prev.childrenCount : 0
+      }));
+    } else if (name === 'menuType' || name === 'companionMenuType') {
+      setGuest(prev => ({
+        ...prev,
+        [name]: value === 'estandar' ? 'especial' : 'estandar',
+        ...(name === 'menuType' ? { specialMenuType: 'vegano', customMenuType: '' } : {}),
+        ...(name === 'companionMenuType' ? { companionSpecialMenuType: 'vegano', companionCustomMenuType: '' } : {})
+      }));
+    } else {
+      const newValue = type === 'checkbox' ? checked : value;
+      setGuest(prev => ({ ...prev, [name]: newValue }));
+    }
   };
-
+  
   const handleMenuTypeChange = (index: number, adult: boolean, value: string) => {
     const updatedMenus = adult ? [...guest.specialMenuAdults] : [...guest.specialMenuChildren];
     updatedMenus[index] = { type: value, customType: updatedMenus[index].customType };
@@ -136,6 +167,34 @@ function WeddingInvitationForm() {
     const newChildrenDetails = [...guest.childrenDetails];
     newChildrenDetails[index] = { ...newChildrenDetails[index], [field]: value };
     setGuest(prev => ({ ...prev, childrenDetails: newChildrenDetails }));
+  };
+
+
+  const handleChangeMenuType = (isCompanion = false) => {
+    setGuest(prev => {
+      // Cambio para el acompañante
+      if (isCompanion) {
+        const newMenuType = prev.companionMenuType === 'estandar' ? 'especial' : 'estandar';
+        return {
+          ...prev,
+          companionMenuType: newMenuType,
+          // Si cambia a menú estándar, quita los detalles del menú especial
+          companionSpecialMenuType: newMenuType === 'especial' ? prev.companionSpecialMenuType : 'vegano',
+          companionCustomMenuType: newMenuType === 'especial' ? prev.companionCustomMenuType : '',
+        };
+      } 
+      // Cambio para el invitado principal
+      else {
+        const newMenuType = prev.menuType === 'estandar' ? 'especial' : 'estandar';
+        return {
+          ...prev,
+          menuType: newMenuType,
+          // Si cambia a menú estándar, quita los detalles del menú especial
+          specialMenuType: newMenuType === 'especial' ? prev.specialMenuType : 'vegano',
+          customMenuType: newMenuType === 'especial' ? prev.customMenuType : '',
+        };
+      }
+    });
   };
 
   const handleAddChild = () => {
@@ -172,39 +231,125 @@ function WeddingInvitationForm() {
   };
 return (
   <form onSubmit={handleSubmit} className="form">
-    {/* Nombre y Apellido */}
-    <label className="label">Nombre y Apellido</label>
-    <input
-      className="input"
-      type="text"
-      name="name"
-      value={guest.name}
-      onChange={handleChangeInput}
-      placeholder="Nombre y Apellido"
-    />
+       {/* Nombre y Apellido */}
+       <div className="form-section">
+        <div className="form-column">
+          <label className="label">Nombre y Apellido</label>
+          <input
+            className="input"
+            type="text"
+            name="name"
+            value={guest.name}
+            onChange={handleChangeInput}
+            placeholder="Nombre y Apellido"
+          />
+        </div>
+        <div className="form-column">
+          <label className="label">
+          <input
+  type="checkbox"
+  checked={guest.menuType === 'especial'}
+  onChange={(e) => handleChangeInput({
+    ...e,
+    target: {
+      ...e.target,
+      name: 'menuType',
+      value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
+    }
+  })}
+/>
+            Menú Especial
+          </label>
+          {guest.menuType === 'especial' && (
+            <>
+              <select
+                className="input"
+                name="specialMenuType"
+                value={guest.specialMenuType}
+                onChange={handleChangeInput}
+              >
+                <option value="vegano">Vegano</option>
+                <option value="celiaco">Celíaco</option>
+                <option value="otro">Otro</option>
+              </select>
+              {guest.specialMenuType === 'otro' && (
+                <input
+                  className="input"
+                  type="text"
+                  name="customMenuType"
+                  value={guest.customMenuType}
+                  onChange={handleChangeInput}
+                  placeholder="Especificar tipo de menú"
+                />
+              )}
+            </>
+          )}
+        </div>
+      </div>
 
-    {/* Aceptar Acompañante */}
-    <div className="checkbox-section">
-      <label className="label">
-        <input
-          type="checkbox"
-          name="hasCompanion"
-          checked={guest.hasCompanion}
-          onChange={handleChangeInput}
-        />
-        <span className="label-text">Acompañante</span>
-      </label>
-      {guest.hasCompanion && (
-        <input
-          className="input"
-          type="text"
-          name="companionName"
-          value={guest.companionName}
-          onChange={handleChangeInput}
-          placeholder="Nombre y Apellido del Acompañante"
-        />
-      )}
-    </div>
+   {/* Aceptar Acompañante y Selección de Menú */}
+<div className="form-section">
+  <div className="form-column">
+    <label className="label">
+      <input
+        type="checkbox"
+        name="hasCompanion"
+        checked={guest.hasCompanion}
+        onChange={handleChangeInput}
+      />
+      <span className="label-text">Acompañante</span>
+    </label>
+    {guest.hasCompanion && (
+      <input
+        className="input"
+        type="text"
+        name="companionName"
+        value={guest.companionName}
+        onChange={handleChangeInput}
+        placeholder="Nombre y Apellido del Acompañante"
+      />
+    )}
+  </div>
+  <div className="form-column">
+    {/* Checkbox y selección de menú para el Acompañante */}
+    {guest.hasCompanion && (
+      <>
+        <label className="label">
+          <input
+            type="checkbox"
+            checked={guest.companionMenuType === 'especial'}
+            onChange={() => handleChangeMenuType(true)}
+          />
+          Menú Especial para Acompañante
+        </label>
+        {guest.companionMenuType === 'especial' && (
+          <>
+            <select
+              className="input"
+              name="companionSpecialMenuType"
+              value={guest.companionSpecialMenuType}
+              onChange={handleChangeInput}
+            >
+              <option value="vegano">Vegano</option>
+              <option value="celiaco">Celíaco</option>
+              <option value="otro">Otro</option>
+            </select>
+            {guest.companionSpecialMenuType === 'otro' && (
+              <input
+                className="input"
+                type="text"
+                name="companionCustomMenuType"
+                value={guest.companionCustomMenuType}
+                onChange={handleChangeInput}
+                placeholder="Especificar tipo de menú"
+              />
+            )}
+          </>
+        )}
+      </>
+    )}
+  </div>
+</div>
 
     {/* Ir con Hijos */}
     <div className="checkbox-section">
@@ -354,15 +499,44 @@ return (
 
     
    {/* Cálculo y muestra de cantidades de cada tipo de menú */}
+   
    <div className="menu-summary">
-        <h3>Resumen de Menús Seleccionados</h3>
-        <ul>
-          <li>Total Menús de Adultos: {specialAdultMenuCount}</li>
-          <li>Total Menús Especiales para Adultos: {guest.specialMenuAdults.length}</li>
-          <li>Total Menús Infantiles: {specialChildMenuCount}</li>
-          <li>Total Menús Especiales para Niños: {guest.specialMenuChildren.length}</li>
-        </ul>
-      </div>
+  <h3>Resumen de Menús Seleccionados</h3>
+  {/* Resumen para el Invitado Principal */}
+  <p>
+    Invitado Principal: {guest.name} - Menú: 
+    {guest.menuType === 'especial' 
+      ? `${guest.specialMenuType} ${guest.customMenuType ? `- ${guest.customMenuType}` : ''}` 
+      : 'Estándar'}
+  </p>
+
+  {/* Resumen para el Acompañante, si está presente */}
+  {guest.hasCompanion && (
+    <p>
+      Acompañante: {guest.companionName} - Menú: 
+      {guest.companionMenuType === 'especial' 
+        ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}` 
+        : 'Estándar'}
+    </p>
+  )}
+
+  {/* Resumen para los Hijos */}
+  {guest.childrenDetails.map((child, index) => (
+    <p key={`child-menu-summary-${index}`}>
+      Hijo {index + 1}: {child.name} - Menú: 
+      {child.menuType === 'adulto' 
+        ? 'Adulto' 
+        : 'Infantil'}
+    </p>
+  ))}
+
+  {/* Detalles adicionales, como alergias alimentarias, si es relevante */}
+  {guest.hasFoodAllergy && (
+    <p>
+      Detalles de Alergia Alimentaria: {guest.allergyDetails}
+    </p>
+  )}
+</div>
 
     {/* Botón de Enviar */}
     <button className="button" type="submit">Aceptar Invitación</button>

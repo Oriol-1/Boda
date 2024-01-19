@@ -72,7 +72,46 @@
   font-size: 18px;
 }
 
+/* Estilos para las secciones de detalle de los niños */
+.children-details, .child-detail {
+  margin-top: 10px;
+}
+
+.add-child-button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-child-button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para las columnas del formulario */
+.form-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.form-column {
+  flex: 1;
+  margin-right: 20px;
+}
+
 @media (max-width: 768px) {
+  .form-section {
+    flex-direction: column;
+  }
+
+  .form-column {
+    margin-right: 0;
+  }
+
   .page {
     padding: 20px;
     margin: 20px;
@@ -84,67 +123,5 @@
 
   .label, .input, .select, .button {
     font-size: 16px;
-  }
-}
-
-.children-details {
-  margin-top: 1em;
-  border-top: 2px solid #007BFF; /* Color más vibrante para la línea */
-  padding-top: 1em;
-  background-color: #f8f9fa; /* Fondo ligeramente gris para destacar la sección */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
-}
-
-.child-detail {
-  margin-bottom: 1em;
-  padding: 1em;
-  border-bottom: 1px solid #e9ecef; /* Línea más suave y moderna */
-}
-
-.child-detail:last-child {
-  border-bottom: none; /* Eliminar borde en el último elemento */
-}
-
-.add-child-button {
-  background-color: #007BFF; /* Azul brillante */
-  border-radius: 5px; /* Bordes redondeados en botón */
-  padding: 10px 20px;
-  font-size: 16px;
-  margin: 10px 0;
-  cursor: pointer;
-  transition: background-color 0.3s; /* Transición suave para el botón */
-}
-
-.add-child-button:hover {
-  background-color: #0056b3; /* Color al pasar el ratón */
-}
-
-.input, .label {
-  display: block; /* Asegura que la etiqueta esté encima del input */
-  margin-bottom: 0.5em; /* Espacio entre etiqueta y campo */
-}
-
-.input {
-  width: 100%; /* Ancho completo para mejorar la usabilidad */
-  padding: 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px; /* Bordes redondeados en los campos de texto */
-}
-
-.label {
-  font-weight: bold; /* Hacer las etiquetas más destacadas */
-  color: #495057; /* Color oscuro para una mejor legibilidad */
-}
-
-/* Estilos responsivos para pantallas más pequeñas */
-@media (max-width: 600px) {
-  .add-child-button, .input, .label {
-    width: 100%;
-    margin-top: 0.5em;
-  }
-
-  .child-detail {
-    padding: 10px;
   }
 }
