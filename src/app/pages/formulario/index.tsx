@@ -271,6 +271,7 @@ return (
             value={guest.name}
             onChange={handleChangeInput}
             placeholder="Nombre y Apellido"
+            required 
           />
         </div>
         <div className="form-column">
@@ -466,6 +467,7 @@ return (
    type="tel"
    name="contactPhone"
    value={guest.contactPhone}
+   required 
     onChange={e => {
       // Asegurarse de que solo se introduzcan números
       const value = e.target.value;
