@@ -125,7 +125,7 @@ function WeddingInvitationForm() {
     setSpecialAdultMenuCount(adultMenuCount);
     setSpecialChildMenuCount(childMenuCount);
   }, [guest]);
-
+  
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const target = e.target as HTMLInputElement; // Aserción de tipo para HTMLInputElement
     const { name, value, type } = target;
@@ -141,7 +141,7 @@ function WeddingInvitationForm() {
     } else if (name === 'menuType' || name === 'companionMenuType') {
       setGuest(prev => ({
         ...prev,
-        [name]: value === 'estandar' ? 'especial' : 'estandar',
+        [name]: value === 'estandar' ? 'estandar' : 'especial', // Cambia el valor de menuType
         ...(name === 'menuType' ? { specialMenuType: 'vegano', customMenuType: '' } : {}),
         ...(name === 'companionMenuType' ? { companionSpecialMenuType: 'vegano', companionCustomMenuType: '' } : {})
       }));
