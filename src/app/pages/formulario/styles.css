@@ -35,8 +35,15 @@
   font-size: 17px;
   background-color: #fff;
 }
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Separa los botones */
+  flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas más pequeñas */
+}
 
 .button {
+  flex: 1; /* Los botones toman igual espacio */
+  margin: 5px; /* Espaciado entre botones */
   background-color: #4a4e69;
   color: white;
   padding: 12px 20px;
@@ -103,7 +110,99 @@
   margin-right: 20px;
 }
 
+
+
+/* Estilo para el botón "Agregar Hijo" */
+.add-button {
+  background-color: green; /* Cambia el color de fondo a verde */
+  color: white; /* Cambia el color del texto a blanco */
+  border: none;
+  padding: 5px 10px; /* Ajusta el espaciado interior */
+  margin-left: 10px; /* Agrega un margen a la izquierda para separarlo */
+  cursor: pointer; /* Cambia el cursor al estilo de mano al pasar por encima */
+}
+
+.add-button:hover {
+  background-color: darkgreen; /* Cambia el color de fondo al pasar el cursor por encima */
+}
+
+/* Estilo para el botón "Eliminar" */
+.remove-button {
+  background-color: red; /* Cambia el color de fondo al rojo */
+  color: white; /* Cambia el color del texto a blanco */
+  border: none;
+  padding: 5px 10px; /* Ajusta el espaciado interior */
+  margin-left: 10px; /* Agrega un margen a la izquierda para separarlo */
+  cursor: pointer; /* Cambia el cursor al estilo de mano al pasar por encima */
+}
+
+.remove-button:hover {
+  background-color: darkred; /* Cambia el color de fondo al pasar el cursor por encima */
+}
+
+.child-detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.child-detail > * {
+  flex-grow: 1;
+  margin: 5px;
+}
+
+/* Estilos para los botones de agregar y eliminar */
+.add-button, .remove-button {
+  padding: 10px 15px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-left: 5px;
+  flex-grow: 0;
+}
+
+.add-button {
+  background-color: #4CAF50;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.remove-button {
+  background-color: #f44336;
+}
+
+.remove-button:hover {
+  background-color: #d32f2f;
+}
+
+
+
+
+
 @media (max-width: 768px) {
+
+  .child-detail {
+    flex-direction: column;
+  }
+
+  .child-detail > * {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .button-container {
+    flex-direction: row; /* Alinea los botones horizontalmente */
+  }
+
+  .button {
+    width: calc(50% - 10px); /* Ajusta el ancho para dos botones en línea con espaciado */
+  }
+  
   .form-section {
     flex-direction: column;
   }
@@ -123,5 +222,48 @@
 
   .label, .input, .select, .button {
     font-size: 16px;
+  }
+
+  .form-section, .checkbox-section, .select-section {
+    align-items: flex-start; /* Alinea los elementos al inicio (izquierda) */
+  }
+
+  .form-column, .label, .input, .select, .button {
+    text-align: left; /* Alinea el texto a la izquierda */
+    width: 100%; /* Ocupa el ancho completo disponible */
+  }
+}
+
+
+/* Estilo para el label */
+.label {
+  margin-right: 10px; /* Espacio entre el label y el input */
+}
+
+
+
+@media (max-width: 480px) {
+
+  
+  .form-section, .checkbox-section, .select-section {
+    flex-direction: column;
+  }
+
+  .input, .select, .button {
+    font-size: 14px; /* Tamaño de fuente más pequeño para dispositivos móviles */
+  }
+
+  .heading {
+    font-size: 24px; /* Tamaño de encabezado más pequeño para dispositivos móviles */
+  }
+
+  .form-column {
+    width: 100%; /* Hace que las columnas tomen todo el ancho disponible */
+    margin-bottom: 15px; /* Añade espacio entre las columnas cuando están en disposición vertical */
+  }
+
+  .add-child-button, .add-button, .remove-button {
+    padding: 10px; /* Aumenta el relleno para una mejor accesibilidad táctil */
+    font-size: 16px; /* Aumenta el tamaño de la fuente para una mejor visibilidad */
   }
 }

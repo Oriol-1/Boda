@@ -10,6 +10,9 @@ interface SpecialMenuSelection {
 interface ChildWithMenuType {
   name: string;
   menuType: 'infantil' | 'adulto';
+  isSpecialMenu: boolean;
+  specialMenuType?: 'vegetariano' | 'celiaco' | 'otro';
+  customMenuType?: string; // Para almacenar el texto del menú personalizado
 }
 
 interface GuestFormState {
@@ -29,6 +32,7 @@ interface GuestFormState {
   allergyDetails: string;
   specialMenuAdults: SpecialMenuSelection[];
   specialMenuChildren: SpecialMenuSelection[];
+  contactPhone: string;
 }
 
 export default function FormularioPage() {
@@ -59,7 +63,7 @@ export default function FormularioPage() {
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
       {!showForm && !showInput && !goodbyeMessage && (
-        <div>
+        <div className="button-container">
           <button className="button" onClick={handleAccept}>Ir a la Boda</button>
           <button className="button" onClick={handleDecline}>No Puedo Ir a la Boda</button>
         </div>
@@ -101,31 +105,57 @@ function WeddingInvitationForm() {
     allergyDetails: '',
     specialMenuAdults: [],
     specialMenuChildren: [],
-    childrenDetails: []
+    childrenDetails: [],
+    contactPhone: ''
   });
 
   const [specialAdultMenuCount, setSpecialAdultMenuCount] = useState(0);
   const [specialChildMenuCount, setSpecialChildMenuCount] = useState(0);
 
   useEffect(() => {
-    let adultMenuCount = 1; // Contar siempre el invitado principal
-    if (guest.hasCompanion && guest.companionName.trim() !== '') {
-      adultMenuCount += 1; // Añadir por el acompañante
+    let adultSpecialMenuCount = 0;
+    let childSpecialMenuCount = 0;
+  
+    // Contar menús especiales para adultos
+    if (guest.menuType === 'especial') {
+      adultSpecialMenuCount += 1;
     }
-
-    let childMenuCount = 0;
+    if (guest.hasCompanion && guest.companionMenuType === 'especial') {
+      adultSpecialMenuCount += 1;
+    }
+  
+    // Contar menús especiales para niños
     guest.childrenDetails.forEach(child => {
-      if (child.menuType === 'adulto') {
-        adultMenuCount += 1; // Añadir por niño con menú adulto
-      } else if (child.menuType === 'infantil') {
-        childMenuCount += 1; // Añadir por niño con menú infantil
+      if (child.isSpecialMenu) {
+        childSpecialMenuCount += 1;
       }
     });
-
-    setSpecialAdultMenuCount(adultMenuCount);
-    setSpecialChildMenuCount(childMenuCount);
-  }, [guest]);
   
+    setSpecialAdultMenuCount(adultSpecialMenuCount);
+    setSpecialChildMenuCount(childSpecialMenuCount);
+  }, [guest]);
+
+
+  const [childMenuCounts, setChildMenuCounts] = useState<number[]>([0]);
+
+  const handleAddChildMenu = () => {
+    setChildMenuCounts([...childMenuCounts, 0]);
+  };
+  
+  const handleRemoveChildMenu = (index: number) => {
+    setGuest(prev => {
+      const updatedChildrenDetails = prev.childrenDetails.filter((_, i) => i !== index);
+  
+      return {
+        ...prev,
+        childrenDetails: updatedChildrenDetails,
+        hasChildren: updatedChildrenDetails.length > 0,
+        childrenCount: updatedChildrenDetails.length
+      };
+    });
+  };
+
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const target = e.target as HTMLInputElement; // Aserción de tipo para HTMLInputElement
     const { name, value, type } = target;
@@ -200,7 +230,7 @@ function WeddingInvitationForm() {
   const handleAddChild = () => {
     setGuest(prev => ({
       ...prev,
-      childrenDetails: [...prev.childrenDetails, { name: '', menuType: 'infantil' }],
+      childrenDetails: [...prev.childrenDetails, { name: '', menuType: 'infantil', isSpecialMenu: false }],
     }));
   };
 
@@ -216,13 +246,12 @@ function WeddingInvitationForm() {
 
   const handleChangeChildrenCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCount = Number(e.target.value);
-    setGuest(prev => {
-      const updatedChildrenDetails = prev.childrenDetails.slice(0, newCount);
-      while (updatedChildrenDetails.length < newCount) {
-        updatedChildrenDetails.push({ name: '', menuType: 'infantil' });
-      }
-      return { ...prev, childrenCount: newCount, childrenDetails: updatedChildrenDetails };
-    });
+    setChildMenuCounts(Array.from(Array(newCount).keys()));
+    setGuest(prev => ({
+      ...prev,
+      childrenCount: newCount,
+      childrenDetails: prev.childrenDetails.slice(0, newCount),
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -351,150 +380,103 @@ return (
   </div>
 </div>
 
-    {/* Ir con Hijos */}
-    <div className="checkbox-section">
-        <label className="label">
+  
+{/* Ir con Hijos */}
+<div className="checkbox-section">
+  <label className="label">
+    <input
+      type="checkbox"
+      name="hasChildren"
+      checked={guest.hasChildren}
+      onChange={handleChangeInput}
+    />
+    <span className="label-text">Ir con Hijos</span>
+  </label>
+  {guest.hasChildren && (
+    <>
+      {guest.childrenDetails.map((child, index) => (
+        <div key={index} className="child-detail">
           <input
-            type="checkbox"
-            name="hasChildren"
-            checked={guest.hasChildren}
-            onChange={handleChangeInput}
+            className="input"
+            type="text"
+            value={child.name}
+            onChange={(e) => handleChangeChildrenDetails(index, 'name', e.target.value)}
+            placeholder="Nombre del Hijo"
           />
-          <span className="label-text">Ir con Hijos</span>
-        </label>
-        {guest.hasChildren && (
-          <>
-            <label className="label">Cantidad de Hijos:</label>
-            <input
+          <label className="label">
+            <span className="label-text">Tipo de Menú</span>
+            <select
               className="input"
-              type="number"
-              name="childrenCount"
-              value={guest.childrenCount}
-              onChange={handleChangeChildrenCount}
-              min="0"
+              value={child.menuType}
+              onChange={(e) => handleChangeChildrenDetails(index, 'menuType', e.target.value)}
+            >
+              <option value="infantil">Menú Infantil</option>
+              <option value="adulto">Menú Adulto</option>
+            </select>
+          </label>
+          <label className="label">
+            <input
+              type="checkbox"
+              checked={child.isSpecialMenu}
+              onChange={(e) => handleChangeChildrenDetails(index, 'isSpecialMenu', e.target.checked)}
             />
-
-            {guest.childrenDetails.map((child, index) => (
-              <div key={`child-detail-${index}`} className="child-detail">
+            Menú Especial
+          </label>
+          {child.isSpecialMenu && (
+            <>
+              <label className="label">Tipo de Menú Especial</label>
+              <select
+                className="input"
+                value={child.specialMenuType || ''}
+                onChange={(e) => handleChangeChildrenDetails(index, 'specialMenuType', e.target.value)}
+              >
+                <option value="">Seleccionar Tipo</option>
+                <option value="vegetariano">Vegetariano</option>
+                <option value="celiaco">Celíaco</option>
+                <option value="otro">Otro</option>
+              </select>
+              {child.specialMenuType === 'otro' && (
                 <input
                   className="input"
                   type="text"
-                  value={child.name}
-                  onChange={(e) => handleChangeChildrenDetails(index, 'name', e.target.value)}
-                  placeholder="Nombre del Hijo"
+                  value={child.customMenuType || ''}
+                  onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
+                  placeholder="Especificar tipo de menú"
                 />
-                <label className="label">
-                  <span className="label-text">Tipo de Menú</span>
-                  <select
-                    className="input"
-                    value={child.menuType}
-                    onChange={(e) => handleChangeChildrenDetails(index, 'menuType', e.target.value)}
-                  >
-                    <option value="infantil">Menú Infantil</option>
-                    <option value="adulto">Menú Adulto</option>
-                  </select>
-                </label>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
-
-    {/* Alergias Alimentarias */}
-    <div className="checkbox-section">
-      <label className="label">
-        <input
-          type="checkbox"
-          name="hasFoodAllergy"
-          checked={guest.hasFoodAllergy}
-          onChange={handleChangeInput}
-        />
-        <span className="label-text">Alergias Alimentarias</span>
-      </label>
-      {guest.hasFoodAllergy && (
-        <input
-          className="input"
-          type="text"
-          name="allergyDetails"
-          value={guest.allergyDetails}
-          onChange={handleChangeInput}
-          placeholder="Detalles de la Alergia Alimentaria"
-        />
-      )}
-    </div>
-
-    {/* Menús Especiales para Adultos */}
-    <div className="checkbox-section">
-      <label className="label">Cantidad de Menús Especiales para Adultos</label>
-      <input 
-        className="input" 
-        type="number" 
-        name="specialMenuAdultsCount" 
-        value={guest.specialMenuAdults.length} 
-        onChange={(e) => handleSpecialMenusChange(Number(e.target.value), true)} 
-        min="0"
-      />
-      {guest.specialMenuAdults.map((menu, index) => (
-        <div key={`adult-menu-${index}`}>
-          <select 
-            className="input"
-            value={menu.type}
-            onChange={(e) => handleMenuTypeChange(index, true, e.target.value)}
-          >
-            <option value="">Seleccionar Tipo</option>
-            <option value="vegetariano">Vegetariano</option>
-            <option value="celiaco">Celiaco</option>
-            <option value="otro">Otro</option>
-          </select>
-          {menu.type === 'otro' && (
-            <input
-              className="input"
-              type="text"
-              value={menu.customType || ''}
-              onChange={(e) => handleCustomMenuTypeChange(index, true, e.target.value)}
-              placeholder="Especificar Tipo de Menú"
-            />
+              )}
+            </>
           )}
+          <button type="button" onClick={() => handleRemoveChildMenu(index)} className="remove-button">
+            Eliminar
+          </button>
         </div>
       ))}
-    </div>
+      <button type="button" onClick={handleAddChild} className="add-button">
+        Agregar Hijo
+      </button>
+    </>
+  )}
+</div>
 
-    {/* Menús Especiales para Niños */}
-    <div className="checkbox-section">
-      <label className="label">Cantidad de Menús Especiales para Niños</label>
-      <input 
-        className="input" 
-        type="number" 
-        name="specialMenuChildrenCount" 
-        value={guest.specialMenuChildren.length} 
-        onChange={(e) => handleSpecialMenusChange(Number(e.target.value), false)} 
-        min="0"
-        max={guest.childrenCount}
-      />
-      {guest.specialMenuChildren.map((menu, index) => (
-        <div key={`child-menu-${index}`}>
-          <select 
-            className="input"
-            value={menu.type}
-            onChange={(e) => handleMenuTypeChange(index, false, e.target.value)}
-          >
-            <option value="">Seleccionar Tipo</option>
-            <option value="vegetariano">Vegetariano</option>
-            <option value="celiaco">Celiaco</option>
-            <option value="otro">Otro</option>
-          </select>
-          {menu.type === 'otro' && (
-            <input
-              className="input"
-              type="text"
-              value={menu.customType || ''}
-              onChange={(e) => handleCustomMenuTypeChange(index, false, e.target.value)}
-              placeholder="Especificar Tipo de Menú"
-            />
-          )}
-        </div>
-      ))}
-    </div>
+{/* Teléfono de Contacto */}
+<div className="form-section">
+<label className="label label-phone">Teléfono de Contacto</label>
+  <input
+   className="input"
+   type="tel"
+   name="contactPhone"
+   value={guest.contactPhone}
+    onChange={e => {
+      // Asegurarse de que solo se introduzcan números
+      const value = e.target.value;
+      const re = /^[0-9\b]+$/; // Permite números y teclas de retroceso
+      if (value === '' || re.test(value)) {
+        handleChangeInput(e);
+      }
+    }}
+    placeholder="Número de Teléfono"
+  />
+</div>
 
 
     
@@ -522,13 +504,18 @@ return (
 
   {/* Resumen para los Hijos */}
   {guest.childrenDetails.map((child, index) => (
-    <p key={`child-menu-summary-${index}`}>
-      Hijo {index + 1}: {child.name} - Menú: 
-      {child.menuType === 'adulto' 
-        ? 'Adulto' 
-        : 'Infantil'}
-    </p>
-  ))}
+  <p key={`child-menu-summary-${index}`}>
+    Hijo {index + 1}: {child.name} - Tipo de Menú: {child.menuType}
+    {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
+    {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
+  </p>
+))}
+
+{/* resumen de numero de telefono */}
+<p>
+  Teléfono de Contacto: {guest.contactPhone}
+</p>
+
 
   {/* Detalles adicionales, como alergias alimentarias, si es relevante */}
   {guest.hasFoodAllergy && (
