@@ -316,7 +316,9 @@ return (
           )}
         </div>
       </div>
-
+<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '0rem',}}>
+  {/* Contenido de la sección */}
+</div>
    {/* Aceptar Acompañante y Selección de Menú */}
 <div className="form-section">
   <div className="form-column">
@@ -380,7 +382,9 @@ return (
     )}
   </div>
 </div>
-
+<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem',}}>
+  {/* Contenido de la sección */}
+</div>
   
 {/* Ir con Hijos */}
 <div className="checkbox-section">
@@ -457,6 +461,10 @@ return (
       </button>
     </>
   )}
+</div>
+
+<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem',}}>
+  {/* Contenido de la sección */}
 </div>
 
 {/* Teléfono de Contacto */}
