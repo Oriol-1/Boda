@@ -254,9 +254,29 @@ function WeddingInvitationForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(guest); // Envío de datos al backend
+    
+    try {
+      const response = await fetch('/api/formularios/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(guest),
+      });
+  
+      if (response.ok) {
+        // Aquí puedes manejar una respuesta exitosa, como mostrar un mensaje de confirmación
+        console.log('Formulario enviado con éxito');
+      } else {
+        // Aquí puedes manejar respuestas de error, como mostrar un mensaje de error
+        console.error('Error al enviar el formulario');
+      }
+    } catch (error) {
+      // Aquí puedes manejar excepciones de red o errores inesperados
+      console.error('Error al procesar el formulario', error);
+    }
   };
 return (
   <form onSubmit={handleSubmit} className="form">
