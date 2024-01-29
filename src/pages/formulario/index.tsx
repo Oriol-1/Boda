@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import './styles.css';
+// import {handler}from './../api/formularios/submit'
 
 interface SpecialMenuSelection {
   type: string;
@@ -252,6 +253,16 @@ function WeddingInvitationForm() {
       childrenCount: newCount,
       childrenDetails: prev.childrenDetails.slice(0, newCount),
     }));
+  };
+
+  const validateForm = () => {
+    // Aquí puedes añadir todas las validaciones necesarias
+    if (guest.name === '' || guest.contactPhone === '') {
+      console.error('Nombre y teléfono son campos requeridos');
+      return false;
+    }
+    // Agrega más validaciones según sea necesario
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
