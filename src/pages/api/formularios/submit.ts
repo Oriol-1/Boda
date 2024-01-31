@@ -4,27 +4,28 @@ import { connectToDatabase } from '../../../app/libs/mysql';
 
 interface ChildDetail {
   name: string;
-  menuType: string;
-  isSpecialMenu: boolean;
-  specialMenuType: string;
-  customMenuType: string;
+  tipoMenu: string;
+  menuEspecial: boolean;
+  menuEspecialTipo: string;
+  menuEspecialTipoOtro: string;
 }
 
 interface GuestData {
-  name: string;
-  menuType: string;
-  specialMenuType: string;
-  customMenuType: string;
-  hasCompanion: boolean;
-  companionName: string;
-  companionMenuType: string;
-  companionSpecialMenuType: string;
-  companionCustomMenuType: string;
-  hasChildren: boolean;
+  nombre: string;
+  menuPrincipalTipo: string;
+  menuPrincipalTipoEspecial?: string;
+  menuPrincipalTipoOtro?: string;
+  acompanante: boolean;
+  nombreAcompanante?: string;
+  menuAcompananteTipo?: string;
+  menuAcompananteTipoEspecial?: string;
+  menuAcompananteTipoOtro?: string;
+  hijos: boolean;
+  cantidadHijos?: number;
+  alergiaAlimentaria: boolean;
+  detallesAlergiaAlimentaria?: string;
+  telefonoContacto: string;
   childrenDetails: ChildDetail[];
-  contactPhone: string;
-  hasFoodAllergy: boolean;
-  allergyDetails: string;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -42,16 +43,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const guestData: GuestData = req.body;
 
-    // Asumiendo que tu tabla 'invitados' tiene columnas como 'nombre', 'menu_principal_tipo', etc.
+    const valuesInvitados = [
+      guestData.nombre,
+      guestData.menuPrincipalTipo,
+      guestData.menuPrincipalTipoEspecial || null,
+      guestData.menuPrincipalTipoOtro || null,
+      guestData.acompanante ? 1 : 0,
+      guestData.nombreAcompanante || null,
+      guestData.menuAcompananteTipo || null,
+      guestData.menuAcompananteTipoEspecial || null,
+      guestData.menuAcompananteTipoOtro || null,
+      guestData.hijos ? 1 : 0,
+      guestData.hijos ? guestData.cantidadHijos || null : null,
+      guestData.alergiaAlimentaria ? 1 : 0,
+      guestData.detallesAlergiaAlimentaria || null,
+      guestData.telefonoContacto
+    ];
+
     const queryInvitados = `
-      INSERT INTO invitados (nombre, menu_principal_tipo)
-      VALUES (?, ?)
+      INSERT INTO invitados (
+        nombre, menu_principal_tipo, menu_principal_tipo_especial,
+        menu_principal_tipo_otro, acompanante, nombre_acompanante, 
+        menu_acompanante_tipo, menu_acompanante_tipo_especial, 
+        menu_acompanante_tipo_otro, hijos, cantidad_hijos, 
+        alergia_alimentaria, detalles_alergia_alimentaria, telefono_contacto
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-    const [resultInvitados] = await db.execute(queryInvitados, [guestData.name, guestData.menuType]);
+    const [resultInvitados] = await db.execute(queryInvitados, valuesInvitados);
     const invitadoId = (resultInvitados as mysql.OkPacket).insertId;
 
-    // Inserción de hijos, si corresponde
-    if (guestData.hasChildren && guestData.childrenDetails && guestData.childrenDetails.length > 0) {
+    if (guestData.hijos && guestData.childrenDetails && guestData.childrenDetails.length > 0) {
       const queryHijos = `
         INSERT INTO hijos (invitado_id, nombre, tipo_menu, menu_especial, menu_especial_tipo, menu_especial_tipo_otro)
         VALUES ?
@@ -59,10 +81,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const valuesHijos = guestData.childrenDetails.map((child: ChildDetail) => [
         invitadoId, 
         child.name, 
-        child.menuType,
-        child.isSpecialMenu ? 1 : 0,
-        child.specialMenuType,
-        child.customMenuType
+        child.tipoMenu,
+        child.menuEspecial ? 1 : 0,
+        child.menuEspecialTipo || null,
+        child.menuEspecialTipoOtro || null
       ]);
       await db.query(queryHijos, [valuesHijos]);
     }
