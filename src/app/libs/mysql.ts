@@ -1,5 +1,5 @@
 import mysql from 'mysql2/promise';
-
+//conecta
 export async function connectToDatabase() {
   try {
     const connection = await mysql.createConnection({
