@@ -1,8 +1,8 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import './styles.css';
-// import {handler}from './../api/formularios/submit'
 
+// Definiciones de interfaces para tipar los datos del formulario.
 interface SpecialMenuSelection {
   type: string;
   customType?: string;
@@ -36,30 +36,37 @@ interface GuestFormState {
   contactPhone: string;
 }
 
+// Componente principal del formulario de invitación a la boda.
+
 export default function FormularioPage() {
   const [showForm, setShowForm] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [declinerName, setDeclinerName] = useState('');
   const [goodbyeMessage, setGoodbyeMessage] = useState('');
 
+  // Función para manejar la aceptación de la invitación.
   const handleAccept = () => {
     setShowForm(true);
     setShowInput(false);
     setGoodbyeMessage('');
   };
 
+
+  // Función para manejar el rechazo de la invitación.
   const handleDecline = () => {
     setShowForm(false);
     setShowInput(true);
     setGoodbyeMessage('');
   };
 
+    // Función para manejar el envío del formulario de rechazo.
   const handleDeclineSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, <span class="boldText">${declinerName}</span>. Te enviamos un abrazo.`);
     setShowInput(false);
   };
 
+    // Renderización condicional basada en el estado del formulario y mensajes.
   return (
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
@@ -89,6 +96,8 @@ export default function FormularioPage() {
     </div>
   );
 }
+
+// Componente para el formulario de invitación a la boda.
 function WeddingInvitationForm() {
   const [guest, setGuest] = useState<GuestFormState>({
     name: '',

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
 import { connectToDatabase } from '../../../app/libs/mysql';
 
+// Definición de la estructura de los detalles de un hijo
 interface ChildDetail {
   name: string;
   tipoMenu: string;
@@ -10,6 +11,7 @@ interface ChildDetail {
   menuEspecialTipoOtro: string;
 }
 
+// Definición de la estructura de los datos del invitado
 interface GuestData {
   nombre: string;
   menuPrincipalTipo: string;
@@ -28,12 +30,15 @@ interface GuestData {
   childrenDetails: ChildDetail[];
 }
 
+// Función principal que maneja las solicitudes HTTP a la ruta
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Verificar que el método de la solicitud sea POST
   if (req.method !== 'POST') {
     res.status(405).json({ message: 'Método no permitido' });
     return;
   }
 
+  // Conectar a la base de datos
   const db = await connectToDatabase();
   if (!db) {
     res.status(500).json({ message: 'No se pudo conectar a la base de datos' });
@@ -41,13 +46,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    // Extraer datos del invitado del cuerpo de la solicitud
     const guestData: GuestData = req.body;
 
+    // Preparar los valores para la inserción en la tabla 'invitados'
     const valuesInvitados = [
       guestData.nombre,
       guestData.menuPrincipalTipo,
+      // Uso de operador '||' para manejar valores nulos o indefinidos
       guestData.menuPrincipalTipoEspecial || null,
       guestData.menuPrincipalTipoOtro || null,
+      // Conversión de valores booleanos a 1 o 0 para MySQL
       guestData.acompanante ? 1 : 0,
       guestData.nombreAcompanante || null,
       guestData.menuAcompananteTipo || null,
@@ -60,6 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       guestData.telefonoContacto
     ];
 
+    // Consulta SQL para insertar un nuevo invitado
     const queryInvitados = `
       INSERT INTO invitados (
         nombre, menu_principal_tipo, menu_principal_tipo_especial,
@@ -70,9 +80,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
+    // Ejecución de la consulta
     const [resultInvitados] = await db.execute(queryInvitados, valuesInvitados);
+    // Obtener el ID del invitado insertado
     const invitadoId = (resultInvitados as mysql.OkPacket).insertId;
 
+    // Si el invitado tiene hijos, insertarlos en la tabla 'hijos'
     if (guestData.hijos && guestData.childrenDetails && guestData.childrenDetails.length > 0) {
       const queryHijos = `
         INSERT INTO hijos (invitado_id, nombre, tipo_menu, menu_especial, menu_especial_tipo, menu_especial_tipo_otro)
@@ -86,12 +99,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         child.menuEspecialTipo || null,
         child.menuEspecialTipoOtro || null
       ]);
+      // Ejecución de la consulta para insertar hijos
       await db.query(queryHijos, [valuesHijos]);
     }
 
+    // Finalizar la conexión con la base de datos
     await db.end();
+    // Enviar respuesta al cliente
     res.status(200).json({ message: 'Formulario enviado con éxito', invitadoId });
   } catch (error) {
+    // Manejo de errores
     console.error('Error al procesar el formulario:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
