@@ -32,6 +32,8 @@ interface GuestData {
 
 // Función principal que maneja las solicitudes HTTP a la ruta
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log('Datos recibidos:', req.body);  // Agregado para depuración
+
   // Verificar que el método de la solicitud sea POST
   if (req.method !== 'POST') {
     res.status(405).json({ message: 'Método no permitido' });
@@ -49,21 +51,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Extraer datos del invitado del cuerpo de la solicitud
     const guestData: GuestData = req.body;
 
+    // Asegurarse de que los campos requeridos no sean undefined
+    if (!guestData.nombre || !guestData.menuPrincipalTipo || !guestData.acompanante || !guestData.hijos || !guestData.alergiaAlimentaria || !guestData.telefonoContacto) {
+      res.status(400).json({ message: 'Faltan campos requeridos' });
+      return;
+    }
+
     // Preparar los valores para la inserción en la tabla 'invitados'
     const valuesInvitados = [
       guestData.nombre,
       guestData.menuPrincipalTipo,
-      // Uso de operador '||' para manejar valores nulos o indefinidos
       guestData.menuPrincipalTipoEspecial || null,
       guestData.menuPrincipalTipoOtro || null,
-      // Conversión de valores booleanos a 1 o 0 para MySQL
       guestData.acompanante ? 1 : 0,
       guestData.nombreAcompanante || null,
       guestData.menuAcompananteTipo || null,
       guestData.menuAcompananteTipoEspecial || null,
       guestData.menuAcompananteTipoOtro || null,
       guestData.hijos ? 1 : 0,
-      guestData.hijos ? guestData.cantidadHijos || null : null,
+      guestData.cantidadHijos || null,
       guestData.alergiaAlimentaria ? 1 : 0,
       guestData.detallesAlergiaAlimentaria || null,
       guestData.telefonoContacto

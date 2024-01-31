@@ -276,7 +276,14 @@ function WeddingInvitationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+  
+    if (!validateForm()) {
+      console.error('Validación del formulario falló');
+      return;
+    }
+  
+    console.log('Datos del formulario:', guest);
+  
     try {
       const response = await fetch('/api/formularios/submit', {
         method: 'POST',
@@ -286,16 +293,13 @@ function WeddingInvitationForm() {
         body: JSON.stringify(guest),
       });
   
-      if (response.ok) {
-        // Aquí puedes manejar una respuesta exitosa, como mostrar un mensaje de confirmación
-        console.log('Formulario enviado con éxito');
-      } else {
-        // Aquí puedes manejar respuestas de error, como mostrar un mensaje de error
-        console.error('Error al enviar el formulario');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
+      console.log('Formulario enviado con éxito');
     } catch (error) {
-      // Aquí puedes manejar excepciones de red o errores inesperados
-      console.error('Error al procesar el formulario', error);
+      console.error('Error al enviar el formulario', error);
     }
   };
 return (
