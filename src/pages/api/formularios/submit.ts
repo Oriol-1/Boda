@@ -7,6 +7,7 @@ interface ChildDetail {
     menuType: string;
     isSpecialMenu: boolean;
     specialMenuType?: string;
+    customMenuType?: string;
 }
 
 interface GuestData {
@@ -86,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Inserción en la tabla de hijos (si corresponde)
         if (guestData.hasChildren && guestData.childrenDetails && guestData.childrenDetails.length > 0) {
             const queryHijos = `
-                INSERT INTO hijos (invitado_id, nombre, tipo_menu, menu_especial, menu_especial_tipo)
+                INSERT INTO hijos (invitado_id, nombre, tipo_menu, menu_especial, menu_especial_tipo, menu_especial_tipo_otro)
                 VALUES ?
             `;
             const valuesHijos = guestData.childrenDetails.map((child: ChildDetail) => [
@@ -94,7 +95,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 child.name, 
                 child.menuType,
                 child.isSpecialMenu ? 1 : 0,
-                child.specialMenuType || null
+                child.specialMenuType || null,
+                child.specialMenuType === 'otro' ? child.customMenuType : null // Asegúrate de incluir este cambio
             ]);
             await db.query(queryHijos, [valuesHijos]);
         }
