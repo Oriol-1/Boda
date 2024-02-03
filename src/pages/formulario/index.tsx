@@ -1,4 +1,5 @@
 "use client"
+"use client"
 import React, { useEffect, useState } from 'react';
 import './styles.css';
 
@@ -12,20 +13,20 @@ interface ChildWithMenuType {
   name: string;
   menuType: 'infantil' | 'adulto';
   isSpecialMenu: boolean;
-  specialMenuType?: 'vegetariano' | 'celiaco' | 'otro';
-  customMenuType?: string; // Para almacenar el texto del menú personalizado
+  specialMenuType?: 'vegetariano' | 'celiaco' | 'otro' | null;
+  customMenuType?: string | null;
 }
 
 interface GuestFormState {
   name: string;
-  menuType: 'estandar' | 'especial';
-  specialMenuType: 'vegano' | 'celiaco' | 'otro';
-  customMenuType: string;
+  menuType: 'estandar' | 'especial' | null;
+  specialMenuType: 'vegano' | 'celiaco' | 'otro' | null;
+  customMenuType: string | null;
   hasCompanion: boolean;
   companionName: string;
-  companionMenuType: 'estandar' | 'especial';
-  companionSpecialMenuType: 'vegano' | 'celiaco' | 'otro';
-  companionCustomMenuType: string;
+  companionMenuType: 'estandar' | 'especial' | null;
+  companionSpecialMenuType: 'vegano' | 'celiaco' | 'otro' | null;
+  companionCustomMenuType: string | null;
   hasChildren: boolean;
   childrenCount: number;
   childrenDetails: ChildWithMenuType[];
@@ -37,7 +38,6 @@ interface GuestFormState {
 }
 
 // Componente principal del formulario de invitación a la boda.
-
 export default function FormularioPage() {
   const [showForm, setShowForm] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -51,7 +51,6 @@ export default function FormularioPage() {
     setGoodbyeMessage('');
   };
 
-
   // Función para manejar el rechazo de la invitación.
   const handleDecline = () => {
     setShowForm(false);
@@ -59,14 +58,14 @@ export default function FormularioPage() {
     setGoodbyeMessage('');
   };
 
-    // Función para manejar el envío del formulario de rechazo.
+  // Función para manejar el envío del formulario de rechazo.
   const handleDeclineSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, <span class="boldText">${declinerName}</span>. Te enviamos un abrazo.`);
     setShowInput(false);
   };
 
-    // Renderización condicional basada en el estado del formulario y mensajes.
+  // Renderización condicional basada en el estado del formulario y mensajes.
   return (
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
@@ -101,21 +100,21 @@ export default function FormularioPage() {
 function WeddingInvitationForm() {
   const [guest, setGuest] = useState<GuestFormState>({
     name: '',
-    menuType: 'estandar', // Incluye esta propiedad
-    specialMenuType: 'vegano', // Incluye esta propiedad
-    customMenuType: '', // Incluye esta propiedad
+    menuType: null,
+    specialMenuType: null,
+    customMenuType: null,
     hasCompanion: false,
     companionName: '',
-    companionMenuType: 'estandar', // Incluye esta propiedad
-    companionSpecialMenuType: 'vegano', // Incluye esta propiedad
-    companionCustomMenuType: '', // Incluye esta propiedad
+    companionMenuType: null,
+    companionSpecialMenuType: null,
+    companionCustomMenuType: null,
     hasChildren: false,
     childrenCount: 0,
+    childrenDetails: [],
     hasFoodAllergy: false,
     allergyDetails: '',
     specialMenuAdults: [],
     specialMenuChildren: [],
-    childrenDetails: [],
     contactPhone: ''
   });
 
@@ -125,7 +124,7 @@ function WeddingInvitationForm() {
   useEffect(() => {
     let adultSpecialMenuCount = 0;
     let childSpecialMenuCount = 0;
-  
+
     // Contar menús especiales para adultos
     if (guest.menuType === 'especial') {
       adultSpecialMenuCount += 1;
@@ -133,14 +132,14 @@ function WeddingInvitationForm() {
     if (guest.hasCompanion && guest.companionMenuType === 'especial') {
       adultSpecialMenuCount += 1;
     }
-  
+
     // Contar menús especiales para niños
     guest.childrenDetails.forEach(child => {
       if (child.isSpecialMenu) {
         childSpecialMenuCount += 1;
       }
     });
-  
+
     setSpecialAdultMenuCount(adultSpecialMenuCount);
     setSpecialChildMenuCount(childSpecialMenuCount);
   }, [guest]);
@@ -151,11 +150,11 @@ function WeddingInvitationForm() {
   const handleAddChildMenu = () => {
     setChildMenuCounts([...childMenuCounts, 0]);
   };
-  
+
   const handleRemoveChildMenu = (index: number) => {
     setGuest(prev => {
       const updatedChildrenDetails = prev.childrenDetails.filter((_, i) => i !== index);
-  
+
       return {
         ...prev,
         childrenDetails: updatedChildrenDetails,
@@ -167,30 +166,31 @@ function WeddingInvitationForm() {
 
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement; // Aserción de tipo para HTMLInputElement
+    const target = e.target as HTMLInputElement;
     const { name, value, type } = target;
-    const checked = type === 'checkbox' ? target.checked : false; // Asignar false como valor predeterminado
+    const checked = type === 'checkbox' ? target.checked : false;
   
-    if (name === 'hasChildren') {
+    if (name === 'menuType' || name === 'companionMenuType') {
+      const updatedValue = value === 'estandar' || value === 'especial' ? value : null;
+      setGuest(prev => ({
+        ...prev,
+        [name]: updatedValue,
+        ...(name === 'menuType' ? { specialMenuType: updatedValue !== 'especial' ? null : prev.specialMenuType } : {}),
+        ...(name === 'companionMenuType' ? { companionSpecialMenuType: updatedValue !== 'especial' ? null : prev.companionSpecialMenuType } : {}),
+      }));
+    } else if (name === 'hasChildren') {
       setGuest(prev => ({
         ...prev,
         [name]: checked,
         childrenDetails: checked ? prev.childrenDetails : [],
-        childrenCount: checked ? prev.childrenCount : 0
-      }));
-    } else if (name === 'menuType' || name === 'companionMenuType') {
-      setGuest(prev => ({
-        ...prev,
-        [name]: value === 'estandar' ? 'estandar' : 'especial', // Cambia el valor de menuType
-        ...(name === 'menuType' ? { specialMenuType: 'vegano', customMenuType: '' } : {}),
-        ...(name === 'companionMenuType' ? { companionSpecialMenuType: 'vegano', companionCustomMenuType: '' } : {})
+        childrenCount: checked ? prev.childrenCount : 0,
       }));
     } else {
       const newValue = type === 'checkbox' ? checked : value;
       setGuest(prev => ({ ...prev, [name]: newValue }));
     }
   };
-  
+
   const handleMenuTypeChange = (index: number, adult: boolean, value: string) => {
     const updatedMenus = adult ? [...guest.specialMenuAdults] : [...guest.specialMenuChildren];
     updatedMenus[index] = { type: value, customType: updatedMenus[index].customType };
@@ -203,11 +203,14 @@ function WeddingInvitationForm() {
     setGuest(prev => ({ ...prev, [adult ? 'specialMenuAdults' : 'specialMenuChildren']: updatedMenus }));
   };
 
-  const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: any) => {
-    const newChildrenDetails = [...guest.childrenDetails];
-    newChildrenDetails[index] = { ...newChildrenDetails[index], [field]: value };
-    setGuest(prev => ({ ...prev, childrenDetails: newChildrenDetails }));
-  };
+  const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: string | boolean) => {
+    setGuest(prevGuest => {
+        const updatedChildren = [...prevGuest.childrenDetails];
+        const updatedChild = { ...updatedChildren[index], [field]: value };
+        updatedChildren[index] = updatedChild;
+        return { ...prevGuest, childrenDetails: updatedChildren };
+    });
+};
 
 
   const handleChangeMenuType = (isCompanion = false) => {
@@ -222,7 +225,7 @@ function WeddingInvitationForm() {
           companionSpecialMenuType: newMenuType === 'especial' ? prev.companionSpecialMenuType : 'vegano',
           companionCustomMenuType: newMenuType === 'especial' ? prev.companionCustomMenuType : '',
         };
-      } 
+      }
       // Cambio para el invitado principal
       else {
         const newMenuType = prev.menuType === 'estandar' ? 'especial' : 'estandar';
@@ -265,47 +268,103 @@ function WeddingInvitationForm() {
   };
 
   const validateForm = () => {
-    // Aquí puedes añadir todas las validaciones necesarias
-    if (guest.name === '' || guest.contactPhone === '') {
-      console.error('Nombre y teléfono son campos requeridos');
-      return false;
+    // Verifica si el nombre está vacío
+    if (!guest.name || guest.name.trim() === '') {
+        console.error('El nombre es un campo requerido');
+        return false;
     }
-    // Agrega más validaciones según sea necesario
-    return true;
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  
-    if (!validateForm()) {
+    // Verifica si el teléfono de contacto está vacío
+    if (!guest.contactPhone || guest.contactPhone.trim() === '') {
+        console.error('El teléfono de contacto es un campo requerido');
+        return false;
+    }
+
+    // Si se ha elegido tener acompañante, verifica si su nombre está proporcionado
+    if (guest.hasCompanion && (!guest.companionName || guest.companionName.trim() === '')) {
+        console.error('El nombre del acompañante es requerido');
+        return false;
+    }
+
+    // Si hay niños, verifica cada uno de ellos
+    if (guest.hasChildren && guest.childrenDetails.length > 0) {
+        for (let i = 0; i < guest.childrenDetails.length; i++) {
+            if (!guest.childrenDetails[i].name || guest.childrenDetails[i].name.trim() === '') {
+                console.error(`El nombre del hijo ${i + 1} es requerido`);
+                return false;
+            }
+        }
+    }
+
+    // Agrega más validaciones según sean necesarias
+
+    // Si todas las validaciones pasan, retorna true
+    return true;
+};
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // Verificación de la validez del formulario
+  if (!validateForm()) {
       console.error('Validación del formulario falló');
       return;
-    }
-  
-    console.log('Datos del formulario:', guest);
-  
-    try {
-      const response = await fetch('/api/formularios/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(guest),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      console.log('Formulario enviado con éxito');
-    } catch (error) {
-      console.error('Error al enviar el formulario', error);
-    }
+  }
+
+  // Mapeo de childrenDetails a la estructura requerida
+  const formattedChildrenDetails = guest.childrenDetails.map(child => ({
+      name: child.name,
+      menuType: child.menuType,
+      isSpecialMenu: child.isSpecialMenu ? 1 : 0,
+      specialMenuType: child.isSpecialMenu ? child.specialMenuType : null,
+      customMenuType: child.customMenuType
+  }));
+
+  // Preparación de los datos del formulario
+  const formData = {
+      name: guest.name,
+      menuType: guest.menuType || 'estandar',
+      specialMenuType: guest.menuType === 'especial' ? (guest.specialMenuType !== 'otro' ? guest.specialMenuType : null) : null,
+      customMenuType: guest.specialMenuType === 'otro' ? guest.customMenuType : null,
+      hasCompanion: guest.hasCompanion,
+      companionName: guest.hasCompanion ? guest.companionName : null,
+      companionMenuType: guest.hasCompanion ? guest.companionMenuType || 'estandar' : null,
+      companionSpecialMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' ? (guest.companionSpecialMenuType !== 'otro' ? guest.companionSpecialMenuType : null) : null,
+      companionCustomMenuType: guest.hasCompanion && guest.companionSpecialMenuType === 'otro' ? guest.companionCustomMenuType : null,
+      hasChildren: guest.hasChildren,
+      childrenCount: guest.hasChildren ? guest.childrenCount : null,
+      hasFoodAllergy: guest.hasFoodAllergy || false,
+      allergyDetails: guest.hasFoodAllergy ? guest.allergyDetails : null,
+      contactPhone: guest.contactPhone,
+      childrenDetails: formattedChildrenDetails
   };
-return (
-  <form onSubmit={handleSubmit} className="form">
-       {/* Nombre y Apellido */}
-       <div className="form-section">
+
+  console.log('Datos del formulario a enviar:', formData);
+
+  try {
+      const response = await fetch('/api/formularios/submit', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      console.log('Formulario enviado con éxito');
+      // Aquí puedes agregar cualquier lógica adicional para manejar la respuesta exitosa.
+  } catch (error) {
+      console.error('Error al enviar el formulario', error);
+  }
+};
+
+  return (
+    <form onSubmit={handleSubmit} className="form">
+      {/* Nombre y Apellido */}
+      <div className="form-section">
         <div className="form-column">
           <label className="label">Nombre y Apellido</label>
           <input
@@ -315,23 +374,23 @@ return (
             value={guest.name}
             onChange={handleChangeInput}
             placeholder="Nombre y Apellido"
-            required 
+            required
           />
         </div>
         <div className="form-column">
           <label className="label">
-          <input
-  type="checkbox"
-  checked={guest.menuType === 'especial'}
-  onChange={(e) => handleChangeInput({
-    ...e,
-    target: {
-      ...e.target,
-      name: 'menuType',
-      value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
-    }
-  })}
-/>
+            <input
+              type="checkbox"
+              checked={guest.menuType === 'especial'}
+              onChange={(e) => handleChangeInput({
+                ...e,
+                target: {
+                  ...e.target,
+                  name: 'menuType',
+                  value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
+                }
+              })}
+            />
             Menú Especial
           </label>
           {guest.menuType === 'especial' && (
@@ -339,7 +398,7 @@ return (
               <select
                 className="input"
                 name="specialMenuType"
-                value={guest.specialMenuType}
+                value={guest.specialMenuType ?? ''}
                 onChange={handleChangeInput}
               >
                 <option value="vegano">Vegano</option>
@@ -351,7 +410,7 @@ return (
                   className="input"
                   type="text"
                   name="customMenuType"
-                  value={guest.customMenuType}
+                  value={guest.customMenuType ?? ''}
                   onChange={handleChangeInput}
                   placeholder="Especificar tipo de menú"
                 />
@@ -360,227 +419,227 @@ return (
           )}
         </div>
       </div>
-<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '0rem',}}>
-  {/* Contenido de la sección */}
-</div>
-   {/* Aceptar Acompañante y Selección de Menú */}
-<div className="form-section">
-  <div className="form-column">
-    <label className="label">
-      <input
-        type="checkbox"
-        name="hasCompanion"
-        checked={guest.hasCompanion}
-        onChange={handleChangeInput}
-      />
-      <span className="label-text">Acompañante</span>
-    </label>
-    {guest.hasCompanion && (
-      <input
-        className="input"
-        type="text"
-        name="companionName"
-        value={guest.companionName}
-        onChange={handleChangeInput}
-        placeholder="Nombre y Apellido del Acompañante"
-      />
-    )}
-  </div>
-  <div className="form-column">
-    {/* Checkbox y selección de menú para el Acompañante */}
-    {guest.hasCompanion && (
-      <>
-        <label className="label">
-          <input
-            type="checkbox"
-            checked={guest.companionMenuType === 'especial'}
-            onChange={() => handleChangeMenuType(true)}
-          />
-          Menú Especial para Acompañante
-        </label>
-        {guest.companionMenuType === 'especial' && (
-          <>
-            <select
-              className="input"
-              name="companionSpecialMenuType"
-              value={guest.companionSpecialMenuType}
-              onChange={handleChangeInput}
-            >
-              <option value="vegano">Vegano</option>
-              <option value="celiaco">Celíaco</option>
-              <option value="otro">Otro</option>
-            </select>
-            {guest.companionSpecialMenuType === 'otro' && (
-              <input
-                className="input"
-                type="text"
-                name="companionCustomMenuType"
-                value={guest.companionCustomMenuType}
-                onChange={handleChangeInput}
-                placeholder="Especificar tipo de menú"
-              />
-            )}
-          </>
-        )}
-      </>
-    )}
-  </div>
-</div>
-<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem',}}>
-  {/* Contenido de la sección */}
-</div>
-  
-{/* Ir con Hijos */}
-<div className="checkbox-section">
-  <label className="label">
-    <input
-      type="checkbox"
-      name="hasChildren"
-      checked={guest.hasChildren}
-      onChange={handleChangeInput}
-    />
-    <span className="label-text">Ir con Hijos</span>
-  </label>
-  {guest.hasChildren && (
-    <>
-      {guest.childrenDetails.map((child, index) => (
-        <div key={index} className="child-detail">
-          <input
-            className="input"
-            type="text"
-            value={child.name}
-            onChange={(e) => handleChangeChildrenDetails(index, 'name', e.target.value)}
-            placeholder="Nombre del Hijo"
-          />
-          <label className="label">
-            <span className="label-text">Tipo de Menú</span>
-            <select
-              className="input"
-              value={child.menuType}
-              onChange={(e) => handleChangeChildrenDetails(index, 'menuType', e.target.value)}
-            >
-              <option value="infantil">Menú Infantil</option>
-              <option value="adulto">Menú Adulto</option>
-            </select>
-          </label>
+      <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '0rem', }}>
+        {/* Contenido de la sección */}
+      </div>
+      {/* Aceptar Acompañante y Selección de Menú */}
+      <div className="form-section">
+        <div className="form-column">
           <label className="label">
             <input
               type="checkbox"
-              checked={child.isSpecialMenu}
-              onChange={(e) => handleChangeChildrenDetails(index, 'isSpecialMenu', e.target.checked)}
+              name="hasCompanion"
+              checked={guest.hasCompanion}
+              onChange={handleChangeInput}
             />
-            Menú Especial
+            <span className="label-text">Acompañante</span>
           </label>
-          {child.isSpecialMenu && (
+          {guest.hasCompanion && (
+            <input
+              className="input"
+              type="text"
+              name="companionName"
+              value={guest.companionName}
+              onChange={handleChangeInput}
+              placeholder="Nombre y Apellido del Acompañante"
+            />
+          )}
+        </div>
+        <div className="form-column">
+          {/* Checkbox y selección de menú para el Acompañante */}
+          {guest.hasCompanion && (
             <>
-              <label className="label">Tipo de Menú Especial</label>
-              <select
-                className="input"
-                value={child.specialMenuType || ''}
-                onChange={(e) => handleChangeChildrenDetails(index, 'specialMenuType', e.target.value)}
-              >
-                <option value="">Seleccionar Tipo</option>
-                <option value="vegetariano">Vegetariano</option>
-                <option value="celiaco">Celíaco</option>
-                <option value="otro">Otro</option>
-              </select>
-              {child.specialMenuType === 'otro' && (
+              <label className="label">
                 <input
-                  className="input"
-                  type="text"
-                  value={child.customMenuType || ''}
-                  onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
-                  placeholder="Especificar tipo de menú"
+                  type="checkbox"
+                  checked={guest.companionMenuType === 'especial'}
+                  onChange={() => handleChangeMenuType(true)}
                 />
+                Menú Especial para Acompañante
+              </label>
+              {guest.companionMenuType === 'especial' && (
+                <>
+                  <select
+                    className="input"
+                    name="companionSpecialMenuType"
+                    value={guest.companionSpecialMenuType ?? ''}
+                    onChange={handleChangeInput}
+                  >
+                    <option value="vegano">Vegano</option>
+                    <option value="celiaco">Celíaco</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                  {guest.companionSpecialMenuType === 'otro' && (
+                    <input
+                      className="input"
+                      type="text"
+                      name="companionCustomMenuType"
+                      value={guest.companionCustomMenuType ?? ''}
+                      onChange={handleChangeInput}
+                      placeholder="Especificar tipo de menú"
+                    />
+                  )}
+                </>
               )}
             </>
           )}
-          <button type="button" onClick={() => handleRemoveChildMenu(index)} className="remove-button">
-            Eliminar
-          </button>
         </div>
-      ))}
-      <button type="button" onClick={handleAddChild} className="add-button">
-        Agregar Hijo
-      </button>
-    </>
-  )}
-</div>
+      </div>
+      <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem', }}>
+        {/* Contenido de la sección */}
+      </div>
 
-<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem',}}>
-  {/* Contenido de la sección */}
-</div>
+      {/* Ir con Hijos */}
+      <div className="checkbox-section">
+        <label className="label">
+          <input
+            type="checkbox"
+            name="hasChildren"
+            checked={guest.hasChildren}
+            onChange={handleChangeInput}
+          />
+          <span className="label-text">Ir con Hijos</span>
+        </label>
+        {guest.hasChildren && (
+          <>
+            {guest.childrenDetails.map((child, index) => (
+              <div key={index} className="child-detail">
+                <input
+                  className="input"
+                  type="text"
+                  value={child.name}
+                  onChange={(e) => handleChangeChildrenDetails(index, 'name', e.target.value)}
+                  placeholder="Nombre del Hijo"
+                />
+                <label className="label">
+                  <span className="label-text">Tipo de Menú</span>
+                  <select
+                    className="input"
+                    value={child.menuType}
+                    onChange={(e) => handleChangeChildrenDetails(index, 'menuType', e.target.value)}
+                  >
+                    <option value="infantil">Menú Infantil</option>
+                    <option value="adulto">Menú Adulto</option>
+                  </select>
+                </label>
+                <label className="label">
+                  <input
+                    type="checkbox"
+                    checked={child.isSpecialMenu}
+                    onChange={(e) => handleChangeChildrenDetails(index, 'isSpecialMenu', e.target.checked)}
+                  />
+                  Menú Especial
+                </label>
+                {child.isSpecialMenu && (
+                  <>
+                    <label className="label">Tipo de Menú Especial</label>
+                    <select
+                      className="input"
+                      value={child.specialMenuType || ''}
+                      onChange={(e) => handleChangeChildrenDetails(index, 'specialMenuType', e.target.value)}
+                    >
+                      <option value="">Seleccionar Tipo</option>
+                      <option value="vegetariano">Vegetariano</option>
+                      <option value="celiaco">Celíaco</option>
+                      <option value="otro">Otro</option>
+                    </select>
+                    {child.specialMenuType === 'otro' && (
+                      <input
+                        className="input"
+                        type="text"
+                        value={child.customMenuType || ''}
+                        onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
+                        placeholder="Especificar tipo de menú"
+                      />
+                    )}
+                  </>
+                )}
+                <button type="button" onClick={() => handleRemoveChildMenu(index)} className="remove-button">
+                  Eliminar
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={handleAddChild} className="add-button">
+              Agregar Hijo
+            </button>
+          </>
+        )}
+      </div>
 
-{/* Teléfono de Contacto */}
-<div className="form-section">
-<label className="label label-phone">Teléfono de Contacto</label>
-  <input
-   className="input"
-   type="tel"
-   name="contactPhone"
-   value={guest.contactPhone}
-   required 
-    onChange={e => {
-      // Asegurarse de que solo se introduzcan números
-      const value = e.target.value;
-      const re = /^[0-9\b]+$/; // Permite números y teclas de retroceso
-      if (value === '' || re.test(value)) {
-        handleChangeInput(e);
-      }
-    }}
-    placeholder="Número de Teléfono"
-  />
-</div>
+      <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem', }}>
+        {/* Contenido de la sección */}
+      </div>
+
+      {/* Teléfono de Contacto */}
+      <div className="form-section">
+        <label className="label label-phone">Teléfono de Contacto</label>
+        <input
+          className="input"
+          type="tel"
+          name="contactPhone"
+          value={guest.contactPhone}
+          required
+          onChange={e => {
+            // Asegurarse de que solo se introduzcan números
+            const value = e.target.value;
+            const re = /^[0-9\b]+$/; // Permite números y teclas de retroceso
+            if (value === '' || re.test(value)) {
+              handleChangeInput(e);
+            }
+          }}
+          placeholder="Número de Teléfono"
+        />
+      </div>
 
 
-    
-   {/* Cálculo y muestra de cantidades de cada tipo de menú */}
-   
-   <div className="menu-summary">
-  <h3>Resumen de Menús Seleccionados</h3>
-  {/* Resumen para el Invitado Principal */}
-  <p>
-    Invitado Principal: {guest.name} - Menú: 
-    {guest.menuType === 'especial' 
-      ? `${guest.specialMenuType} ${guest.customMenuType ? `- ${guest.customMenuType}` : ''}` 
-      : 'Estándar'}
-  </p>
 
-  {/* Resumen para el Acompañante, si está presente */}
-  {guest.hasCompanion && (
-    <p>
-      Acompañante: {guest.companionName} - Menú: 
-      {guest.companionMenuType === 'especial' 
-        ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}` 
-        : 'Estándar'}
-    </p>
-  )}
+      {/* Cálculo y muestra de cantidades de cada tipo de menú */}
 
-  {/* Resumen para los Hijos */}
-  {guest.childrenDetails.map((child, index) => (
-  <p key={`child-menu-summary-${index}`}>
-    Hijo {index + 1}: {child.name} - Tipo de Menú: {child.menuType}
-    {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
-    {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
-  </p>
-))}
+      <div className="menu-summary">
+        <h3>Resumen de Menús Seleccionados</h3>
+        {/* Resumen para el Invitado Principal */}
+        <p>
+          Invitado Principal: {guest.name} - Menú:
+          {guest.menuType === 'especial'
+            ? `${guest.specialMenuType} ${guest.customMenuType ? `- ${guest.customMenuType}` : ''}`
+            : 'Estándar'}
+        </p>
 
-{/* resumen de numero de telefono */}
-<p>
-  Teléfono de Contacto: {guest.contactPhone}
-</p>
+        {/* Resumen para el Acompañante, si está presente */}
+        {guest.hasCompanion && (
+          <p>
+            Acompañante: {guest.companionName} - Menú:
+            {guest.companionMenuType === 'especial'
+              ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}`
+              : 'Estándar'}
+          </p>
+        )}
+
+        {/* Resumen para los Hijos */}
+        {guest.childrenDetails.map((child, index) => (
+          <p key={`child-menu-summary-${index}`}>
+            Hijo {index + 1}: {child.name} - Tipo de Menú: {child.menuType}
+            {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
+            {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
+          </p>
+        ))}
+
+        {/* resumen de numero de telefono */}
+        <p>
+          Teléfono de Contacto: {guest.contactPhone}
+        </p>
 
 
-  {/* Detalles adicionales, como alergias alimentarias, si es relevante */}
-  {guest.hasFoodAllergy && (
-    <p>
-      Detalles de Alergia Alimentaria: {guest.allergyDetails}
-    </p>
-  )}
-</div>
+        {/* Detalles adicionales, como alergias alimentarias, si es relevante */}
+        {guest.hasFoodAllergy && (
+          <p>
+            Detalles de Alergia Alimentaria: {guest.allergyDetails}
+          </p>
+        )}
+      </div>
 
-    {/* Botón de Enviar */}
-    <button className="button" type="submit">Aceptar Invitación</button>
-  </form>
-);
+      {/* Botón de Enviar */}
+      <button className="button" type="submit">Aceptar Invitación</button>
+    </form>
+  );
 }
