@@ -119,6 +119,7 @@ function WeddingInvitationForm() {
 
   const [specialAdultMenuCount, setSpecialAdultMenuCount] = useState(0);
   const [specialChildMenuCount, setSpecialChildMenuCount] = useState(0);
+  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '' }); // Estado de errores agregado
 
   useEffect(() => {
     let adultSpecialMenuCount = 0;
@@ -207,9 +208,15 @@ function WeddingInvitationForm() {
         const updatedChildren = [...prevGuest.childrenDetails];
         const updatedChild = { ...updatedChildren[index], [field]: value };
         updatedChildren[index] = updatedChild;
+  
+        // Si se está actualizando el nombre y hay un mensaje de error, lo borra
+        if (field === 'name' && errors.childrenNameError) {
+          setErrors({ ...errors, childrenNameError: '' });
+        }
+  
         return { ...prevGuest, childrenDetails: updatedChildren };
     });
-};
+  };
 
 
   const handleChangeMenuType = (isCompanion = false) => {
@@ -267,39 +274,46 @@ function WeddingInvitationForm() {
   };
 
   const validateForm = () => {
-    // Verifica si el nombre está vacío
+    let isValid = true;
+    let newErrors = { companionNameError: '', childrenNameError: '' };
+  
+    // Verifica si el nombre del invitado principal está vacío
     if (!guest.name || guest.name.trim() === '') {
-        console.error('El nombre es un campo requerido');
-        return false;
+      console.error('El nombre es un campo requerido');
+      isValid = false;
     }
-
+  
     // Verifica si el teléfono de contacto está vacío
     if (!guest.contactPhone || guest.contactPhone.trim() === '') {
-        console.error('El teléfono de contacto es un campo requerido');
-        return false;
+      console.error('El teléfono de contacto es un campo requerido');
+      isValid = false;
     }
-
+  
     // Si se ha elegido tener acompañante, verifica si su nombre está proporcionado
-    if (guest.hasCompanion && (!guest.companionName || guest.companionName.trim() === '')) {
-        console.error('El nombre del acompañante es requerido');
-        return false;
+    if (guest.hasCompanion) {
+      if (!guest.companionName || guest.companionName.trim() === '') {
+        newErrors.companionNameError = 'Por favor, introduce el nombre del acompañante';
+        isValid = false;
+      }
     }
-
+  
     // Si hay niños, verifica cada uno de ellos
     if (guest.hasChildren && guest.childrenDetails.length > 0) {
-        for (let i = 0; i < guest.childrenDetails.length; i++) {
-            if (!guest.childrenDetails[i].name || guest.childrenDetails[i].name.trim() === '') {
-                console.error(`El nombre del hijo ${i + 1} es requerido`);
-                return false;
-            }
+      for (let i = 0; i < guest.childrenDetails.length; i++) {
+        if (!guest.childrenDetails[i].name || guest.childrenDetails[i].name.trim() === '') {
+          newErrors.childrenNameError = `El nombre del hijo ${i + 1} es requerido`;
+          isValid = false;
+          break; // Detiene la verificación al encontrar el primer error
         }
+      }
     }
-
-    // Agrega más validaciones según sean necesarias
-
-    // Si todas las validaciones pasan, retorna true
-    return true;
-};
+  
+    // Agrega aquí más validaciones según sean necesarias
+  
+    setErrors(newErrors); // Actualiza el estado de los errores
+    return isValid;
+  };
+  
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -423,147 +437,158 @@ const handleSubmit = async (e: React.FormEvent) => {
       </div>
       {/* Aceptar Acompañante y Selección de Menú */}
       <div className="form-section">
-        <div className="form-column">
-          <label className="label">
-            <input
-              type="checkbox"
-              name="hasCompanion"
-              checked={guest.hasCompanion}
-              onChange={handleChangeInput}
-            />
-            <span className="label-text">Acompañante</span>
-          </label>
-          {guest.hasCompanion && (
-            <input
+  <div className="form-column">
+    <label className="label">
+      <input
+        type="checkbox"
+        name="hasCompanion"
+        checked={guest.hasCompanion}
+        onChange={handleChangeInput}
+      />
+      <span className="label-text">Acompañante</span>
+    </label>
+    {guest.hasCompanion && (
+      <>
+        <input
+          className="input"
+          type="text"
+          name="companionName"
+          value={guest.companionName}
+          onChange={handleChangeInput}
+          placeholder="Nombre y Apellido del Acompañante"
+        />
+        {/* Mensaje de error si el nombre del acompañante no está presente */}
+        {errors.companionNameError && (
+          <div className="error-message" style={{ color: 'red' }}>{errors.companionNameError}</div>
+        )}
+      </>
+    )}
+  </div>
+  <div className="form-column">
+    {/* Checkbox y selección de menú para el Acompañante */}
+    {guest.hasCompanion && (
+      <>
+        <label className="label">
+          <input
+            type="checkbox"
+            checked={guest.companionMenuType === 'especial'}
+            onChange={() => handleChangeMenuType(true)}
+          />
+          Menú Especial para Acompañante
+        </label>
+        {guest.companionMenuType === 'especial' && (
+          <>
+            <select
               className="input"
-              type="text"
-              name="companionName"
-              value={guest.companionName}
+              name="companionSpecialMenuType"
+              value={guest.companionSpecialMenuType ?? ''}
               onChange={handleChangeInput}
-              placeholder="Nombre y Apellido del Acompañante"
-            />
-          )}
-        </div>
-        <div className="form-column">
-          {/* Checkbox y selección de menú para el Acompañante */}
-          {guest.hasCompanion && (
-            <>
-              <label className="label">
-                <input
-                  type="checkbox"
-                  checked={guest.companionMenuType === 'especial'}
-                  onChange={() => handleChangeMenuType(true)}
-                />
-                Menú Especial para Acompañante
-              </label>
-              {guest.companionMenuType === 'especial' && (
-                <>
-                  <select
-                    className="input"
-                    name="companionSpecialMenuType"
-                    value={guest.companionSpecialMenuType ?? ''}
-                    onChange={handleChangeInput}
-                  >
-                    <option value="vegano">Vegano</option>
-                    <option value="celiaco">Celíaco</option>
-                    <option value="otro">Otro</option>
-                  </select>
-                  {guest.companionSpecialMenuType === 'otro' && (
-                    <input
-                      className="input"
-                      type="text"
-                      name="companionCustomMenuType"
-                      value={guest.companionCustomMenuType ?? ''}
-                      onChange={handleChangeInput}
-                      placeholder="Especificar tipo de menú"
-                    />
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </div>
+            >
+              <option value="vegano">Vegano</option>
+              <option value="celiaco">Celíaco</option>
+              <option value="otro">Otro</option>
+            </select>
+            {guest.companionSpecialMenuType === 'otro' && (
+              <input
+                className="input"
+                type="text"
+                name="companionCustomMenuType"
+                value={guest.companionCustomMenuType ?? ''}
+                onChange={handleChangeInput}
+                placeholder="Especificar tipo de menú"
+              />
+            )}
+          </>
+        )}
+      </>
+    )}
+  </div>
+</div>
+
       <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem', }}>
         {/* Contenido de la sección */}
       </div>
 
       {/* Ir con Hijos */}
       <div className="checkbox-section">
-        <label className="label">
+  <label className="label">
+    <input
+      type="checkbox"
+      name="hasChildren"
+      checked={guest.hasChildren}
+      onChange={handleChangeInput}
+    />
+    <span className="label-text">Ir con Hijos</span>
+  </label>
+  {guest.hasChildren && (
+    <>
+      {guest.childrenDetails.map((child, index) => (
+        <div key={index} className="child-detail">
           <input
-            type="checkbox"
-            name="hasChildren"
-            checked={guest.hasChildren}
-            onChange={handleChangeInput}
+            className="input"
+            type="text"
+            value={child.name}
+            onChange={(e) => handleChangeChildrenDetails(index, 'name', e.target.value)}
+            placeholder="Nombre del Hijo"
           />
-          <span className="label-text">Ir con Hijos</span>
-        </label>
-        {guest.hasChildren && (
-          <>
-            {guest.childrenDetails.map((child, index) => (
-              <div key={index} className="child-detail">
+          {/* Mostrar mensaje de error si el nombre de este hijo específico está vacío */}
+          {!child.name && errors.childrenNameError && (
+            <div className="error-message" style={{ color: 'red' }}>{errors.childrenNameError}</div>
+          )}
+          <label className="label">
+            <span className="label-text">Tipo de Menú</span>
+            <select
+              className="input"
+              value={child.menuType}
+              onChange={(e) => handleChangeChildrenDetails(index, 'menuType', e.target.value)}
+            >
+              <option value="infantil">Menú Infantil</option>
+              <option value="adulto">Menú Adulto</option>
+            </select>
+          </label>
+          <label className="label">
+            <input
+              type="checkbox"
+              checked={child.isSpecialMenu}
+              onChange={(e) => handleChangeChildrenDetails(index, 'isSpecialMenu', e.target.checked)}
+            />
+            Menú Especial
+          </label>
+          {child.isSpecialMenu && (
+            <>
+              <label className="label">Tipo de Menú Especial</label>
+              <select
+                className="input"
+                value={child.specialMenuType || ''}
+                onChange={(e) => handleChangeChildrenDetails(index, 'specialMenuType', e.target.value)}
+              >
+                <option value="">Seleccionar Tipo</option>
+                <option value="vegetariano">Vegetariano</option>
+                <option value="celiaco">Celíaco</option>
+                <option value="otro">Otro</option>
+              </select>
+              {child.specialMenuType === 'otro' && (
                 <input
                   className="input"
                   type="text"
-                  value={child.name}
-                  onChange={(e) => handleChangeChildrenDetails(index, 'name', e.target.value)}
-                  placeholder="Nombre del Hijo"
+                  value={child.customMenuType || ''}
+                  onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
+                  placeholder="Especificar tipo de menú"
                 />
-                <label className="label">
-                  <span className="label-text">Tipo de Menú</span>
-                  <select
-                    className="input"
-                    value={child.menuType}
-                    onChange={(e) => handleChangeChildrenDetails(index, 'menuType', e.target.value)}
-                  >
-                    <option value="infantil">Menú Infantil</option>
-                    <option value="adulto">Menú Adulto</option>
-                  </select>
-                </label>
-                <label className="label">
-                  <input
-                    type="checkbox"
-                    checked={child.isSpecialMenu}
-                    onChange={(e) => handleChangeChildrenDetails(index, 'isSpecialMenu', e.target.checked)}
-                  />
-                  Menú Especial
-                </label>
-                {child.isSpecialMenu && (
-                  <>
-                    <label className="label">Tipo de Menú Especial</label>
-                    <select
-                      className="input"
-                      value={child.specialMenuType || ''}
-                      onChange={(e) => handleChangeChildrenDetails(index, 'specialMenuType', e.target.value)}
-                    >
-                      <option value="">Seleccionar Tipo</option>
-                      <option value="vegetariano">Vegetariano</option>
-                      <option value="celiaco">Celíaco</option>
-                      <option value="otro">Otro</option>
-                    </select>
-                    {child.specialMenuType === 'otro' && (
-                      <input
-                        className="input"
-                        type="text"
-                        value={child.customMenuType || ''}
-                        onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
-                        placeholder="Especificar tipo de menú"
-                      />
-                    )}
-                  </>
-                )}
-                <button type="button" onClick={() => handleRemoveChildMenu(index)} className="remove-button">
-                  Eliminar
-                </button>
-              </div>
-            ))}
-            <button type="button" onClick={handleAddChild} className="add-button">
-              Agregar Hijo
-            </button>
-          </>
-        )}
-      </div>
+              )}
+            </>
+          )}
+          <button type="button" onClick={() => handleRemoveChildMenu(index)} className="remove-button">
+            Eliminar
+          </button>
+        </div>
+      ))}
+      <button type="button" onClick={handleAddChild} className="add-button">
+        Agregar Hijo
+      </button>
+    </>
+  )}
+</div>
 
       <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem', }}>
         {/* Contenido de la sección */}
