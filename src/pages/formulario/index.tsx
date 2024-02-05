@@ -35,6 +35,7 @@ interface GuestFormState {
   specialMenuAdults: SpecialMenuSelection[];
   specialMenuChildren: SpecialMenuSelection[];
   contactPhone: string;
+  
 }
 interface GuestFormState {
   // ... otras propiedades ...
@@ -44,7 +45,8 @@ interface GuestFormState {
 interface FormErrors {
   companionNameError: string;
   childrenNameError: string;
-  childrenMenuError: string; // Nueva propiedad
+  childrenMenuError: string; 
+  childSpecialMenuOtherError: string;
 }
 
 // Componente principal del formulario de invitación a la boda.
@@ -131,7 +133,7 @@ function WeddingInvitationForm() {
 
   const [specialAdultMenuCount, setSpecialAdultMenuCount] = useState(0);
   const [specialChildMenuCount, setSpecialChildMenuCount] = useState(0);
-  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '', childrenMenuError: ''  }); // Estado de errores agregado
+  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '', childrenMenuError: '',  childSpecialMenuOtherError: ''  }); // Estado de errores agregado
 
 
 
@@ -221,27 +223,19 @@ function WeddingInvitationForm() {
 
   const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: string | boolean) => {
     setGuest(prevGuest => {
-        const updatedChildren = [...prevGuest.childrenDetails];
-        const updatedChild = { ...updatedChildren[index], [field]: value };
+      const updatedChildren = [...prevGuest.childrenDetails];
+      const updatedChild = { ...updatedChildren[index], [field]: value };
+      updatedChildren[index] = updatedChild;
 
-        // Si se cambia el tipo de menú especial a 'otro', habilitar la entrada de texto
-        if (field === 'specialMenuType' && value === 'otro') {
-            updatedChild.customMenuType = '';
-        } else if (field === 'specialMenuType' && value !== 'otro') {
-            // Si se selecciona cualquier otra opción que no sea 'otro', limpiar el campo de texto
-            updatedChild.customMenuType = null;
-        }
+      // Actualizar el estado de error para el menú especial "Otro"
+      if (field === 'customMenuType') {
+        const newError = typeof value === 'string' && value.trim() !== '' ? '' : 'Por favor, especifica el tipo de menú';
+        setErrors(prevErrors => ({ ...prevErrors, childSpecialMenuOtherError: newError }));
+      }
 
-        updatedChildren[index] = updatedChild;
-
-        // Si se está actualizando el nombre y hay un mensaje de error, lo borra
-        if (field === 'name' && errors.childrenNameError) {
-            setErrors({ ...errors, childrenNameError: '' });
-        }
-
-        return { ...prevGuest, childrenDetails: updatedChildren };
+      return { ...prevGuest, childrenDetails: updatedChildren };
     });
-};
+  };
 
 
   const handleChangeMenuType = (isCompanion = false) => {
@@ -300,21 +294,26 @@ function WeddingInvitationForm() {
 
   const validateForm = () => {
     let isValid = true;
-    let newErrors = { companionNameError: '', childrenNameError: '', childrenMenuError: '' };
+    let newErrors: FormErrors = {
+      companionNameError: '',
+      childrenNameError: '',
+      childrenMenuError: '',
+      childSpecialMenuOtherError: ''
+    };
   
-    // Verifica si el nombre del invitado principal está vacío
+    // Verificar si el nombre del invitado principal está vacío
     if (!guest.name || guest.name.trim() === '') {
       console.error('El nombre es un campo requerido');
       isValid = false;
     }
   
-    // Verifica si el teléfono de contacto está vacío
+    // Verificar si el teléfono de contacto está vacío
     if (!guest.contactPhone || guest.contactPhone.trim() === '') {
       console.error('El teléfono de contacto es un campo requerido');
       isValid = false;
     }
   
-    // Si se ha elegido tener acompañante, verifica si su nombre está proporcionado
+    // Si se ha elegido tener acompañante, verificar si su nombre está proporcionado
     if (guest.hasCompanion) {
       if (!guest.companionName || guest.companionName.trim() === '') {
         newErrors.companionNameError = 'Por favor, introduce el nombre del acompañante';
@@ -322,22 +321,25 @@ function WeddingInvitationForm() {
       }
     }
   
-    // Si hay niños, verifica cada uno de ellos
+    // Si hay niños, verificar cada uno de ellos
     if (guest.hasChildren && guest.childrenDetails.length > 0) {
-      for (let i = 0; i < guest.childrenDetails.length; i++) {
-        const child = guest.childrenDetails[i];
+      guest.childrenDetails.forEach((child, index) => {
         if (!child.name || child.name.trim() === '') {
-          newErrors.childrenNameError = `El nombre del hijo ${i + 1} es requerido`;
+          newErrors.childrenNameError = `El nombre del hijo ${index + 1} es requerido`;
           isValid = false;
-          break; // Detiene la verificación al encontrar el primer error
         }
-        // Verifica el menú especial para cada hijo que lo requiera
-        if (child.isSpecialMenu && (!child.specialMenuType || child.specialMenuType.trim() === '')) {
-          newErrors.childrenMenuError = `Por favor, selecciona el tipo de menú especial para el hijo ${i + 1}`;
-          isValid = false;
-          break;
+  
+        // Verificar el menú especial para cada hijo que lo requiera
+        if (child.isSpecialMenu) {
+          if (!child.specialMenuType || child.specialMenuType.trim() === '') {
+            newErrors.childrenMenuError = `Por favor, selecciona el tipo de menú especial para el hijo ${index + 1}`;
+            isValid = false;
+          } else if (child.specialMenuType === 'otro' && (!child.customMenuType || child.customMenuType.trim() === '')) {
+            newErrors.childSpecialMenuOtherError = `Por favor, especifica el tipo de menú para el hijo ${index + 1}`;
+            isValid = false;
+          }
         }
-      }
+      });
     }
   
     setErrors(newErrors);
@@ -610,6 +612,10 @@ function WeddingInvitationForm() {
                   onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
                   placeholder="Especificar tipo de menú"
                 />
+              )}
+              {/* Mostrar mensaje de error si no se especifica el menú "Otro" */}
+              {errors.childSpecialMenuOtherError && (
+                <div className="error-message" style={{ color: 'red' }}>{errors.childSpecialMenuOtherError}</div>
               )}
             </>
           )}
