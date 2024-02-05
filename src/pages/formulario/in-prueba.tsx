@@ -1,4 +1,3 @@
-
 "use client"
 import React, { useEffect, useState } from 'react';
 import './styles.css';
@@ -35,16 +34,6 @@ interface GuestFormState {
   specialMenuAdults: SpecialMenuSelection[];
   specialMenuChildren: SpecialMenuSelection[];
   contactPhone: string;
-}
-interface GuestFormState {
-  // ... otras propiedades ...
-  transportOption: 'bus' | 'car' | null;
-}
-
-interface FormErrors {
-  companionNameError: string;
-  childrenNameError: string;
-  childrenMenuError: string; // Nueva propiedad
 }
 
 // Componente principal del formulario de invitación a la boda.
@@ -125,15 +114,12 @@ function WeddingInvitationForm() {
     allergyDetails: '',
     specialMenuAdults: [],
     specialMenuChildren: [],
-    contactPhone: '',
-    transportOption: null,
+    contactPhone: ''
   });
 
   const [specialAdultMenuCount, setSpecialAdultMenuCount] = useState(0);
   const [specialChildMenuCount, setSpecialChildMenuCount] = useState(0);
-  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '', childrenMenuError: ''  }); // Estado de errores agregado
-
-
+  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '' }); // Estado de errores agregado
 
   useEffect(() => {
     let adultSpecialMenuCount = 0;
@@ -180,32 +166,30 @@ function WeddingInvitationForm() {
 
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-
-    if (type === 'checkbox') {
-        const input = e.target as HTMLInputElement;
-        const checked = input.checked;
-
-        setGuest(prev => ({
-            ...prev,
-            [name]: checked,
-            ...(name === 'menuType' && !checked && { specialMenuType: null, customMenuType: null }),
-            ...(name === 'companionMenuType' && !checked && { companionSpecialMenuType: null, companionCustomMenuType: null })
-        }));
-    } else if (name === 'specialMenuType' || name === 'companionSpecialMenuType') {
-        setGuest(prev => ({
-            ...prev,
-            [name]: value,
-            ...(name === 'specialMenuType' && value !== 'otro' ? { customMenuType: null } : {}),
-            ...(name === 'companionSpecialMenuType' && value !== 'otro' ? { companionCustomMenuType: null } : {})
-        }));
+    const target = e.target as HTMLInputElement;
+    const { name, value, type } = target;
+    const checked = type === 'checkbox' ? target.checked : false;
+  
+    if (name === 'menuType' || name === 'companionMenuType') {
+      const updatedValue = value === 'estandar' || value === 'especial' ? value : null;
+      setGuest(prev => ({
+        ...prev,
+        [name]: updatedValue,
+        ...(name === 'menuType' ? { specialMenuType: updatedValue !== 'especial' ? null : prev.specialMenuType } : {}),
+        ...(name === 'companionMenuType' ? { companionSpecialMenuType: updatedValue !== 'especial' ? null : prev.companionSpecialMenuType } : {}),
+      }));
+    } else if (name === 'hasChildren') {
+      setGuest(prev => ({
+        ...prev,
+        [name]: checked,
+        childrenDetails: checked ? prev.childrenDetails : [],
+        childrenCount: checked ? prev.childrenCount : 0,
+      }));
     } else {
-        setGuest(prev => ({
-            ...prev,
-            [name]: value
-        }));
+      const newValue = type === 'checkbox' ? checked : value;
+      setGuest(prev => ({ ...prev, [name]: newValue }));
     }
-};
+  };
 
   const handleMenuTypeChange = (index: number, adult: boolean, value: string) => {
     const updatedMenus = adult ? [...guest.specialMenuAdults] : [...guest.specialMenuChildren];
@@ -223,25 +207,16 @@ function WeddingInvitationForm() {
     setGuest(prevGuest => {
         const updatedChildren = [...prevGuest.childrenDetails];
         const updatedChild = { ...updatedChildren[index], [field]: value };
-
-        // Si se cambia el tipo de menú especial a 'otro', habilitar la entrada de texto
-        if (field === 'specialMenuType' && value === 'otro') {
-            updatedChild.customMenuType = '';
-        } else if (field === 'specialMenuType' && value !== 'otro') {
-            // Si se selecciona cualquier otra opción que no sea 'otro', limpiar el campo de texto
-            updatedChild.customMenuType = null;
-        }
-
         updatedChildren[index] = updatedChild;
-
+  
         // Si se está actualizando el nombre y hay un mensaje de error, lo borra
         if (field === 'name' && errors.childrenNameError) {
-            setErrors({ ...errors, childrenNameError: '' });
+          setErrors({ ...errors, childrenNameError: '' });
         }
-
+  
         return { ...prevGuest, childrenDetails: updatedChildren };
     });
-};
+  };
 
 
   const handleChangeMenuType = (isCompanion = false) => {
@@ -332,11 +307,11 @@ function WeddingInvitationForm() {
           break; // Detiene la verificación al encontrar el primer error
         }
         // Verifica el menú especial para cada hijo que lo requiera
-        if (child.isSpecialMenu && (!child.specialMenuType || child.specialMenuType.trim() === '')) {
-          newErrors.childrenMenuError = `Por favor, selecciona el tipo de menú especial para el hijo ${i + 1}`;
-          isValid = false;
-          break;
-        }
+       if (child.isSpecialMenu && (!child.specialMenuType || child.specialMenuType.trim() === '')) {
+  newErrors.childrenMenuError = `Por favor, selecciona el tipo de menú especial para el hijo ${i + 1}`;
+  isValid = false;
+  break;
+}
       }
     }
   
@@ -345,64 +320,63 @@ function WeddingInvitationForm() {
   };
   
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    // Verificación de la validez del formulario
-    if (!validateForm()) {
-        console.error('Validación del formulario falló');
-        return;
-    }
+  // Verificación de la validez del formulario
+  if (!validateForm()) {
+      console.error('Validación del formulario falló');
+      return;
+  }
 
-    // Mapeo de childrenDetails a la estructura requerida
-    const formattedChildrenDetails = guest.childrenDetails.map(child => ({
-        name: child.name,
-        menuType: child.menuType,
-        isSpecialMenu: child.isSpecialMenu ? 1 : 0,
-        specialMenuType: child.isSpecialMenu ? child.specialMenuType : null,
-        customMenuType: child.isSpecialMenu && child.specialMenuType === 'otro' ? child.customMenuType : null
-    }));
+  // Mapeo de childrenDetails a la estructura requerida
+  const formattedChildrenDetails = guest.childrenDetails.map(child => ({
+      name: child.name,
+      menuType: child.menuType,
+      isSpecialMenu: child.isSpecialMenu ? 1 : 0,
+      specialMenuType: child.isSpecialMenu ? child.specialMenuType : null,
+      customMenuType: child.customMenuType
+  }));
 
-    // Preparación de los datos del formulario
-    const formData = {
-        name: guest.name,
-        menuType: guest.menuType || 'estandar',
-        specialMenuType: guest.menuType === 'especial' && guest.specialMenuType !== 'otro' ? guest.specialMenuType : null,
-        customMenuType: guest.menuType === 'especial' && guest.specialMenuType === 'otro' ? guest.customMenuType : null,
-        hasCompanion: guest.hasCompanion,
-        companionName: guest.hasCompanion ? guest.companionName : null,
-        companionMenuType: guest.hasCompanion ? guest.companionMenuType || 'estandar' : null,
-        companionSpecialMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' && guest.companionSpecialMenuType !== 'otro' ? guest.companionSpecialMenuType : null,
-        companionCustomMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' && guest.companionSpecialMenuType === 'otro' ? guest.companionCustomMenuType : null,
-        hasChildren: guest.hasChildren,
-        childrenCount: guest.hasChildren ? guest.childrenCount : null,
-        childrenDetails: formattedChildrenDetails,
-        hasFoodAllergy: guest.hasFoodAllergy || false,
-        allergyDetails: guest.hasFoodAllergy ? guest.allergyDetails : null,
-        contactPhone: guest.contactPhone,
-        transportOption: guest.transportOption
-    };
+  // Preparación de los datos del formulario
+  const formData = {
+      name: guest.name,
+      menuType: guest.menuType || 'estandar',
+      specialMenuType: guest.menuType === 'especial' ? (guest.specialMenuType !== 'otro' ? guest.specialMenuType : null) : null,
+      customMenuType: guest.specialMenuType === 'otro' ? guest.customMenuType : null,
+      hasCompanion: guest.hasCompanion,
+      companionName: guest.hasCompanion ? guest.companionName : null,
+      companionMenuType: guest.hasCompanion ? guest.companionMenuType || 'estandar' : null,
+      companionSpecialMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' ? (guest.companionSpecialMenuType !== 'otro' ? guest.companionSpecialMenuType : null) : null,
+      companionCustomMenuType: guest.hasCompanion && guest.companionSpecialMenuType === 'otro' ? guest.companionCustomMenuType : null,
+      hasChildren: guest.hasChildren,
+      childrenCount: guest.hasChildren ? guest.childrenCount : null,
+      hasFoodAllergy: guest.hasFoodAllergy || false,
+      allergyDetails: guest.hasFoodAllergy ? guest.allergyDetails : null,
+      contactPhone: guest.contactPhone,
+      childrenDetails: formattedChildrenDetails
+  };
 
-    console.log('Datos del formulario a enviar:', formData);
+  console.log('Datos del formulario a enviar:', formData);
 
-    try {
-        const response = await fetch('/api/formularios/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
+  try {
+      const response = await fetch('/api/formularios/submit', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+      });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-        console.log('Formulario enviado con éxito');
-        // Aquí puedes agregar cualquier lógica adicional para manejar la respuesta exitosa.
-    } catch (error) {
-        console.error('Error al enviar el formulario', error);
-    }
+      console.log('Formulario enviado con éxito');
+      // Aquí puedes agregar cualquier lógica adicional para manejar la respuesta exitosa.
+  } catch (error) {
+      console.error('Error al enviar el formulario', error);
+  }
 };
 
   return (
@@ -598,9 +572,14 @@ function WeddingInvitationForm() {
                 <option value="celiaco">Celíaco</option>
                 <option value="otro">Otro</option>
               </select>
-              {/* Mostrar mensaje de error si el menú especial no está seleccionado correctamente */}
-              {!child.specialMenuType && errors.childrenMenuError && (
-                <div className="error-message" style={{ color: 'red' }}>{errors.childrenMenuError}</div>
+              {child.specialMenuType === 'otro' && (
+                <input
+                  className="input"
+                  type="text"
+                  value={child.customMenuType || ''}
+                  onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
+                  placeholder="Especificar tipo de menú"
+                />
               )}
             </>
           )}
@@ -619,39 +598,6 @@ function WeddingInvitationForm() {
       <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem', }}>
         {/* Contenido de la sección */}
       </div>
-
-
-      {/* Opciones de Transporte */}
-      <div className="form-section transport-section">
-  <div className="form-column">
-    <h3>Opciones de Transporte a la Boda</h3>
-    <p>Por favor, indica cómo prefieres llegar a la boda:</p>
-    <div className="transport-option">
-      <input
-        type="radio"
-        name="transportOption"
-        value="bus"
-        checked={guest.transportOption === 'bus'}
-        onChange={handleChangeInput}
-      />
-      <label>Utilizaré el autobús proporcionado por los novios (Pasará por Barcelona y Sardañola).</label>
-    </div>
-    <div className="transport-option">
-      <input
-        type="radio"
-        name="transportOption"
-        value="car"
-        checked={guest.transportOption === 'car'}
-        onChange={handleChangeInput}
-      />
-      <label>Prefiero viajar en mi propio coche.</label>
-    </div>
-  </div>
-</div>
-
-<div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '1rem' }}>
-  {/* Separador de sección */}
-</div>
 
       {/* Teléfono de Contacto */}
       <div className="form-section">

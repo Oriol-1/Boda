@@ -230,6 +230,46 @@
   }
 }
 
+/* Estilos para la sección de Opciones de Transporte */
+.transport-section {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.transport-section h3 {
+  color: #6d6875;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.transport-section p {
+  font-size: 16px;
+  color: #4a4e69;
+  margin-bottom: 15px;
+}
+
+.transport-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.transport-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.transport-option label {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+
+
+
 /* Estilos responsivos para dispositivos más pequeños (menos de 480px de ancho) */
 @media (max-width: 480px) {
   /* Alineación de elementos en secciones en dispositivos más pequeños */
@@ -258,4 +298,19 @@
     padding: 10px;
     font-size: 16px;
   }
+
+  .transport-section {
+    padding: 10px;
+  }
+
+  .transport-section h3 {
+    font-size: 20px;
+  }
+
+  .transport-section p, .transport-option label {
+    font-size: 14px;
+  }
+  
+
+
 }
