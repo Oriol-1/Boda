@@ -112,12 +112,12 @@ export default function FormularioPage() {
 function WeddingInvitationForm() {
   const [guest, setGuest] = useState<GuestFormState>({
     name: '',
-    menuType: null,
-    specialMenuType: null,
+    menuType: 'estandar',  // Estado inicial como 'estandar'
+    specialMenuType: 'vegano', // Cambio aquí
     customMenuType: null,
     hasCompanion: false,
     companionName: '',
-    companionMenuType: null,
+    companionMenuType: 'estandar',  // Estado inicial para el acompañante también como 'estandar'
     companionSpecialMenuType: null,
     companionCustomMenuType: null,
     hasChildren: false,
@@ -183,31 +183,36 @@ function WeddingInvitationForm() {
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-
+  
     if (type === 'checkbox') {
-        const input = e.target as HTMLInputElement;
-        const checked = input.checked;
-
+      const checked = (e.target as HTMLInputElement).checked;
+  
+      if (name === 'menuType') {
         setGuest(prev => ({
-            ...prev,
-            [name]: checked,
-            ...(name === 'menuType' && !checked && { specialMenuType: null, customMenuType: null }),
-            ...(name === 'companionMenuType' && !checked && { companionSpecialMenuType: null, companionCustomMenuType: null })
+          ...prev,
+          menuType: checked ? 'especial' : 'estandar',
+          // Asignar 'vegano' inmediatamente al activar el checkbox
+          specialMenuType: checked ? 'vegano' : null
         }));
-    } else if (name === 'specialMenuType' || name === 'companionSpecialMenuType') {
+      } else if (name === 'companionMenuType') {
         setGuest(prev => ({
-            ...prev,
-            [name]: value,
-            ...(name === 'specialMenuType' && value !== 'otro' ? { customMenuType: null } : {}),
-            ...(name === 'companionSpecialMenuType' && value !== 'otro' ? { companionCustomMenuType: null } : {})
+          ...prev,
+          companionMenuType: checked ? 'especial' : 'estandar',
+          companionSpecialMenuType: checked ? 'vegano' : null
         }));
+      } else {
+        setGuest(prev => ({
+          ...prev,
+          [name]: checked
+        }));
+      }
     } else {
-        setGuest(prev => ({
-            ...prev,
-            [name]: value
-        }));
+      setGuest(prev => ({
+        ...prev,
+        [name]: value
+      }));
     }
-};
+  };
 
   const handleMenuTypeChange = (index: number, adult: boolean, value: string) => {
     const updatedMenus = adult ? [...guest.specialMenuAdults] : [...guest.specialMenuChildren];
@@ -303,7 +308,7 @@ function WeddingInvitationForm() {
   
     // Verificar si el nombre del invitado principal está vacío
     if (!guest.name || guest.name.trim() === '') {
-      console.error('El nombre es un campo requerido');
+      newErrors.companionNameError = 'El nombre es un campo requerido';
       isValid = false;
     }
   
@@ -411,60 +416,60 @@ function WeddingInvitationForm() {
     <form onSubmit={handleSubmit} className="form">
       {/* Nombre y Apellido */}
       <div className="form-section">
-        <div className="form-column">
-          <label className="label">Nombre y Apellido</label>
+  <div className="form-column">
+    <label className="label">Nombre y Apellido</label>
+    <input
+      className="input"
+      type="text"
+      name="name"
+      value={guest.name}
+      onChange={handleChangeInput}
+      placeholder="Nombre y Apellido"
+      required
+    />
+  </div>
+  <div className="form-column">
+    <label className="label">
+      <input
+        type="checkbox"
+        checked={guest.menuType === 'especial'}
+        onChange={(e) => handleChangeInput({
+          ...e,
+          target: {
+            ...e.target,
+            name: 'menuType',
+            value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
+          }
+        })}
+      />
+      Menú Especial
+    </label>
+    {guest.menuType === 'especial' && (
+      <>
+        <select
+          className="input"
+          name="specialMenuType"
+          value={guest.specialMenuType ?? 'vegano'} // Cambio realizado aquí
+          onChange={handleChangeInput}
+        >
+          <option value="vegano">Vegano</option>
+          <option value="celiaco">Celíaco</option>
+          <option value="otro">Otro</option>
+        </select>
+        {guest.specialMenuType === 'otro' && (
           <input
             className="input"
             type="text"
-            name="name"
-            value={guest.name}
+            name="customMenuType"
+            value={guest.customMenuType ?? ''}
             onChange={handleChangeInput}
-            placeholder="Nombre y Apellido"
-            required
+            placeholder="Especificar tipo de menú"
           />
-        </div>
-        <div className="form-column">
-          <label className="label">
-            <input
-              type="checkbox"
-              checked={guest.menuType === 'especial'}
-              onChange={(e) => handleChangeInput({
-                ...e,
-                target: {
-                  ...e.target,
-                  name: 'menuType',
-                  value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
-                }
-              })}
-            />
-            Menú Especial
-          </label>
-          {guest.menuType === 'especial' && (
-            <>
-              <select
-                className="input"
-                name="specialMenuType"
-                value={guest.specialMenuType ?? ''}
-                onChange={handleChangeInput}
-              >
-                <option value="vegano">Vegano</option>
-                <option value="celiaco">Celíaco</option>
-                <option value="otro">Otro</option>
-              </select>
-              {guest.specialMenuType === 'otro' && (
-                <input
-                  className="input"
-                  type="text"
-                  name="customMenuType"
-                  value={guest.customMenuType ?? ''}
-                  onChange={handleChangeInput}
-                  placeholder="Especificar tipo de menú"
-                />
-              )}
-            </>
-          )}
-        </div>
-      </div>
+        )}
+      </>
+    )}
+  </div>
+</div>
       <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '0rem', }}>
         {/* Contenido de la sección */}
       </div>
