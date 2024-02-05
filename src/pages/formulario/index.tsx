@@ -602,6 +602,15 @@ function WeddingInvitationForm() {
               {!child.specialMenuType && errors.childrenMenuError && (
                 <div className="error-message" style={{ color: 'red' }}>{errors.childrenMenuError}</div>
               )}
+              {child.specialMenuType === 'otro' && (
+                <input
+                  className="input"
+                  type="text"
+                  value={child.customMenuType || ''}
+                  onChange={(e) => handleChangeChildrenDetails(index, 'customMenuType', e.target.value)}
+                  placeholder="Especificar tipo de menú"
+                />
+              )}
             </>
           )}
           <button type="button" onClick={() => handleRemoveChildMenu(index)} className="remove-button">
