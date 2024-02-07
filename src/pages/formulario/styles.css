@@ -53,8 +53,10 @@
   flex: 1;
   margin: 5px;
   background-color: #4a4e69;
+  padding: 15px 20px; /* Tamaño más grande para mejorar la interacción táctil */
+  font-size: 18px;
   color: white;
-  padding: 12px 20px;
+ 
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -110,6 +112,7 @@
 /* Estilos para las columnas del formulario */
 .form-section {
   display: flex;
+  flex-wrap: wrap; /* Asegura la adaptabilidad en pantallas pequeñas */
   justify-content: space-between;
   margin-bottom: 15px;
 }
@@ -117,6 +120,7 @@
 /* Estilo para las columnas del formulario */
 .form-column {
   flex: 1;
+  margin-right: 20px;
   margin-right: 20px;
 }
 
@@ -169,6 +173,37 @@
   margin-right: 10px;
 }
 
+
+/* Estilos para la sección de resumen de menús */
+.menu-summary {
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-summary h3 {
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.menu-summary p {
+  color: #555;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.menu-summary p:last-child {
+  margin-bottom: 0;
+}
+
+
+
+
+
 /* Estilos responsivos para dispositivos móviles */
 @media (max-width: 768px) {
   /* Alineación de elementos en los detalles de los niños en dispositivos móviles */
@@ -184,88 +219,33 @@
 
   /* Alineación horizontal de botones en dispositivos móviles */
   .button-container {
-    flex-direction: row;
+    flex-direction: column; /* Apila los botones verticalmente */
   }
 
-  /* Ancho de botones en dispositivos móviles */
   .button {
-    width: calc(50% - 10px);
+    width: 100%; /* Botones de ancho completo */
   }
 
-  /* Alineación de elementos en secciones en dispositivos móviles */
   .form-section {
     flex-direction: column;
   }
 
-  /* Eliminar margen derecho en columnas en dispositivos móviles */
   .form-column {
+    width: 100%; /* Columnas de ancho completo */
     margin-right: 0;
   }
 
-  /* Estilos generales de la página en dispositivos móviles */
-  .page {
-    padding: 20px;
-    margin: 20px;
+  .input, .select {
+    font-size: 16px; /* Tamaño de fuente más grande para facilitar la lectura */
   }
 
-  /* Tamaño de encabezado en dispositivos móviles */
-  .heading {
-    font-size: 26px;
+  .menu-summary p {
+    font-size: 14px; /* Tamaño de fuente más pequeño para resumenes */
   }
 
-  /* Tamaño de fuente en etiquetas, campos de entrada, selectores y botones en dispositivos móviles */
-  .label, .input, .select, .button {
-    font-size: 16px;
-  }
 
-  /* Alineación de elementos en secciones, casillas de verificación y selectores en dispositivos móviles */
-  .form-section, .checkbox-section, .select-section {
-    align-items: flex-start;
-  }
-
-  /* Alineación de texto a la izquierda en dispositivos móviles */
-  .form-column, .label, .input, .select, .button {
-    text-align: left;
-    width: 100%;
-  }
 }
 
-/* Estilos para la sección de Opciones de Transporte */
-.transport-section {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.transport-section h3 {
-  color: #6d6875;
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-.transport-section p {
-  font-size: 16px;
-  color: #4a4e69;
-  margin-bottom: 15px;
-}
-
-.transport-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.transport-option input[type="radio"] {
-  margin-right: 10px;
-}
-
-.transport-option label {
-  margin: 0;
-  font-size: 16px;
-  color: #333;
-}
 
 
 
@@ -310,6 +290,7 @@
   .transport-section p, .transport-option label {
     font-size: 14px;
   }
+  
   
 
 

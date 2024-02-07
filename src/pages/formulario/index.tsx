@@ -47,6 +47,10 @@ interface FormErrors {
   childrenNameError: string;
   childrenMenuError: string; 
   childSpecialMenuOtherError: string;
+  specialMenuError: string;
+  companionSpecialMenuError: string;
+  transportError: string;
+  
 }
 
 // Componente principal del formulario de invitación a la boda.
@@ -118,7 +122,7 @@ function WeddingInvitationForm() {
     hasCompanion: false,
     companionName: '',
     companionMenuType: 'estandar',  // Estado inicial para el acompañante también como 'estandar'
-    companionSpecialMenuType: null,
+    companionSpecialMenuType: 'vegano',
     companionCustomMenuType: null,
     hasChildren: false,
     childrenCount: 0,
@@ -133,7 +137,8 @@ function WeddingInvitationForm() {
 
   const [specialAdultMenuCount, setSpecialAdultMenuCount] = useState(0);
   const [specialChildMenuCount, setSpecialChildMenuCount] = useState(0);
-  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '', childrenMenuError: '',  childSpecialMenuOtherError: ''  }); // Estado de errores agregado
+  const [errors, setErrors] = useState({ companionNameError: '', childrenNameError: '', childrenMenuError: '',  childSpecialMenuOtherError: '', specialMenuError: '',  companionSpecialMenuError: '',  transportError: ''
+  }); // Estado de errores agregado
 
 
 
@@ -191,7 +196,6 @@ function WeddingInvitationForm() {
         setGuest(prev => ({
           ...prev,
           menuType: checked ? 'especial' : 'estandar',
-          // Asignar 'vegano' inmediatamente al activar el checkbox
           specialMenuType: checked ? 'vegano' : null
         }));
       } else if (name === 'companionMenuType') {
@@ -211,6 +215,14 @@ function WeddingInvitationForm() {
         ...prev,
         [name]: value
       }));
+  
+      // Limpia el mensaje de error cuando se empieza a escribir en los campos de menú especial "otros"
+      if (name === 'customMenuType' && value.trim() !== '') {
+        setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
+      }
+      if (name === 'companionCustomMenuType' && value.trim() !== '') {
+        setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
+      }
     }
   };
 
@@ -303,8 +315,11 @@ function WeddingInvitationForm() {
       companionNameError: '',
       childrenNameError: '',
       childrenMenuError: '',
-      childSpecialMenuOtherError: ''
-    };
+      childSpecialMenuOtherError: '',
+      specialMenuError: '', // Error para menú especial del invitado principal
+      companionSpecialMenuError: '', // Error para menú especial del acompaña
+      transportError: '', // Error para opciones de transporte
+        };
   
     // Verificar si el nombre del invitado principal está vacío
     if (!guest.name || guest.name.trim() === '') {
@@ -347,10 +362,34 @@ function WeddingInvitationForm() {
       });
     }
   
+    // Validación para el menú especial del invitado principal
+    if (guest.menuType === 'especial') {
+      const error = guest.specialMenuType === 'otro' && (!guest.customMenuType || guest.customMenuType.trim() === '')
+        ? 'Debe especificar el tipo de menú especial para el invitado principal.'
+        : '';
+      newErrors.specialMenuError = error;
+      if (error) isValid = false;
+    }
+  
+    // Validación para el menú especial del acompañante
+    if (guest.hasCompanion && guest.companionMenuType === 'especial') {
+      const companionError = guest.companionSpecialMenuType === 'otro' && (!guest.companionCustomMenuType || guest.companionCustomMenuType.trim() === '')
+        ? 'Debe especificar el tipo de menú especial para el acompañante.'
+        : '';
+      newErrors.companionSpecialMenuError = companionError;
+      if (companionError) isValid = false;
+    }
+
+
+    // Validación para la opción de transporte
+  if (!guest.transportOption) {
+    newErrors.transportError = 'Por favor, selecciona una opción de transporte';
+    isValid = false;
+  }
+  
     setErrors(newErrors);
     return isValid;
   };
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -416,60 +455,64 @@ function WeddingInvitationForm() {
     <form onSubmit={handleSubmit} className="form">
       {/* Nombre y Apellido */}
       <div className="form-section">
-  <div className="form-column">
-    <label className="label">Nombre y Apellido</label>
-    <input
-      className="input"
-      type="text"
-      name="name"
-      value={guest.name}
-      onChange={handleChangeInput}
-      placeholder="Nombre y Apellido"
-      required
-    />
-  </div>
-  <div className="form-column">
-    <label className="label">
-      <input
-        type="checkbox"
-        checked={guest.menuType === 'especial'}
-        onChange={(e) => handleChangeInput({
-          ...e,
-          target: {
-            ...e.target,
-            name: 'menuType',
-            value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
-          }
-        })}
-      />
-      Menú Especial
-    </label>
-    {guest.menuType === 'especial' && (
-      <>
-        <select
+      <div className="form-column">
+        <label className="label">Nombre y Apellido</label>
+        <input
           className="input"
-          name="specialMenuType"
-          value={guest.specialMenuType ?? 'vegano'} // Cambio realizado aquí
+          type="text"
+          name="name"
+          value={guest.name}
           onChange={handleChangeInput}
-        >
-          <option value="vegano">Vegano</option>
-          <option value="celiaco">Celíaco</option>
-          <option value="otro">Otro</option>
-        </select>
-        {guest.specialMenuType === 'otro' && (
+          placeholder="Nombre y Apellido"
+          required
+        />
+      </div>
+      <div className="form-column">
+        <label className="label">
           <input
-            className="input"
-            type="text"
-            name="customMenuType"
-            value={guest.customMenuType ?? ''}
-            onChange={handleChangeInput}
-            placeholder="Especificar tipo de menú"
+            type="checkbox"
+            checked={guest.menuType === 'especial'}
+            onChange={(e) => handleChangeInput({
+              ...e,
+              target: {
+                ...e.target,
+                name: 'menuType',
+                value: guest.menuType === 'estandar' ? 'especial' : 'estandar'
+              }
+            })}
           />
+          Menú Especial
+        </label>
+        {guest.menuType === 'especial' && (
+          <>
+            <select
+              className="input"
+              name="specialMenuType"
+              value={guest.specialMenuType ?? ''}
+              onChange={handleChangeInput}
+            >
+              <option value="vegano">Vegano</option>
+              <option value="celiaco">Celíaco</option>
+              <option value="otro">Otro</option>
+            </select>
+            {guest.specialMenuType === 'otro' && (
+              <input
+                className="input"
+                type="text"
+                name="customMenuType"
+                value={guest.customMenuType ?? ''}
+                onChange={handleChangeInput}
+                placeholder="Especificar tipo de menú"
+              />
+            )}
+            {/* Mensaje de error para menú especial del invitado principal */}
+            {errors.specialMenuError && (
+              <div className="error-message" style={{ color: 'red' }}>{errors.specialMenuError}</div>
+            )}
+          </>
         )}
-      </>
-    )}
-  </div>
-</div>
+      </div>
+    </div>
       <div style={{ borderBottom: '2px solid #ccc', marginBottom: '2rem', paddingBottom: '0rem', }}>
         {/* Contenido de la sección */}
       </div>
@@ -483,7 +526,7 @@ function WeddingInvitationForm() {
         checked={guest.hasCompanion}
         onChange={handleChangeInput}
       />
-      <span className="label-text">Acompañante</span>
+      Acompañante
     </label>
     {guest.hasCompanion && (
       <>
@@ -503,14 +546,20 @@ function WeddingInvitationForm() {
     )}
   </div>
   <div className="form-column">
-    {/* Checkbox y selección de menú para el Acompañante */}
     {guest.hasCompanion && (
       <>
         <label className="label">
           <input
             type="checkbox"
             checked={guest.companionMenuType === 'especial'}
-            onChange={() => handleChangeMenuType(true)}
+            onChange={(e) => handleChangeInput({
+              ...e,
+              target: {
+                ...e.target,
+                name: 'companionMenuType',
+                value: guest.companionMenuType === 'estandar' ? 'especial' : 'estandar'
+              }
+            })}
           />
           Menú Especial para Acompañante
         </label>
@@ -535,6 +584,10 @@ function WeddingInvitationForm() {
                 onChange={handleChangeInput}
                 placeholder="Especificar tipo de menú"
               />
+            )}
+            {/* Mensaje de error para menú especial del acompañante */}
+            {errors.companionSpecialMenuError && (
+              <div className="error-message" style={{ color: 'red' }}>{errors.companionSpecialMenuError}</div>
             )}
           </>
         )}
@@ -654,7 +707,7 @@ function WeddingInvitationForm() {
         checked={guest.transportOption === 'bus'}
         onChange={handleChangeInput}
       />
-      <label>Utilizaré el autobús proporcionado por los novios (Pasará por Barcelona y Sardañola).</label>
+      <label>Utilizaré el autobús proporcionado por los novios (Pasará por Barcelona y Cerdanyola del Vallès).</label>
     </div>
     <div className="transport-option">
       <input
@@ -666,6 +719,10 @@ function WeddingInvitationForm() {
       />
       <label>Prefiero viajar en mi propio coche.</label>
     </div>
+    {/* Mensaje de error si no se selecciona una opción de transporte */}
+    {errors.transportError && (
+      <div className="error-message" style={{ color: 'red' }}>{errors.transportError}</div>
+    )}
   </div>
 </div>
 
@@ -732,13 +789,14 @@ function WeddingInvitationForm() {
           Teléfono de Contacto: {guest.contactPhone}
         </p>
 
+{/* muestra si utizas Utilizaré el autobús proporcionado por los novios (Pasará por Barcelona y Cerdanyola del Vallès).
 
-        {/* Detalles adicionales, como alergias alimentarias, si es relevante */}
-        {guest.hasFoodAllergy && (
-          <p>
-            Detalles de Alergia Alimentaria: {guest.allergyDetails}
-          </p>
-        )}
+Prefiero viajar en mi propio coche. */}
+        <p>
+          Opción de Transporte: {guest.transportOption}
+        </p>
+       
+  
       </div>
 
       {/* Botón de Enviar */}
