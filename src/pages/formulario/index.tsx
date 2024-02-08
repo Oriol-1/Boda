@@ -409,7 +409,7 @@ function WeddingInvitationForm() {
         customMenuType: child.isSpecialMenu && child.specialMenuType === 'otro' ? child.customMenuType : null
     }));
 
-    // Preparación de los datos del formulario
+    // Preparación de los datos del formulario para enviar
     const formData = {
         name: guest.name,
         menuType: guest.menuType || 'estandar',
@@ -428,8 +428,6 @@ function WeddingInvitationForm() {
         contactPhone: guest.contactPhone,
         transportOption: guest.transportOption
     };
-
-    console.log('Datos del formulario a enviar:', formData);
 
     try {
         const response = await fetch('/api/formularios/submit', {

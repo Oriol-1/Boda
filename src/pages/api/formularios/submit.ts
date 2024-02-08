@@ -25,6 +25,7 @@ interface GuestData {
     hasFoodAllergy?: boolean;
     allergyDetails?: string;
     contactPhone: string;
+    transportOption?: 'bus' | 'car';
     childrenDetails: ChildDetail[];
 }
 
@@ -43,16 +44,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const guestData: GuestData = req.body;
 
-        // Registrar los datos recibidos para depuración
-        console.log("Datos recibidos:", guestData);
-
         // Verificar campos obligatorios
         if (!guestData.name || guestData.name.trim() === '' || !guestData.contactPhone || guestData.contactPhone.trim() === '') {
             res.status(400).json({ message: 'Nombre y teléfono son campos obligatorios' });
             return;
         }
 
-        // Preparar valores para la inserción en la base de datos
+        await db.beginTransaction();
+
+        // Inserción en la tabla de invitados
         const valuesInvitados = [
             guestData.name,
             guestData.menuType || null,
@@ -63,26 +63,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             guestData.companionMenuType || null,
             guestData.companionSpecialMenuType || null,
             guestData.companionCustomMenuType || null,
-            guestData.hasChildren ? 1 : 0,
-            guestData.childrenCount || 0,
-            guestData.hasFoodAllergy ? 1 : 0,
+            guestData.hasChildren ? guestData.childrenCount : 0,
             guestData.allergyDetails || null,
-            guestData.contactPhone
+            guestData.contactPhone,
+            guestData.transportOption || null
         ];
 
-        // Inserción en la tabla de invitados
+        console.log('Insertando en invitados con datos:', valuesInvitados);
         const queryInvitados = `
             INSERT INTO invitados (
                 nombre, menu_principal_tipo, menu_principal_tipo_especial,
                 menu_principal_tipo_otro, acompanante, nombre_acompanante, 
                 menu_acompanante_tipo, menu_acompanante_tipo_especial, 
-                menu_acompanante_tipo_otro, hijos, cantidad_hijos, 
-                alergia_alimentaria, detalles_alergia_alimentaria, telefono_contacto
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                menu_acompanante_tipo_otro, hijos, 
+                detalles_alergia_alimentaria, telefono_contacto, opcion_transporte
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const [resultInvitados] = await db.execute(queryInvitados, valuesInvitados);
         const invitadoId = (resultInvitados as mysql.OkPacket).insertId;
+        console.log('Inserción en invitados exitosa, ID:', invitadoId);
 
         // Inserción en la tabla de hijos (si corresponde)
         if (guestData.hasChildren && guestData.childrenDetails && guestData.childrenDetails.length > 0) {
@@ -91,20 +90,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 VALUES ?
             `;
             const valuesHijos = guestData.childrenDetails.map((child: ChildDetail) => [
-                invitadoId, 
-                child.name, 
+                invitadoId,
+                child.name,
                 child.menuType,
                 child.isSpecialMenu ? 1 : 0,
                 child.specialMenuType || null,
-                child.specialMenuType === 'otro' ? child.customMenuType : null // Asegúrate de incluir este cambio
+                child.specialMenuType === 'otro' ? child.customMenuType : null
             ]);
+            console.log('Insertando en hijos con datos:', valuesHijos);
             await db.query(queryHijos, [valuesHijos]);
+            console.log('Inserción en hijos exitosa');
         }
 
-        await db.end();
+        await db.commit();
         res.status(200).json({ message: 'Formulario enviado con éxito', invitadoId });
     } catch (error) {
-        console.error('Error al procesar el formulario:', error);
-        res.status(500).json({ message: 'Error interno del servidor' });
+        await db.rollback();
+    
+        // Verificamos si el error es una instancia de Error para acceder a su propiedad 'message'
+        if (error instanceof Error) {
+            console.error('Error al procesar el formulario:', error);
+            res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+        } else {
+            // Si el error no es una instancia de Error, manéjalo de manera genérica
+            console.error('Se produjo un error desconocido');
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    } finally {
+        await db.end();
     }
 }
