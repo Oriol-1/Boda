@@ -3,7 +3,7 @@
   background-color: #f9f9f9;
   color: #333;
   font-family: 'Georgia', serif;
-  max-width: 700px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 30px;
   border-radius: 10px;
@@ -94,6 +94,24 @@
 }
 
 /* Estilos para las secciones de detalle de los niños */
+
+.child-detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  background-color: #fff; /* Fondo blanco para cada detalle de hijo */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera para resaltar */
+  padding: 15px; /* Espacio interior para separar el contenido de los bordes */
+  margin-bottom: 20px; /* Espacio entre cada detalle de hijo */
+}
+
+.child-detail > * {
+  flex: 1 1 45%; /* Cada elemento ocupa aproximadamente la mitad del ancho */
+  margin: 5px;
+}
+
+
 .children-details, .child-detail {
   margin-top: 10px;
 }
@@ -108,6 +126,29 @@
   cursor: pointer;
   font-size: 16px;
 }
+
+/* Estilos adicionales para la sección de detalle de los niños */
+.child-detail {
+  background-color: #fff; /* Fondo blanco para cada detalle de hijo */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera para resaltar */
+  padding: 15px; /* Espacio interior para separar el contenido de los bordes */
+  margin-bottom: 20px; /* Espacio entre cada detalle de hijo */
+}
+
+/* Estilos para la etiqueta y el input dentro de los detalles del hijo */
+.child-detail .label, .child-detail .input {
+  display: block; /* Hace que la etiqueta y el input ocupen toda la línea */
+  width: 100%; /* Ancho completo dentro del detalle del hijo */
+  margin-bottom: 10px; /* Espacio después de cada etiqueta e input */
+}
+
+/* Botones para agregar y eliminar dentro de los detalles del hijo */
+.child-detail .add-button, .child-detail .remove-button {
+  width: auto; /* Ancho automático para adaptarse al contenido del botón */
+  padding: 5px 10px; /* Relleno más pequeño para los botones */
+}
+
 
 /* Estilos para las columnas del formulario */
 .form-section {
@@ -162,6 +203,12 @@
   margin-bottom: 10px;
 }
 
+/* texto en negrita menus */
+.label-tipo-menu, 
+.label-tipo-menu-especial {
+  font-weight: bold; /* Aplica negrita */
+}
+
 /* Alineación de elementos en los detalles de los niños */
 .child-detail > * {
   flex-grow: 1;
@@ -198,6 +245,47 @@
 
 .menu-summary p:last-child {
   margin-bottom: 0;
+}
+
+
+
+
+
+/* Estilos para la sección de Opciones de Transporte */
+.transport-section {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.transport-section h3 {
+  color: #6d6875;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.transport-section p {
+  font-size: 16px;
+  color: #4a4e69;
+  margin-bottom: 15px;
+}
+
+.transport-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.transport-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.transport-option label {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
 }
 
 
@@ -243,45 +331,17 @@
     font-size: 14px; /* Tamaño de fuente más pequeño para resumenes */
   }
 
+  .child-detail {
+    padding: 10px; /* Relleno más pequeño para pantallas más pequeñas */
+  }
+
+  .child-detail > * {
+    flex-basis: 100%; /* En pantallas pequeñas, cada elemento ocupa el 100% */
+  }
+
 
 }
 
-/* Estilos para la sección de Opciones de Transporte */
-.transport-section {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.transport-section h3 {
-  color: #6d6875;
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-.transport-section p {
-  font-size: 16px;
-  color: #4a4e69;
-  margin-bottom: 15px;
-}
-
-.transport-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.transport-option input[type="radio"] {
-  margin-right: 10px;
-}
-
-.transport-option label {
-  margin: 0;
-  font-size: 16px;
-  color: #333;
-}
 
 
 

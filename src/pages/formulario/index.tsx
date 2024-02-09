@@ -223,6 +223,10 @@ function WeddingInvitationForm() {
       if (name === 'companionCustomMenuType' && value.trim() !== '') {
         setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
       }
+
+      if (name === 'transportOption') {
+        setErrors(prevErrors => ({ ...prevErrors, transportError: '' }));
+      }
     }
   };
 
@@ -625,7 +629,7 @@ function WeddingInvitationForm() {
             <div className="error-message" style={{ color: 'red' }}>{errors.childrenNameError}</div>
           )}
           <label className="label">
-            <span className="label-text">Tipo de Menú</span>
+            <span className="label-text label-tipo-menu">Tipo de Menú</span>
             <select
               className="input"
               value={child.menuType}
@@ -645,7 +649,7 @@ function WeddingInvitationForm() {
           </label>
           {child.isSpecialMenu && (
             <>
-              <label className="label">Tipo de Menú Especial</label>
+              <label className="label label-tipo-menu-especial">Tipo de Menú Especial</label>
               <select
                 className="input"
                 value={child.specialMenuType || ''}
