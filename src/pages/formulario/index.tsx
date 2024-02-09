@@ -75,10 +75,33 @@ export default function FormularioPage() {
   };
 
   // Función para manejar el envío del formulario de rechazo.
-  const handleDeclineSubmit = (e: React.FormEvent) => {
+  const handleDeclineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, <span class="boldText">${declinerName}</span>. Te enviamos un abrazo.`);
-    setShowInput(false);
+  
+    const declineData = {
+      nombre: declinerName,
+      // Puedes agregar más campos aquí si es necesario
+    };
+  
+    try {
+      const response = await fetch('/api/invitados/no-asistentes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(declineData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      console.log('Datos enviados con éxito');
+      setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, <span class="boldText">${declinerName}</span>. Te enviamos un abrazo.`);
+      setShowInput(false);
+    } catch (error) {
+      console.error('Error al enviar los datos', error);
+    }
   };
 
   // Renderización condicional basada en el estado del formulario y mensajes.
@@ -143,6 +166,8 @@ function WeddingInvitationForm() {
 
 
   const [showSummary, setShowSummary] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
 
 
   useEffect(() => {
@@ -385,6 +410,8 @@ function WeddingInvitationForm() {
     return isValid;
   };
 
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -447,7 +474,8 @@ function WeddingInvitationForm() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+      localStorage.setItem("formSubmitted", "true");
+      setIsSubmitted(true); // Actualizar el estado para reflejar que se ha enviado
       console.log('Formulario enviado con éxito');
       // Aquí puedes agregar cualquier lógica adicional para manejar la respuesta exitosa, como mostrar un mensaje de confirmación.
     } catch (error) {
@@ -455,6 +483,20 @@ function WeddingInvitationForm() {
     }
   };
 
+  useEffect(() => {
+    const submitted = localStorage.getItem("formSubmitted") === "true";
+    setIsSubmitted(submitted);
+  }, []);
+
+// Renderización condicional en el componente
+if (isSubmitted) {
+  return (
+    <div className="page"  style={{ textAlign: 'center' }}>
+      <h1>¡Invitación Confirmada!</h1>
+      <p>¡Gracias, {guest.name}{guest.hasCompanion ? `, ${guest.companionName}` : ''}{guest.childrenDetails.map(child => `, ${child.name}`).join("")}! Los esperamos el 1 de noviembre en la bodas.</p>
+    </div>
+  );
+}
 
   return (
     <div>
