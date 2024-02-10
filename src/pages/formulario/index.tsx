@@ -59,28 +59,34 @@ export default function FormularioPage() {
   const [showInput, setShowInput] = useState(false);
   const [declinerName, setDeclinerName] = useState('');
   const [goodbyeMessage, setGoodbyeMessage] = useState('');
+  const [response, setResponse] = useState(localStorage.getItem("weddingResponse"));
+  const [isSubmitted, setIsSubmitted] = useState(localStorage.getItem("formSubmitted") === "true");
 
-  // Función para manejar la aceptación de la invitación.
+  useEffect(() => {
+    if (response) {
+      localStorage.setItem("weddingResponse", response);
+    }
+  }, [response]);
+
   const handleAccept = () => {
+    setResponse("accepted");
     setShowForm(true);
     setShowInput(false);
     setGoodbyeMessage('');
   };
 
-  // Función para manejar el rechazo de la invitación.
   const handleDecline = () => {
+    setResponse("declined");
     setShowForm(false);
     setShowInput(true);
     setGoodbyeMessage('');
   };
 
-  // Función para manejar el envío del formulario de rechazo.
   const handleDeclineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
     const declineData = {
       nombre: declinerName,
-      // Puedes agregar más campos aquí si es necesario
+      // Agrega más campos si es necesario
     };
   
     try {
@@ -96,15 +102,26 @@ export default function FormularioPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
-      console.log('Datos enviados con éxito');
-      setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, <span class="boldText">${declinerName}</span>. Te enviamos un abrazo.`);
+      setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, ${declinerName}. Te enviamos un abrazo.`);
       setShowInput(false);
+      setResponse("declined");
+      setIsSubmitted(true);
+      localStorage.setItem("formSubmitted", "true");
     } catch (error) {
       console.error('Error al enviar los datos', error);
     }
   };
 
-  // Renderización condicional basada en el estado del formulario y mensajes.
+  if (response && isSubmitted) {
+    return (
+      <div className="page">
+        <h1 className="heading">Formulario de Invitación a la Boda</h1>
+        {response === "accepted" && <p>¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>}
+        {response === "declined" && <p>{goodbyeMessage}</p>}
+      </div>
+    );
+  }
+
   return (
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
@@ -441,7 +458,7 @@ function WeddingInvitationForm() {
       specialMenuType: child.isSpecialMenu ? child.specialMenuType : null,
       customMenuType: child.isSpecialMenu && child.specialMenuType === 'otro' ? child.customMenuType : null
     }));
-
+  
     // Preparación de los datos del formulario para enviar
     const formData = {
       name: guest.name,
@@ -461,7 +478,7 @@ function WeddingInvitationForm() {
       contactPhone: guest.contactPhone,
       transportOption: guest.transportOption
     };
-
+  
     try {
       const response = await fetch('/api/formularios/submit', {
         method: 'POST',
@@ -470,10 +487,13 @@ function WeddingInvitationForm() {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
+      // Actualizar el estado y el localStorage para reflejar que el formulario ha sido enviado
+      localStorage.setItem("weddingResponse", "accepted");
       localStorage.setItem("formSubmitted", "true");
       setIsSubmitted(true); // Actualizar el estado para reflejar que se ha enviado
       console.log('Formulario enviado con éxito');
