@@ -290,6 +290,21 @@
 
 
 
+/* texto de despues de mandar formularios */
+.greenMessage {
+  color: green; /* Ejemplo, ajusta el color según tus preferencias */
+  text-align: center; /* Centrar el texto */
+  font-size: 1.2em; /* Tamaño del texto, ajusta según necesites */
+  /* Agrega aquí otros estilos que necesites para el mensaje */
+}
+
+/* Estilo para hacer que el nombre aparezca en negrita */
+.bold {
+  font-weight: bold;
+}
+
+
+
 
 
 /* Estilos responsivos para dispositivos móviles */

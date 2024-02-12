@@ -55,12 +55,29 @@ interface FormErrors {
 
 // Componente principal del formulario de invitación a la boda.
 export default function FormularioPage() {
+  // Declaración de estados
   const [showForm, setShowForm] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [declinerName, setDeclinerName] = useState('');
   const [goodbyeMessage, setGoodbyeMessage] = useState('');
-  const [response, setResponse] = useState(localStorage.getItem("weddingResponse"));
-  const [isSubmitted, setIsSubmitted] = useState(localStorage.getItem("formSubmitted") === "true");
+  const [response, setResponse] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // useEffect para cargar datos del localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedResponse = localStorage.getItem("weddingResponse");
+      const storedGoodbyeMessage = localStorage.getItem("goodbyeMessage");
+
+      if (storedResponse) {
+        setResponse(storedResponse);
+        setGoodbyeMessage(storedGoodbyeMessage || '');
+      }
+
+      const storedIsSubmitted = localStorage.getItem("formSubmitted") === "true";
+      setIsSubmitted(storedIsSubmitted);
+    }
+  }, []);
 
   useEffect(() => {
     if (response) {
@@ -84,6 +101,7 @@ export default function FormularioPage() {
 
   const handleDeclineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
     const declineData = {
       nombre: declinerName,
       // Agrega más campos si es necesario
@@ -102,7 +120,10 @@ export default function FormularioPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
-      setGoodbyeMessage(`Lamentamos que no puedas asistir a la boda, ${declinerName}. Te enviamos un abrazo.`);
+      // Crear un mensaje de despedida con HTML
+      const goodbyeMsg = `Lamentamos que no puedas asistir a la boda, <strong>${declinerName}</strong>. Te enviamos un abrazo.`;
+    setGoodbyeMessage(goodbyeMsg);
+      localStorage.setItem("goodbyeMessage", goodbyeMsg);
       setShowInput(false);
       setResponse("declined");
       setIsSubmitted(true);
@@ -116,8 +137,25 @@ export default function FormularioPage() {
     return (
       <div className="page">
         <h1 className="heading">Formulario de Invitación a la Boda</h1>
-        {response === "accepted" && <p>¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>}
-        {response === "declined" && <p>{goodbyeMessage}</p>}
+        {response === "accepted" && (
+           <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>
+        )}
+        {response === "declined" && (
+          <p className="goodbyeMessage" dangerouslySetInnerHTML={{ __html: goodbyeMessage }}></p>
+        )}
+
+        <style jsx>{`
+          .goodbyeMessage {
+            text-align: center;
+            font-size: 20px; 
+            color: black; 
+            font-weight: normal;
+          }
+          .goodbyeMessage strong {
+            font-weight: bold; 
+            color: blue; 
+          }
+        `}</style>
       </div>
     );
   }
@@ -125,14 +163,15 @@ export default function FormularioPage() {
   return (
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
-      {!showForm && !showInput && !goodbyeMessage && (
+
+      {!showForm && !showInput && !response && (
         <div className="button-container">
-          <button className="button" onClick={handleAccept}>Ir a la Boda</button>
-          <button className="button" onClick={handleDecline}>No Puedo Ir a la Boda</button>
+          <button className="button" onClick={() => setShowForm(true)}>Ir a la Boda</button>
+          <button className="button" onClick={() => setShowInput(true)}>No Puedo Ir a la Boda</button>
         </div>
       )}
 
-      {showForm && <WeddingInvitationForm />}
+      {showForm && <WeddingInvitationForm />} {/* Asegúrate de tener este componente definido */}
       {showInput && (
         <form onSubmit={handleDeclineSubmit} className="form">
           <input
@@ -145,12 +184,28 @@ export default function FormularioPage() {
           <button className="button" type="submit">Enviar</button>
         </form>
       )}
-      {goodbyeMessage && (
-        <p className="greenMessage" dangerouslySetInnerHTML={{ __html: goodbyeMessage }}></p>
+
+      {response === "declined" && (
+        <p className="goodbyeMessage">
+          Lamentamos que no puedas asistir a la boda, <strong>{declinerName}</strong>. Te enviamos un abrazo.
+        </p>
       )}
+
+      <style jsx>{`
+        .goodbyeMessage {
+          text-align: center;
+          font-size: 18px;
+          color: black;
+        }
+        .goodbyeMessage strong {
+          font-weight: bold;
+          color: blue;
+        }
+      `}</style>
     </div>
   );
 }
+
 
 // Componente para el formulario de invitación a la boda.
 function WeddingInvitationForm() {
@@ -511,13 +566,17 @@ function WeddingInvitationForm() {
 // Renderización condicional en el componente
 if (isSubmitted) {
   return (
-    <div className="page"  style={{ textAlign: 'center' }}>
+    <div className="page" style={{ textAlign: 'center' }}>
       <h1>¡Invitación Confirmada!</h1>
-      <p>¡Gracias, {guest.name}{guest.hasCompanion ? `, ${guest.companionName}` : ''}{guest.childrenDetails.map(child => `, ${child.name}`).join("")}! Los esperamos el 1 de noviembre en la bodas.</p>
+      <p className="goodbyeMessage">
+        ¡Mil gracias, {guest.name}{guest.hasCompanion ? ` y ${guest.companionName}` : ''}{guest.childrenDetails.length > 0 ? ` junto a vuestros peques` : ''}! Estamos deseando veros el 1 de noviembre en nuestra boda. ¡Va a ser un día inolvidable!
+      </p>
     </div>
   );
 }
 
+
+ 
   return (
     <div>
       {!showSummary ? (
