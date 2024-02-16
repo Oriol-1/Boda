@@ -288,63 +288,82 @@ function WeddingInvitationForm() {
     const { name, value, type } = e.target;
 
     if (type === 'checkbox') {
-      const checked = (e.target as HTMLInputElement).checked;
+        const checked = (e.target as HTMLInputElement).checked;
 
-      if (name === 'menuType') {
-        setGuest(prev => ({
-          ...prev,
-          menuType: checked ? 'especial' : 'estandar',
-          specialMenuType: checked ? 'vegetariano' : null
-        }));
-      } else if (name === 'companionMenuType') {
-        setGuest(prev => ({
-          ...prev,
-          companionMenuType: checked ? 'especial' : 'estandar',
-          companionSpecialMenuType: checked ? 'vegetariano' : null
-        }));
-      } else {
-        setGuest(prev => ({
-          ...prev,
-          [name]: checked
-        }));
-      }
+        if (name === 'menuType') {
+            setGuest(prev => ({
+                ...prev,
+                menuType: checked ? 'especial' : 'estandar',
+                specialMenuType: checked ? 'vegetariano' : null
+            }));
+            // Eliminar mensaje de error para el menú especial del invitado principal si se desmarca
+            if (!checked) {
+                setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
+            }
+        } else if (name === 'companionMenuType') {
+            setGuest(prev => ({
+                ...prev,
+                companionMenuType: checked ? 'especial' : 'estandar',
+                companionSpecialMenuType: checked ? 'vegetariano' : null
+            }));
+            // Eliminar mensaje de error para el menú especial del acompañante si se desmarca
+            if (!checked) {
+                setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
+            }
+        } else {
+            setGuest(prev => ({
+                ...prev,
+                [name]: checked
+            }));
+        }
     } else {
-      setGuest(prev => ({
-        ...prev,
-        [name]: value
-      }));
+        setGuest(prev => ({
+            ...prev,
+            [name]: value
+        }));
 
-      // Limpia el mensaje de error cuando se empieza a escribir en los campos de menú especial "otros"
-      if (name === 'customMenuType' && value.trim() !== '') {
-        setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
-      }
-      if (name === 'companionCustomMenuType' && value.trim() !== '') {
-        setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
-      }
-
-      if (name === 'transportOption') {
-        setErrors(prevErrors => ({ ...prevErrors, transportError: '' }));
-      }
+        // Limpia el mensaje de error cuando se empieza a escribir en los campos de menú especial "otros"
+        if (name === 'customMenuType' && value.trim() !== '') {
+            setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
+        }
+        if (name === 'companionCustomMenuType' && value.trim() !== '') {
+            setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
+        }
+        if (name === 'transportOption' && value.trim() !== '') {
+            setErrors(prevErrors => ({ ...prevErrors, transportError: '' }));
+        }
     }
-  };
+};
 
-
-  const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: string | boolean) => {
-    setGuest(prevGuest => {
+const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: string | boolean) => {
+  setGuest(prevGuest => {
       const updatedChildren = [...prevGuest.childrenDetails];
       const updatedChild = { ...updatedChildren[index], [field]: value };
       updatedChildren[index] = updatedChild;
 
-      // Actualizar el estado de error para el menú especial "Otro"
-      if (field === 'customMenuType') {
-        const newError = typeof value === 'string' && value.trim() !== '' ? '' : 'Por favor, especifica el tipo de menú';
-        setErrors(prevErrors => ({ ...prevErrors, childSpecialMenuOtherError: newError }));
-      }
-
       return { ...prevGuest, childrenDetails: updatedChildren };
-    });
-  };
+  });
 
+  // Actualizar el estado de error para el menú especial "Otro"
+  if (field === 'customMenuType') {
+      const newError = typeof value === 'string' && value.trim() !== '' ? '' : 'Por favor, especifica el tipo de menú';
+      setErrors(prevErrors => {
+          const updatedErrors = { ...prevErrors };
+          updatedErrors.childSpecialMenuOtherError = newError;
+          return updatedErrors;
+      });
+  }
+
+  // Eliminar mensaje de error si se proporciona un nombre válido para el hijo
+  if (field === 'name' && typeof value === 'string' && value.trim() !== '') {
+      setErrors(prevErrors => ({ ...prevErrors, childrenNameError: '' }));
+  }
+
+  // Eliminar mensaje de error del menú especial para cada hijo si se selecciona correctamente
+  if (field === 'specialMenuType' && typeof value === 'string' && value.trim() !== '') {
+      setErrors(prevErrors => ({ ...prevErrors, childrenMenuError: '' }));
+  }
+};
 
   const handleChangeMenuType = (isCompanion = false) => {
     setGuest(prev => {
@@ -884,45 +903,56 @@ if (isSubmitted) {
           {/* Cálculo y muestra de cantidades de cada tipo de menú */}
 
           <div className="menu-summary">
-            <h3>Resumen de Menús Seleccionados</h3>
-            {/* Resumen para el Invitado Principal */}
-            <p>
-              Invitado Principal: {guest.name} - Menú:
-              {guest.menuType === 'especial'
-                ? `${guest.specialMenuType} ${guest.customMenuType ? `- ${guest.customMenuType}` : ''}`
-                : 'Estándar'}
-            </p>
+    <h3>Resumen de Menús Seleccionados</h3>
+    
+    {/* Resumen para el Invitado Principal */}
+    <p>
+      Invitado Principal: {guest.name} - Menú:
+      {guest.menuType === 'especial'
+        ? `${guest.specialMenuType} ${guest.customMenuType ? `- ${guest.customMenuType}` : ''}`
+        : 'Estándar'}
+      {errors.specialMenuError && (
+        <span className="error-message" style={{ color: 'red' }}> - {errors.specialMenuError}</span>
+      )}
+    </p>
 
-            {/* Resumen para el Acompañante, si está presente */}
-            {guest.hasCompanion && (
-              <p>
-                Acompañante: {guest.companionName} - Menú:
-                {guest.companionMenuType === 'especial'
-                  ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}`
-                  : 'Estándar'}
-              </p>
-            )}
+    {/* Resumen para el Acompañante, si está presente */}
+    {guest.hasCompanion && (
+      <p>
+        Acompañante: {guest.companionName} - Menú:
+        {guest.companionMenuType === 'especial'
+          ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}`
+          : 'Estándar'}
+        {errors.companionSpecialMenuError && (
+          <span className="error-message" style={{ color: 'red' }}> - {errors.companionSpecialMenuError}</span>
+        )}
+      </p>
+    )}
 
-            {/* Resumen para los Hijos */}
-            {guest.childrenDetails.map((child, index) => (
-              <p key={`child-menu-summary-${index}`}>
-                Hijo {index + 1}: {child.name} - Tipo de Menú: {child.menuType}
-                {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
-                {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
-              </p>
-            ))}
+    {/* Resumen para los Hijos */}
+    {guest.childrenDetails.map((child, index) => (
+      <p key={`child-menu-summary-${index}`}>
+        Hijo {index + 1}: {child.name} - Tipo de Menú: {child.menuType}
+        {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
+        {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
+        {errors.childrenMenuError && (
+          <span className="error-message" style={{ color: 'red' }}> - {errors.childrenMenuError}</span>
+        )}
+      </p>
+    ))}
 
-            {/* resumen de numero de telefono */}
-            <p>
-              Teléfono de Contacto: {guest.contactPhone}
-            </p>
+    {/* Resumen de número de teléfono */}
+    <p>
+      Teléfono de Contacto: {guest.contactPhone}
+    </p>
 
-            {/* muestra si utizas Utilizaré el autobús proporcionado por los novios (Pasará por Barcelona y Cerdanyola del Vallès).
-
-Prefiero viajar en mi propio coche. */}
-            <p>
-              Opción de Transporte: {guest.transportOption}
-            </p>
+    {/* Resumen de la opción de transporte */}
+    <p>
+      Opción de Transporte: {guest.transportOption}
+      {errors.transportError && (
+        <span className="error-message" style={{ color: 'red' }}> - {errors.transportError}</span>
+      )}
+    </p>
 
 
           </div>
