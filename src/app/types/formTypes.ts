@@ -1,7 +1,7 @@
 // Define una interfaz para la selección de menús especiales.
 // Utilizada para representar la elección de un tipo de menú especial y una opción personalizada si es necesario.
 export interface SpecialMenuSelection {
-  type: string; // Tipo de menú especial (ej. vegetariano, vegano, etc.).
+  type: string; // Tipo de menú especial (ej. vegetariano, vegetariano, etc.).
   customType?: string; // Tipo de menú especial personalizado, si se selecciona 'otro'.
 }
 
@@ -11,7 +11,7 @@ export interface ChildWithMenuType {
   name: string; // Nombre del niño.
   menuType: 'infantil' | 'adulto'; // Tipo de menú para el niño (infantil o adulto).
   isSpecialMenu: boolean; // Indica si el niño requiere un menú especial.
-  specialMenuType?: 'vegetariano' | 'celiaco' | 'otro'; // Tipo de menú especial para el niño.
+  specialMenuType?: 'vegetariano' | 'gluten' | 'otro'; // Tipo de menú especial para el niño.
   customMenuType?: string; // Tipo de menú especial personalizado para el niño, si se selecciona 'otro'.
 }
 
@@ -20,12 +20,12 @@ export interface ChildWithMenuType {
 export interface GuestFormState {
   name: string; // Nombre del invitado.
   menuType: 'estandar' | 'especial'; // Tipo de menú del invitado (estándar o especial).
-  specialMenuType: 'vegano' | 'celiaco' | 'otro'; // Tipo de menú especial del invitado.
+  specialMenuType: 'vegetariano' | 'gluten' | 'otro'; // Tipo de menú especial del invitado.
   customMenuType: string; // Tipo de menú especial personalizado del invitado, si se selecciona 'otro'.
   hasCompanion: boolean; // Indica si el invitado tiene acompañante.
   companionName: string; // Nombre del acompañante.
   companionMenuType: 'estandar' | 'especial'; // Tipo de menú del acompañante (estándar o especial).
-  companionSpecialMenuType: 'vegano' | 'celiaco' | 'otro'; // Tipo de menú especial del acompañante.
+  companionSpecialMenuType: 'vegetariano' | 'gluten' | 'otro'; // Tipo de menú especial del acompañante.
   companionCustomMenuType: string; // Tipo de menú especial personalizado del acompañante, si se selecciona 'otro'.
   hasChildren: boolean; // Indica si el invitado tiene hijos.
   childrenCount: number; // Número de hijos del invitado.

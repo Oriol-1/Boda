@@ -13,19 +13,19 @@ interface ChildWithMenuType {
   name: string;
   menuType: 'infantil' | 'adulto';
   isSpecialMenu: boolean;
-  specialMenuType?: 'vegetariano' | 'celiaco' | 'otro' | null;
+  specialMenuType?: 'vegetariano' | 'gluten' | 'otro' | null;
   customMenuType?: string | null;
 }
 
 interface GuestFormState {
   name: string;
   menuType: 'estandar' | 'especial' | null;
-  specialMenuType: 'vegano' | 'celiaco' | 'otro' | null;
+  specialMenuType: 'vegetariano' | 'gluten' | 'otro' | null;
   customMenuType: string | null;
   hasCompanion: boolean;
   companionName: string;
   companionMenuType: 'estandar' | 'especial' | null;
-  companionSpecialMenuType: 'vegano' | 'celiaco' | 'otro' | null;
+  companionSpecialMenuType: 'vegetariano' | 'gluten' | 'otro' | null;
   companionCustomMenuType: string | null;
   hasChildren: boolean;
   childrenCount: number;
@@ -212,12 +212,12 @@ function WeddingInvitationForm() {
   const [guest, setGuest] = useState<GuestFormState>({
     name: '',
     menuType: 'estandar',  // Estado inicial como 'estandar'
-    specialMenuType: 'vegano', // Cambio aquí
+    specialMenuType: 'vegetariano', // Cambio aquí
     customMenuType: null,
     hasCompanion: false,
     companionName: '',
     companionMenuType: 'estandar',  // Estado inicial para el acompañante también como 'estandar'
-    companionSpecialMenuType: 'vegano',
+    companionSpecialMenuType: 'vegetariano',
     companionCustomMenuType: null,
     hasChildren: false,
     childrenCount: 0,
@@ -294,13 +294,13 @@ function WeddingInvitationForm() {
         setGuest(prev => ({
           ...prev,
           menuType: checked ? 'especial' : 'estandar',
-          specialMenuType: checked ? 'vegano' : null
+          specialMenuType: checked ? 'vegetariano' : null
         }));
       } else if (name === 'companionMenuType') {
         setGuest(prev => ({
           ...prev,
           companionMenuType: checked ? 'especial' : 'estandar',
-          companionSpecialMenuType: checked ? 'vegano' : null
+          companionSpecialMenuType: checked ? 'vegetariano' : null
         }));
       } else {
         setGuest(prev => ({
@@ -355,7 +355,7 @@ function WeddingInvitationForm() {
           ...prev,
           companionMenuType: newMenuType,
           // Si cambia a menú estándar, quita los detalles del menú especial
-          companionSpecialMenuType: newMenuType === 'especial' ? prev.companionSpecialMenuType : 'vegano',
+          companionSpecialMenuType: newMenuType === 'especial' ? prev.companionSpecialMenuType : 'vegetariano',
           companionCustomMenuType: newMenuType === 'especial' ? prev.companionCustomMenuType : '',
         };
       }
@@ -366,7 +366,7 @@ function WeddingInvitationForm() {
           ...prev,
           menuType: newMenuType,
           // Si cambia a menú estándar, quita los detalles del menú especial
-          specialMenuType: newMenuType === 'especial' ? prev.specialMenuType : 'vegano',
+          specialMenuType: newMenuType === 'especial' ? prev.specialMenuType : 'vegetariano',
           customMenuType: newMenuType === 'especial' ? prev.customMenuType : '',
         };
       }
@@ -619,8 +619,8 @@ if (isSubmitted) {
                     value={guest.specialMenuType ?? ''}
                     onChange={handleChangeInput}
                   >
-                    <option value="vegano">Vegano</option>
-                    <option value="celiaco">Celíaco</option>
+                    <option value="vegetariano">Vegetariano</option>
+                    <option value="gluten">Sin gluten</option>
                     <option value="otro">Otro</option>
                   </select>
                   {guest.specialMenuType === 'otro' && (
@@ -699,8 +699,8 @@ if (isSubmitted) {
                         value={guest.companionSpecialMenuType ?? ''}
                         onChange={handleChangeInput}
                       >
-                        <option value="vegano">Vegano</option>
-                        <option value="celiaco">Celíaco</option>
+                        <option value="vegetariano">Vegetariano</option>
+                        <option value="gluten">Sin gluten</option>
                         <option value="otro">Otro</option>
                       </select>
                       {guest.companionSpecialMenuType === 'otro' && (
@@ -783,7 +783,7 @@ if (isSubmitted) {
                         >
                           <option value="">Seleccionar Tipo</option>
                           <option value="vegetariano">Vegetariano</option>
-                          <option value="celiaco">Celíaco</option>
+                          <option value="gluten">Sin gluten</option>
                           <option value="otro">Otro</option>
                         </select>
                         {/* Mostrar mensaje de error si el menú especial no está seleccionado correctamente */}
