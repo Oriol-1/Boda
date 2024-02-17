@@ -12,7 +12,7 @@ const Header = () => {
        
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-xl font-bold">Mi Logopedia
+              <Link href="/" className="text-xl font-bold">Boda
               </Link>
             </div>
 
