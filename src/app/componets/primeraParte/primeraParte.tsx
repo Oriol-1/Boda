@@ -26,13 +26,13 @@ const PrimeraParte: React.FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles['image-bw']}>
-                <Image src="/masia.jpg" alt="Imagen en Blanco y Negro" layout="fill" objectFit="cover" />
+                <Image src="/masia1.jpg" alt="Imagen en Blanco y Negro" fill />
             </div>
             <div className={styles['image-color']}>
-                <Image src="/masia-color3.jpg" alt="Imagen a Color" layout="fill" objectFit="cover" />
+                <Image src="/masia-color4.jpg" alt="Imagen a Color" fill />
             </div>
             <div className={styles['nosotros-image']}>
-                <Image src="/nosotros.png" alt="Nosotros" layout="responsive" width={300} height={200} />
+                <Image src="/nosotros1.png" alt="Nosotros" width={300} height={300} />
             </div>
         </div>
     );
