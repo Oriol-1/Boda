@@ -22,13 +22,37 @@
     z-index: 2; /* Imagen a color encima */
     opacity: 0; /* Comienza transparente */
 }
+
 .nosotros-image {
     position: absolute;
-    bottom: -90px;
-   
+    bottom: 50%; /* Posición inicial en el centro */
     left: 50%;
-    transform: translateX(-50%); /* Centra la imagen horizontalmente */
-    z-index: 3; /* Asegúrate de que esté por encima de las otras imágenes */
-    width: 20%; /* Ajusta el ancho según sea necesario */
-    height: auto; /* Mantiene la proporción de la imagen */
+    transform: translate(-50%, 50%) scale(1.5); /* Comienza más grande y centrada */
+    z-index: 3; /* Por encima de las otras imágenes */
+    transition: transform 0.8s ease-in-out, bottom 0.8s ease-in-out, opacity 0.8s ease-in-out; /* Suaviza la transición */
+    opacity: 0; /* Comienza transparente */
+    width: 300px; /* Ancho fijo */
+    height: 350px; /* Altura fija */
+    margin-bottom: 50px; /* Negativo para subirla hacia arriba */
+}
+
+/* Ajustes para dispositivos más pequeños */
+@media (max-width: 768px) {
+    .container {
+        height: auto; /* Altura automática para adaptarse al contenido */
+    }
+
+    .nosotros-image {
+        width: 200px; /* Ancho más pequeño */
+        height: 233px; /* Altura ajustada para mantener la proporción */
+        transform: translate(-50%, 50%) scale(1); /* Escala más pequeña */
+    }
+}
+
+@media (max-width: 480px) {
+    .nosotros-image {
+        width: 150px; /* Ancho aún más pequeño */
+        height: 175px; /* Altura ajustada para mantener la proporción */
+        transform: translate(-50%, 50%) scale(0.75); /* Escala aún más pequeña */
+    }
 }
