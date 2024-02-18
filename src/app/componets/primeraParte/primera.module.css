@@ -38,21 +38,22 @@
 
 /* Ajustes para dispositivos más pequeños */
 @media (max-width: 768px) {
-    .container {
-        height: auto; /* Altura automática para adaptarse al contenido */
-    }
-
     .nosotros-image {
-        width: 200px; /* Ancho más pequeño */
-        height: 233px; /* Altura ajustada para mantener la proporción */
-        transform: translate(-50%, 50%) scale(1); /* Escala más pequeña */
+        width: 300px; /* Ancho más pequeño */
+        height: 330px; /* Altura ajustada para mantener la proporción */
+        transform: translate(-50%, 50%) scale(1); /* Escala ajustada */
+    }
+    .container {
+        position: relative;
+        height: 40vh; /* Altura del viewport */
+        width: 100%; /* Ancho completo */
     }
 }
 
 @media (max-width: 480px) {
     .nosotros-image {
-        width: 150px; /* Ancho aún más pequeño */
-        height: 175px; /* Altura ajustada para mantener la proporción */
+        width: 200px; /* Ancho aún más pequeño */
+        height: 220px; /* Altura ajustada para mantener la proporción */
         transform: translate(-50%, 50%) scale(0.75); /* Escala aún más pequeña */
     }
 }
