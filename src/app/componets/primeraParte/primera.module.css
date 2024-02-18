@@ -31,8 +31,8 @@
     z-index: 3; /* Por encima de las otras imágenes */
     transition: transform 0.8s ease-in-out, bottom 0.8s ease-in-out, opacity 0.8s ease-in-out; /* Suaviza la transición */
     opacity: 0; /* Comienza transparente */
-    width: 300px; /* Ancho fijo */
-    height: 350px; /* Altura fija */
+    width: 500px; /* Ancho fijo */
+    height: 550px; /* Altura fija */
     margin-bottom: 50px; /* Negativo para subirla hacia arriba */
 }
 
