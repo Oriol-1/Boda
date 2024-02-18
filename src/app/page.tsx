@@ -9,6 +9,7 @@ export default function Home() {
       <div>
         <Header />
         <PrimeraParte />
+    <br></br>
 
         <FormularioPage />
       

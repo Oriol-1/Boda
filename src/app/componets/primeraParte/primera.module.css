@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap');
+
+
+
 .container {
     position: relative;
-    height: 100vh; /* Altura del viewport */
-    width: 100%; /* Ancho completo */
+    height: 107vh; /* Ajustar según sea necesario para dar más espacio */
+    width: 100%;
+    margin-bottom: 9%;
 }
 
 .image-bw, .image-color {
@@ -10,7 +15,7 @@
     left: 0;
     width: 98%;
     transform: translateX(2%); /* Centra la imagen horizontalmente */
-    height: 100%;
+    height: 100vh;
     transition: opacity 0.6s ease-in-out; /* Transición suave de la opacidad */
 }
 
@@ -25,35 +30,86 @@
 
 .nosotros-image {
     position: absolute;
-    bottom: 50%; /* Posición inicial en el centro */
+    bottom: 40%; /* Posición inicial en el centro */
     left: 50%;
     transform: translate(-50%, 50%) scale(1.5); /* Comienza más grande y centrada */
     z-index: 3; /* Por encima de las otras imágenes */
-    transition: transform 0.8s ease-in-out, bottom 0.8s ease-in-out, opacity 0.8s ease-in-out; /* Suaviza la transición */
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out, bottom 1s ease-in-out; /* Ajuste para una transición más suave */
     opacity: 0; /* Comienza transparente */
     width: 500px; /* Ancho fijo */
     height: 550px; /* Altura fija */
     margin-bottom: 50px; /* Negativo para subirla hacia arriba */
+    
+}
+
+.texto-anuncio {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    text-align: center;
+    max-width: 600px;
+    height: 210px;
+    margin: auto;
+    padding: 20px;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out, top 1s ease-in-out; /* Aumenta la duración a 1 segundo */
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.decoracion-izquierda, .decoracion-derecha {
+    flex: 0 0 100px; /* Tamaño fijo para las imágenes decorativas */
+    position: relative;
+    height: 128%;
+    width: 130px;
+    transition: transform 1s ease-in-out; /* Aumenta la duración a 1 segundo */
+}
+
+.texto-anuncio h1 {
+    font-family: 'Lora', serif;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.texto-anuncio h2 {
+    font-family: 'Lora', serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.texto-anuncio p {
+    font-family: 'Lora', serif;
+    font-size: 1.8rem;
+    font-weight: normal;
 }
 
 /* Ajustes para dispositivos más pequeños */
 @media (max-width: 768px) {
     .nosotros-image {
-        width: 300px; /* Ancho más pequeño */
-        height: 330px; /* Altura ajustada para mantener la proporción */
-        transform: translate(-50%, 50%) scale(1); /* Escala ajustada */
+        width: 300px;
+        height: 330px;
+        transform: translate(-50%, 50%) scale(1);
     }
     .container {
-        position: relative;
-        height: 40vh; /* Altura del viewport */
-        width: 100%; /* Ancho completo */
+        height: 40vh;
+    }
+    .texto-anuncio {
+        flex-direction: column;
+        height: auto;
     }
 }
 
 @media (max-width: 480px) {
     .nosotros-image {
-        width: 200px; /* Ancho aún más pequeño */
-        height: 220px; /* Altura ajustada para mantener la proporción */
-        transform: translate(-50%, 50%) scale(0.75); /* Escala aún más pequeña */
+        width: 200px;
+        height: 220px;
+        transform: translate(-50%, 50%) scale(0.75);
+    }
+    .texto-anuncio {
+        padding: 10px;
     }
 }
