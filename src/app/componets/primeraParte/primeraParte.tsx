@@ -74,7 +74,7 @@ const PrimeraParte: React.FC = () => {
                 <Image src="/masia1.jpg" alt="Imagen en Blanco y Negro" fill priority />
             </div>
             <div className={styles['image-color']}>
-                <Image src="/masia-color4.jpg" alt="Imagen a Color" fill />
+                <Image src="/masia-color6.jpg" alt="Imagen a Color" fill />
             </div>
             <div className={styles['nosotros-image']}>
                 <Image src="/nosotros1.png" alt="Nosotros" fill sizes="50vw" />

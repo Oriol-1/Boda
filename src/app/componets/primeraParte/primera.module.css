@@ -13,8 +13,8 @@
     position: absolute;
     top: 10px;
     left: 0;
-    width: 98%;
-    transform: translateX(2%); /* Centra la imagen horizontalmente */
+    width: 90%;
+    transform: translateX(6%); /* Centra la imagen horizontalmente */
     height: 100vh;
     transition: opacity 0.6s ease-in-out; /* Transición suave de la opacidad */
 }
@@ -36,8 +36,8 @@
     z-index: 3; /* Por encima de las otras imágenes */
     transition: transform 1s ease-in-out, opacity 1s ease-in-out, bottom 1s ease-in-out; /* Ajuste para una transición más suave */
     opacity: 0; /* Comienza transparente */
-    width: 500px; /* Ancho fijo */
-    height: 550px; /* Altura fija */
+    width: 400px; /* Ancho fijo */
+    height: 450px; /* Altura fija */
     margin-bottom: 50px; /* Negativo para subirla hacia arriba */
     
 }
