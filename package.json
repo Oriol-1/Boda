@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 80",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev -p 8080",
+    "build": "next build -p 8080",
+    "start": "next start -p 8080",
+    "lint": "next lint -p 8080"
   },
   "dependencies": {
     "mysql2": "^3.9.1",
