@@ -102,7 +102,7 @@
     .decoracion-izquierda, .decoracion-derecha {
         flex: 0 0 50px;
         width: 50px;
-        height: 66%;
+        height: 50%;
     }
     .texto-anuncio {
         position: fixed;
