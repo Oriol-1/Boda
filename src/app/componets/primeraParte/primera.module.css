@@ -1,50 +1,38 @@
+/* Importación de fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap');
 
-
-
+/* Contenedor principal */
 .container {
     position: relative;
-    height: 107vh; /* Ajustar según sea necesario para dar más espacio */
+    height: 107vh;
     width: 100%;
     margin-bottom: 9%;
 }
 
+/* Estilos para las imágenes de fondo */
 .image-bw, .image-color {
     position: absolute;
     top: 10px;
     left: 0;
     width: 90%;
-    transform: translateX(6%); /* Centra la imagen horizontalmente */
+    transform: translateX(6%);
     height: 100vh;
-    transition: opacity 0.6s ease-in-out; /* Transición suave de la opacidad */
+    transition: opacity 0.6s ease-in-out;
 }
 
 .image-bw {
-    z-index: 1; /* Imagen en blanco y negro debajo */
+    z-index: 1;
 }
 
 .image-color {
-    z-index: 2; /* Imagen a color encima */
-    opacity: 0; /* Comienza transparente */
+    z-index: 2;
+    opacity: 0;
 }
 
-.nosotros-image {
-    position: absolute;
-    bottom: 40%; /* Posición inicial en el centro */
-    left: 50%;
-    transform: translate(-50%, 50%) scale(1.5); /* Comienza más grande y centrada */
-    z-index: 3; /* Por encima de las otras imágenes */
-    transition: transform 1s ease-in-out, opacity 1s ease-in-out, bottom 1s ease-in-out; /* Ajuste para una transición más suave */
-    opacity: 0; /* Comienza transparente */
-    width: 400px; /* Ancho fijo */
-    height: 450px; /* Altura fija */
-    margin-bottom: 50px; /* Negativo para subirla hacia arriba */
-    
-}
-
+/* Estilos para el anuncio de texto */
 .texto-anuncio {
     position: fixed;
-    top: 45%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 4;
@@ -53,63 +41,94 @@
     height: 210px;
     margin: auto;
     padding: 20px;
-    transition: transform 1s ease-in-out, opacity 1s ease-in-out, top 1s ease-in-out; /* Aumenta la duración a 1 segundo */
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out, top 1s ease-in-out;
     border-radius: 15px;
-
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
 
+/* Estilos para las decoraciones */
 .decoracion-izquierda, .decoracion-derecha {
-    flex: 0 0 100px; /* Tamaño fijo para las imágenes decorativas */
+    flex: 0 0 100px;
     position: relative;
     height: 128%;
     width: 130px;
-    transition: transform 1s ease-in-out; /* Aumenta la duración a 1 segundo */
+    transition: transform 1s ease-in-out;
+}
+
+/* Estilos para los títulos y texto */
+.texto-anuncio h1, .texto-anuncio h2, .texto-anuncio p {
+    font-family: 'Lora', serif;
 }
 
 .texto-anuncio h1 {
-    font-family: 'Lora', serif;
     font-size: 3rem;
     font-weight: bold;
 }
 
 .texto-anuncio h2 {
-    font-family: 'Lora', serif;
     font-size: 2.5rem;
     font-weight: bold;
 }
 
 .texto-anuncio p {
-    font-family: 'Lora', serif;
     font-size: 1.8rem;
     font-weight: normal;
 }
 
 /* Ajustes para dispositivos más pequeños */
 @media (max-width: 768px) {
-    .nosotros-image {
-        width: 300px;
-        height: 330px;
-        transform: translate(-50%, 50%) scale(1);
-    }
     .container {
         height: 40vh;
     }
     .texto-anuncio {
-        flex-direction: column;
-        height: auto;
+        flex-direction: row;
+        width: 96%;
+       
+    }
+    .image-bw, .image-color {
+        height: 40vh; /* Ajuste de altura para pantallas más pequeñas */
+    }
+    .texto-anuncio h1 {
+        font-size: 2rem;
+    }
+    .texto-anuncio h2 {
+        font-size: 1.5rem;
+    }
+    .texto-anuncio p {
+        font-size: 1.2rem;
+    }
+    .decoracion-izquierda, .decoracion-derecha {
+        flex: 0 0 50px;
+        width: 50px;
+        height: 66%;
+    }
+    .texto-anuncio {
+        position: fixed;
+        top: 50%;
     }
 }
 
 @media (max-width: 480px) {
-    .nosotros-image {
-        width: 200px;
-        height: 220px;
-        transform: translate(-50%, 50%) scale(0.75);
-    }
     .texto-anuncio {
         padding: 10px;
     }
+    .image-bw, .image-color {
+        height: 30vh; /* Ajuste de altura para dispositivos muy pequeños */
+    }
+    .texto-anuncio h1 {
+        font-size: 1.5rem;
+    }
+    .texto-anuncio h2 {
+        font-size: 1.2rem;
+    }
+    .texto-anuncio p {
+        font-size: 1rem;
+    }
+    .decoracion-izquierda, .decoracion-derecha {
+        flex: 0 0 30px;
+        width: 30px;
+    }
+   
 }
