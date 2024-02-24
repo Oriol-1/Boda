@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev": "next dev -p 3400 & local-ssl-proxy --source 443 --target 3400"
+    "dev": "next dev -p 3000 & local-ssl-proxy --source 443 --target 3000"
   },
   "dependencies": {
     "mysql2": "^3.9.1",
