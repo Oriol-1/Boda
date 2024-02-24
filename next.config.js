@@ -2,5 +2,14 @@
 const nextConfig = {}
 
 module.exports = {
-  basePath: '/app',
+  async redirects() {
+    return [
+      // Basic redirect
+      {
+        source: '/.well-known/pki-validation',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+   },
 }
