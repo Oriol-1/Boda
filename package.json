@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev": "next dev -p 443"
+    "dev": "next dev"
   },
   "dependencies": {
     "mysql2": "^3.9.1",
