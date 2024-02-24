@@ -7,7 +7,7 @@ module.exports = {
       // Basic redirect
       {
         source: '/.well-known/pki-validation',
-        destination: '/',
+        destination: '/A02BE60F398BE4A8EB32A76CF0240B51.txt',
         permanent: true,
       },
     ]
