@@ -136,7 +136,9 @@ export default function FormularioPage() {
   if (response && isSubmitted) {
     return (
       <div className="page">
-        <h1 className="heading">Formulario de Invitación a la Boda</h1>
+        <h1 className="heading">Formulario de Invitación a la Boda<br>
+        Ayúdanos a no meter la pata en nuestra boda... ¡Tu opinión es oro! Échale un ojo a este cuestionario.
+        </br></h1>
         {response === "accepted" && (
            <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>
         )}
