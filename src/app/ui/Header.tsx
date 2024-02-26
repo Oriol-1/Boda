@@ -10,8 +10,8 @@ const Header = () => {
      <link
         rel="icon"
         href="/icon.ico"
-        type="image/ico"
-        sizes="<generated>"
+        type="image/x-icon"
+        sizes="48x48"
      />
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
      <div className="flex justify-between items-center h-16 w-full">
