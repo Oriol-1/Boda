@@ -6,13 +6,13 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <link
-      rel="icon"
-      href="/icon.ico"
-      type="image/ico"
-      sizes="<generated>"
-    />
     <header className="bg-white w-full">
+     <link
+        rel="icon"
+        href="/icon.ico"
+        type="image/ico"
+        sizes="<generated>"
+     />
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
      <div className="flex justify-between items-center h-16 w-full">
        
