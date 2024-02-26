@@ -11,7 +11,7 @@ const Header = () => {
         rel="icon"
         href="/icon.ico"
         type="image/x-icon"
-        sizes="48x48"
+        sizes="16x16 24x24 32x32 48x48 64x64"
      />
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
      <div className="flex justify-between items-center h-16 w-full">
