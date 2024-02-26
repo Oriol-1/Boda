@@ -7,9 +7,6 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Sandra i Oriol',
   description: 'Boda',
-  icons: {
-    icon: '/rings.ico',
-  },
 }
 
 export default function RootLayout({
