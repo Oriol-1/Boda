@@ -4,8 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-image: url('/fondo.png'); /* Ajusta la ruta a tu imagen */
+  
     background-size: cover;
     background-position: center;
     padding: 20px;

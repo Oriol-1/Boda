@@ -45,7 +45,9 @@ const PrimeraParte: React.FC = () => {
         <div className={styles.container}>
             <div className={styles['texto-anuncio']} ref={textoAnuncioRef}>
                 <div className={styles['decoracion-izquierda']}>
-                    <Image src="/shape-1.png" alt="Decoración Izquierda" fill sizes="(max-width: 768px) 100px, 200px" />
+                    <Image src="/shape-1.png" alt="Decoración Izquierda" 
+                    priority // Agrega esta línea para pre-cargar la imagen
+                    fill sizes="(max-width: 768px) 100px, 200px" />
                 </div>
                 <div>
                     <h1>NOS CASAMOS</h1>
@@ -53,7 +55,9 @@ const PrimeraParte: React.FC = () => {
                     <p>¿Te vienes a la fiesta?</p>
                 </div>
                 <div className={styles['decoracion-derecha']}>
-                    <Image src="/shape-2.png" alt="Decoración Derecha" fill sizes="(max-width: 768px) 100px, 200px" />
+                    <Image src="/shape-2.png" alt="Decoración Derecha" 
+                    priority // Agrega esta línea para pre-cargar la imagen
+                    fill sizes="(max-width: 768px) 100px, 200px" />
                 </div>
             </div>
             <div className={styles['image-bw']}>
