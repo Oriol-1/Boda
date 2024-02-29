@@ -6,13 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"   
+    "lint": "next lint"
   },
   "dependencies": {
     "mysql2": "^3.9.1",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-intersection-observer": "^9.8.1",
     "serverless-mysql": "^1.5.5"
   },
   "devDependencies": {

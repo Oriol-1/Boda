@@ -1,0 +1,56 @@
+/* src/app/components/boda/boda.module.css */
+.invitationSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('/fondo.png'); /* Ajusta la ruta a tu imagen */
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .invitationContent {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con un poco de transparencia */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados para el cuadro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+  }
+  
+  .invitationContent h1, .invitationContent p {
+    color: #000; /* Texto de color negro */
+  }
+  
+  .invitationContent h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .invitationContent p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  
+  .countdown {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  .countdownItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .countdownTime {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .countdownLabel {
+    font-size: 1rem;
+  }
+  
