@@ -1,55 +1,103 @@
 /* src/app/components/boda/boda.module.css */
+
+.container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten en filas según el ancho */
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px 20px;
+  background-size: cover;
+}
+
 .invitationSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  
-    background-size: cover;
-    background-position: center;
-    padding: 20px;
-    text-align: center;
+  flex: 1; /* Hace que el elemento sea flexible */
+  min-width: 300px; /* Mínimo ancho antes de que se ajuste */
+  max-width: 500px; /* Máximo ancho para mantener legibilidad */
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  margin: 20px;
+}
+
+.invitationContent h1, .invitationContent p {
+  color: #444;
+}
+
+.invitationContent h1 {
+  font-size: 2rem; /* Reduce el tamaño en dispositivos más pequeños */
+  margin-bottom: 25px;
+}
+
+.invitationContent p {
+  font-size: 1.2rem;
+  margin-bottom: 35px;
+  line-height: 1.6;
+}
+
+.countdown {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.countdownItem {
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.countdownTime {
+  font-size: 2rem; /* Ajuste para dispositivos más pequeños */
+  color: #DAA520;
+}
+
+.countdownLabel {
+  font-size: 1rem;
+}
+
+.calendarContainer {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Media queries para ajustes específicos por tamaño de pantalla */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Cambia la disposición a columna en pantallas más pequeñas */
   }
-  
-  .invitationContent {
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con un poco de transparencia */
-    padding: 20px;
-    border-radius: 10px; /* Bordes redondeados para el cuadro */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+
+  .invitationSection, .calendarContainer {
+    max-width: 90%; /* Permite que los elementos ocupen más ancho en pantallas pequeñas */
   }
-  
-  .invitationContent h1, .invitationContent p {
-    color: #000; /* Texto de color negro */
-  }
-  
-  .invitationContent h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .invitationContent p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-  }
-  
-  .countdown {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-  }
-  
-  .countdownItem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+
   .countdownTime {
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 1.8rem; /* Ajuste de tamaño para visibilidad */
   }
-  
+
   .countdownLabel {
+    font-size: 0.9rem; /* Ajuste de tamaño para coherencia */
+  }
+}
+
+@media (max-width: 480px) {
+  .invitationContent h1 {
+    font-size: 1.8rem; /* Ajuste para pantallas muy pequeñas */
+  }
+
+  .invitationContent p {
     font-size: 1rem;
   }
-  
+
+  .countdownTime, .countdownLabel {
+    font-size: 1.5rem; /* Hace que los números y etiquetas sean más pequeños para mejor ajuste */
+  }
+}

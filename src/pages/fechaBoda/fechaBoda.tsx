@@ -1,23 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Invitation from '../../app/componets/fecha/Fecha'; // Asegúrate de corregir la ruta si es necesario
+import React from 'react';
 import useCountdown from '../../app/libs/useCountdown';
+import Invitation from '../../app/componets/fecha/Fecha'; // Corregido a 'components'
+
 
 const FechaBodaPage = () => {
-    const weddingDate = new Date('2024-11-1').getTime();
-    
-    // Usa directamente useCountdown aquí, sin necesidad de useEffect o useState adicional
-    const { days, hours, minutes, seconds } = useCountdown(weddingDate);
-  
-    return (
+  const weddingDate = new Date('2024-11-01').getTime();
+  const countdown = useCountdown(weddingDate);
+
+  return (
+    <div>
+      <Invitation weddingDate={new Date('2024-11-01')} />
       <div>
-        <Invitation weddingDate={new Date('2024-11-1')} />
-        <div>
-          {/* Quedan {days} días, {hours} horas, {minutes} minutos, y {seconds} segundos para la boda. */}
-        </div>
+        {/* Quedan {countdown.days} días, {countdown.hours} horas, {countdown.minutes} minutos, y {countdown.seconds} segundos para la boda. */}
       </div>
-    );
-  };
-  
-  export default FechaBodaPage;
+    </div>
+  );
+};
+
+export default FechaBodaPage;
