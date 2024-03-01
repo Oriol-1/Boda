@@ -1,15 +1,15 @@
-import Image from 'next/image'
+// import Image from 'next/image'
 import Header from './ui/Header'
-import FormularioPage from './../pages/formulario/index'
 import PrimeraParte from './componets/primeraParte/primeraParte'
+import FormularioPage from './../pages/formulario/index'
 import FechaBodaPage from './../pages/fechaBoda/fechaBoda'
-// import styles  from './Home.module.css'
+
 
 
 
 export default function Home() {
   return (
-    // <section className={styles.invitationSection}>
+
     <main>
       <div>
         <Header />
@@ -18,15 +18,11 @@ export default function Home() {
    
         <FormularioPage />
         <FechaBodaPage />
-    
-      
-     
-      
-      
+  
       
       </div>
     </main>
-    // </section>
+
  
   )
 }
