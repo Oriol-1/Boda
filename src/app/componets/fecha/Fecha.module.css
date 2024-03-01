@@ -2,102 +2,112 @@
 
 .container {
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se ajusten en filas según el ancho */
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 40px;
   padding: 40px 20px;
   background-size: cover;
+  z-index: 23;
 }
 
 .invitationSection {
-  flex: 1; /* Hace que el elemento sea flexible */
-  min-width: 300px; /* Mínimo ancho antes de que se ajuste */
-  max-width: 500px; /* Máximo ancho para mantener legibilidad */
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px; /* Aumento para mejor presentación en pantallas grandes */
+  background-color: rgba(255, 255, 255, 0.95); /* Mayor opacidad para mejorar la legibilidad */
+  padding: 50px; /* Más espacio interior */
+  border-radius: 20px; /* Bordes más redondeados */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Sombra más suave */
   margin: 20px;
+  text-align: center; /* Centrado de texto */
 }
 
-.invitationContent h1, .invitationContent p {
-  color: #444;
+.countdownSection h1, .countdownSectionp {
+  color: #333; /* Color más oscuro para mejor contraste */
 }
 
-.invitationContent h1 {
-  font-size: 2rem; /* Reduce el tamaño en dispositivos más pequeños */
-  margin-bottom: 25px;
+.countdownSection h1 {
+  font-size: 3rem; /* Título más grande */
+  font-weight: 300; /* Más ligero */
+  margin-bottom: 30px;
+  line-height: 1.5; /* Espaciado de línea aumentado */
+
+
 }
 
-.invitationContent p {
-  font-size: 1.2rem;
-  margin-bottom: 35px;
-  line-height: 1.6;
+.countdownSection p {
+  font-size: 1.4rem; /* Texto más grande */
+  margin-bottom: 40px;
+  line-height: 1.8; /* Espaciado de línea aumentado */
+
+
+
+
+
 }
 
 .countdown {
   display: flex;
-  gap: 20px;
+  gap: 25px; /* Mayor espacio entre elementos */
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  border-radius: 10px;
+  background-color: rgba(245, 245, 245, 1); /* Fondo sólido para diferenciar de la sección */
+  padding: 25px;
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra más suave */
 }
 
 .countdownItem {
   text-align: center;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px; /* Más espacio */
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más suave */
 }
 
 .countdownTime {
-  font-size: 2rem; /* Ajuste para dispositivos más pequeños */
-  color: #DAA520;
+  font-size: 2.5rem; /* Números más grandes */
+  color: #DAA520; /* Color mantenimiento para un toque elegante */
+  font-weight: bold;
 }
 
 .countdownLabel {
-  font-size: 1rem;
+  font-size: 1.2rem; /* Etiquetas más grandes */
+  color: #666; /* Color más suave */
 }
 
 .calendarContainer {
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff; /* Fondo blanco para el calendario */
+  border-radius: 20px; /* Bordes redondeados */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Sombra más suave */
 }
 
-/* Media queries para ajustes específicos por tamaño de pantalla */
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column; /* Cambia la disposición a columna en pantallas más pequeñas */
+  .countdown {
+    display: ruby-text;
+  /* separar */
+
+
+
+   
   }
 
   .invitationSection, .calendarContainer {
-    max-width: 90%; /* Permite que los elementos ocupen más ancho en pantallas pequeñas */
-  }
-
-  .countdownTime {
-    font-size: 1.8rem; /* Ajuste de tamaño para visibilidad */
-  }
-
-  .countdownLabel {
-    font-size: 0.9rem; /* Ajuste de tamaño para coherencia */
+    max-width: 90%;
   }
 }
 
 @media (max-width: 480px) {
   .invitationContent h1 {
-    font-size: 1.8rem; /* Ajuste para pantallas muy pequeñas */
+    font-size: 2.5rem;
   }
 
   .invitationContent p {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
 
   .countdownTime, .countdownLabel {
-    font-size: 1.5rem; /* Hace que los números y etiquetas sean más pequeños para mejor ajuste */
+    font-size: 2rem; /* Ajuste para dispositivos más pequeños */
   }
 }
