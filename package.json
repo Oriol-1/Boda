@@ -16,8 +16,7 @@
     "react-calendar": "^4.8.0",
     "react-dom": "^18",
     "react-intersection-observer": "^9.8.1",
-    "serverless-mysql": "^1.5.5",
-    "sharp": "^0.33.2"
+    "serverless-mysql": "^1.5.5"
   },
   "devDependencies": {
     "@types/node": "^20.11.14",
