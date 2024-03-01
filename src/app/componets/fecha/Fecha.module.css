@@ -8,7 +8,9 @@
   gap: 40px;
   padding: 40px 20px;
   background-size: cover;
-  z-index: 23;
+  z-index: 24;
+  background-color: #fff;
+
 }
 
 .invitationSection {

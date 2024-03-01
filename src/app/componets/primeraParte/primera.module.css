@@ -7,6 +7,9 @@
     height: 107vh;
     width: 100%;
     margin-bottom: 9%;
+    /* fondo blanco */
+    z-index: 3;
+
 }
 
 /* Estilos para las imágenes de fondo */

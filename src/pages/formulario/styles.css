@@ -10,9 +10,10 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 /* que este por ensima de cualquier elemento */
   position: relative;
-  z-index: 22;
+  z-index: 23;
 
-  
+  /* fondo blanco */
+ 
   
 }
 
@@ -22,6 +23,7 @@
   color: #6d6875;
   margin-bottom: 15px;
   font-size: 30px;
+  z-index: 23;
 }
 .headingh3 {
   text-align: center;
