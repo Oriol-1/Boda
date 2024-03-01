@@ -18,20 +18,17 @@
     transform: translateX(6%);
     height: 100vh;
     transition: opacity 0.6s ease-in-out;
-}
-
-.image-bw {
-    z-index: 1;
+    z-index: 1; /* Asegura que la imagen en blanco y negro esté detrás de la a color */
 }
 
 .image-color {
-    z-index: 2;
+    z-index: 2; /* Asegura que la imagen a color esté encima de la en blanco y negro, inicialmente oculta */
     opacity: 0;
 }
 
 /* Estilos para el anuncio de texto */
 .texto-anuncio {
-    position: fixed;
+    position: fixed; /* Cambiado dinámicamente por JS para detener el scroll */
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -46,6 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background-color: rgba(255, 255, 255, 0.7); /* Añadido para mejorar la legibilidad */
 }
 
 /* Estilos para las decoraciones */
@@ -83,30 +81,20 @@
         height: 40vh;
     }
     .texto-anuncio {
-        flex-direction: row;
+        flex-direction: column; /* Cambiado para mejorar la disposición en pantallas más pequeñas */
         width: 96%;
-       
+        top: 50%; /* Ajustado para centrar mejor el texto en la pantalla */
     }
     .image-bw, .image-color {
         height: 40vh; /* Ajuste de altura para pantallas más pequeñas */
     }
-    .texto-anuncio h1 {
-        font-size: 2rem;
-    }
-    .texto-anuncio h2 {
-        font-size: 1.5rem;
-    }
-    .texto-anuncio p {
-        font-size: 1.2rem;
+    .texto-anuncio h1, .texto-anuncio h2, .texto-anuncio p {
+        font-size: reducido según el dispositivo; /* Ajustes específicos más abajo */
     }
     .decoracion-izquierda, .decoracion-derecha {
         flex: 0 0 50px;
         width: 50px;
         height: 50%;
-    }
-    .texto-anuncio {
-        position: fixed;
-        top: 50%;
     }
 }
 
@@ -130,5 +118,4 @@
         flex: 0 0 30px;
         width: 30px;
     }
-   
 }
