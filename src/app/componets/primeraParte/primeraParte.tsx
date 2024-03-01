@@ -52,7 +52,7 @@ const PrimeraParte: React.FC = () => {
                 <div>
                     <h1>NOS CASAMOS</h1>
                     <h2>Sandra & Oriol</h2>
-                    <p>¿Te vienes a la fiesta? a</p>
+                    <p>¿Te vienes a la fiesta?</p>
                 </div>
                 <div className={styles['decoracion-derecha']}>
                     <Image src="/shape-2.png" alt="Decoración Derecha" 
