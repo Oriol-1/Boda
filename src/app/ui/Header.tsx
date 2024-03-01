@@ -24,10 +24,10 @@ const Header = () => {
 
             {/* Navegación para pantallas grandes */}
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link href="/nosotros"className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium">Nosotros</Link>
+              {/* <Link href="/nosotros"className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium">Nosotros</Link>
               <Link href="/servicios" className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium">Servicios</Link>
               <Link href="/contacto"className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium">Contacto</Link>
-              <Link href="/reserva"className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium">Reservar Visita</Link>
+              <Link href="/reserva"className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium">Reservar Visita</Link> */}
             </div>
     
 
