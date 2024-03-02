@@ -8,7 +8,7 @@
     width: 100%;
     margin-bottom: 9%;
     /* fondo blanco */
-    z-index: 3;
+ 
 
 }
 
@@ -47,6 +47,7 @@
     align-items: center;
     justify-content: space-around;
     background-color: rgba(255, 255, 255, 0.7); /* Añadido para mejorar la legibilidad */
+    z-index: 3;
 }
 
 /* Estilos para las decoraciones */
@@ -81,12 +82,14 @@
 /* Ajustes para dispositivos más pequeños */
 @media (max-width: 768px) {
     .container {
-        height: 40vh;
+        height: 50vh;
+        margin-bottom: 15%;
     }
     .texto-anuncio {
-        flex-direction: column; /* Cambiado para mejorar la disposición en pantallas más pequeñas */
+        flex-direction: row; /* Cambiado para mejorar la disposición en pantallas más pequeñas */
         width: 96%;
-        top: 50%; /* Ajustado para centrar mejor el texto en la pantalla */
+        padding: 0px;
+        top:30%
     }
     .image-bw, .image-color {
         height: 40vh; /* Ajuste de altura para pantallas más pequeñas */

@@ -50,7 +50,7 @@ const PrimeraParte: React.FC = () => {
                     fill sizes="(max-width: 768px) 100px, 200px" />
                 </div>
                 <div>
-                    <h1>NOS CASAMOS</h1>
+                    <h1>NOS CASAMOS </h1>
                     <h2>Sandra & Oriol</h2>
                     <p>¿Te vienes a la fiesta?</p>
                 </div>

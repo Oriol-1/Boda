@@ -87,12 +87,12 @@
 
 @media (max-width: 768px) {
   .countdown {
-    display: ruby-text;
-  /* separar */
+    display: ruby-text; 
+  }
 
-
-
-   
+  .countdownItem {
+    padding: 10px; 
+    margin:2px/* Ajuste para dispositivos más pequeños */
   }
 
   .invitationSection, .calendarContainer {
