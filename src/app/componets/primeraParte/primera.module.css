@@ -83,7 +83,7 @@
 @media (max-width: 768px) {
     .container {
         height: 50vh;
-        margin-bottom: 15%;
+      
     }
     .texto-anuncio {
         flex-direction: row; /* Cambiado para mejorar la disposición en pantallas más pequeñas */
@@ -121,7 +121,7 @@
         font-size: 1rem;
     }
     .decoracion-izquierda, .decoracion-derecha {
-        flex: 0 0 30px;
+      
         width: 30px;
     }
 }

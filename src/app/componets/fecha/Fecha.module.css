@@ -6,7 +6,6 @@
   justify-content: center;
   align-items: center;
   gap: 40px;
-  padding: 40px 20px;
   background-size: cover;
   z-index: 24;
   background-color: #fff;
@@ -90,6 +89,10 @@
     display: ruby-text; 
   }
 
+  .calendarContainer {
+    padding:0px;
+  }
+
   .countdownItem {
     padding: 10px; 
     margin:2px/* Ajuste para dispositivos más pequeños */
@@ -98,6 +101,26 @@
   .invitationSection, .calendarContainer {
     max-width: 90%;
   }
+
+  .countdownSection h1 {
+    font-size: 2rem;
+    font-weight: 600;
+/* centrar texto*/
+    text-align: center;
+  
+  }
+  
+  .countdownSection p {
+    font-size: 1.4rem; /* Texto más grande */
+    margin-bottom: 40px;
+    line-height: 1.8; /* Espaciado de línea aumentado */
+    text-align: center;
+
+  
+  }
+
+
+
 }
 
 @media (max-width: 480px) {
