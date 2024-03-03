@@ -14,7 +14,7 @@ interface EventoBoda {
 const TimelineBoda: React.FC = () => {
   const eventos: EventoBoda[] = [
     { hora: '12:00 PM', titulo: 'Bienvenida', descripcion: 'Recepción de invitados en el jardín.', tipo: 'Bienvenida' },
-    { hora: '1:00 PM', titulo: 'Ceremonia', descripcion: 'Ceremonia religiosa en la iglesia.', tipo: 'Ceremonia' },
+    { hora: '1:00 PM', titulo: 'Ceremonia', descripcion: 'Ceremonia.', tipo: 'Ceremonia' },
     { hora: '2:00 PM', titulo: 'Aperitivo', descripcion: 'Aperitivo y cóctel en el jardín.', tipo: 'Aperitivo' },
     { hora: '3:00 PM', titulo: 'Banquete', descripcion: 'Banquete en el salón de eventos.', tipo: 'Banquete' },
     { hora: '8:00 PM', titulo: 'Baile', descripcion: 'Baile y fiesta en el salón.', tipo: 'Baile' },
