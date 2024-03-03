@@ -1,73 +1,59 @@
 .timeline {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--color-background, #f0f0f0);
-  padding: 40px 20px;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.linea {
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  background-color: #333;
+  top: 0;
+  bottom: 0;
 }
 
 .evento {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  margin-bottom: 30px;
-  width: 100%;
-  max-width: 600px;
-  background-color: var(--color-accent, #ffffff);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  visibility: hidden;
-}
-
-.visible {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-}
-
-.hora {
-  font-weight: bold;
-
-  padding: 8px 16px;
-  border-radius: 20px;
- 
   display: flex;
-  justify-content: center;
-  font-family: var(--font-primary, Arial, sans-serif);
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
 }
 
-.detalle {
-  padding: 20px;
-  text-align: center;
-  color: var(--color-text, #333);
-  font-family: var(--font-secondary, Arial, sans-serif);
+.evento:nth-child(odd) .detalle {
+  align-self: flex-start;
 }
 
-.titulo {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--color-primary, #DAA520);
-  font-family: var(--font-primary, Arial, sans-serif);
+.evento:nth-child(even) .detalle {
+  align-self: flex-end;
 }
 
-.descripcion {
-  font-size: 16px;
-  line-height: 1.6;
+.icono, .detalle {
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: #fff;
 }
 
-.icono {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px; /* Ajuste según sea necesario */
-  margin-top: 20px;
-  height:auto;
-
-  
-
+.hora, .titulo, .descripcion {
+  margin: 5px 0;
 }
-.icono img {
-  width:70px;
-  height:70px;
+
+.conector {
+  position: absolute;
+  height: 2px;
+  background-color: #333;
+  width: 50%;
+  top: 50%;
+  z-index: 1;
+}
+
+.evento:nth-child(odd) .conector {
+  left: 50%;
+}
+
+.evento:nth-child(even) .conector {
+  right: 50%;
 }
