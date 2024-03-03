@@ -1,59 +1,214 @@
+/* timelineBoda.module.css */
+
 .timeline {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  margin: 40px auto;
+  padding: 40px 0; /* Espacio para los conectores */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los eventos en la línea */
 }
 
-.linea {
+.lineaCentral {
   position: absolute;
   left: 50%;
-  width: 2px;
-  background-color: #333;
   top: 0;
   bottom: 0;
+  width: 2px;
+  background-color: #333;
+  z-index: 1; /* Asegúrate de que la línea central esté debajo de los eventos */
 }
 
 .evento {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   position: relative;
-  margin-bottom: 20px;
-}
-
-.evento:nth-child(odd) .detalle {
-  align-self: flex-start;
-}
-
-.evento:nth-child(even) .detalle {
-  align-self: flex-end;
+  width: 100%; /* Cada evento usará el ancho completo */
+  max-width: 600px; /* Máximo ancho para los eventos */
+  margin-bottom: 40px; /* Espacio entre eventos */
+  display: flex;
+  justify-content: space-between; /* Espacio entre icono y detalles */
+  align-items: center; /* Alinea verticalmente el icono y detalles */
+  z-index: 2; /* Por encima de la línea central */
 }
 
 .icono, .detalle {
-  padding: 10px;
+  width: 45%; /* Ancho para el icono y detalles */
+  padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   background: #fff;
 }
-
-.hora, .titulo, .descripcion {
-  margin: 5px 0;
+.icono img {
+  width: 80px;
+  height: auto;
+  display: block;
 }
 
+.iconoYHora {
+  display: flex;
+  align-items: center; /* Alinea verticalmente el icono y la hora */
+  /* justify-content: center;  */
+  gap: 10px; /* Espacio entre el icono y la hora */
+}
+
+.left .iconoYHora {
+  justify-content: flex-start;
+}
+
+.right .iconoYHora {
+  /* justify-content: flex-end; */
+}
+
+
+
+.left .conector {
+  left: 50%;
+}
+
+.right .conector {
+  left: 50%;
+  transform: translateX(-83%) scaleX(-1); /* Invierte la dirección para la derecha */
+}
+
+.visible {
+  animation: appear 0.8s ease-in-out forwards;
+}
+
+/* Estilos adicionales para hora, título, descripción, etc. */
+.hora, .descripcion {
+ 
+  /* Tus estilos aquí */
+
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  margin: 10px 0;
+
+
+
+
+}
+.titulo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #DAA520;
+  text-align: center;
+  margin: 10px 0;
+
+}
+
+
+
+/* Ajustes a .conector para incluir efectos de flecha */
 .conector {
   position: absolute;
   height: 2px;
   background-color: #333;
-  width: 50%;
+  /* Ajustamos el ancho del conector para que sea suficiente para llegar al centro y añadir la flecha */
+  width: 20%; /* Ajuste según necesites */
   top: 50%;
-  z-index: 1;
+  transform: translateX(-78%) translateY(-50%);
 }
 
-.evento:nth-child(odd) .conector {
-  left: 50%;
+.conector::before, .conector::after {
+  content: '';
+  position: absolute;
+  top: -5px; /* Ajusta según el grosor del conector para centrar la flecha */
+  border-style: solid;
+  border-color: transparent;
+  border-width: 5px 5px 5px 5px; /* Ajusta para cambiar el tamaño de la flecha */
 }
 
-.evento:nth-child(even) .conector {
-  right: 50%;
+/* Flecha para el lado izquierdo */
+.left .conector::before {
+  left: 0; /* Alinea la flecha al inicio del conector */
+  border-color: transparent transparent transparent #333; /* Solo bordes necesarios para la flecha */
+}
+
+
+
+.left .conector::before {
+  left: 0;
+  border-width: 5px 10px 5px 0; /* Crea la forma de flecha */
+  border-color: transparent #333 transparent transparent; /* Color de la flecha */
+}
+
+/* Elimina el after del lado izquierdo si solo deseas una flecha */
+.left .conector::after {
+  display: none;
+}
+
+/* Flecha en el lado derecho apuntando hacia la derecha */
+.right .conector::before, .right .conector::after {
+  content: '';
+  position: absolute;
+  top: -5px; /* Alinea con el centro del conector */
+  border-style: solid;
+}
+
+.right .conector::after {
+  right: 0;
+  border-width: 5px 0 5px 10px; /* Crea la forma de flecha */
+  border-color: transparent transparent transparent #333; /* Color de la flecha */
+}
+
+/* Elimina el before del lado derecho si solo deseas una flecha */
+.right .conector::before {
+  display: none;
+}
+
+/* Ajustes adicionales para animación y responsividad */
+.visible {
+  animation: appear 0.8s ease-in-out forwards;
+}
+
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .timeline {
+    padding: 20px 0; /* Reducir el padding superior e inferior para ahorrar espacio */
+  }
+
+ 
+
+  .evento {
+    flex-direction: column-reverse; /* Cambiamos la dirección a columna para apilar los elementos */
+    align-items: center; /* Centramos los elementos para una mejor visualización */
+    width: 80%; /* Ajustamos el ancho para dar más espacio al contenido */
+    margin: 20px auto; /* Aumentamos el margen para separar los eventos */
+    padding: 15px; /* Añadimos padding para dar espacio alrededor del contenido */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Aplicamos una sombra suave para resaltar los eventos */
+    background-color: #ffffff; /* Aseguramos que el fondo sea blanco para mejorar la legibilidad */
+  }
+
+  .icono, .detalle {
+    width: 100%; /* Hacemos que el icono y los detalles ocupen todo el ancho disponible */
+    text-align: center; /* Centramos el texto de los detalles */
+    margin-bottom: 10px; /* Añadimos un margen inferior para separar los elementos */
+  }
+
+  .icono img {
+    width: 60px; /* Ajustamos el tamaño del icono para que no sea demasiado grande */
+    height: 60px; /* Mantenemos la proporción del icono */
+  }
+
+  .hora, .titulo, .descripcion {
+    display: block; /* Aseguramos que cada elemento se muestre en su propia línea */
+    margin: 5px 0; /* Añadimos un pequeño margen entre los elementos para una mejor separación */
+  }
+
+  .conector {
+    display: none; /* Los conectores no se muestran en dispositivos móviles */
+  }
 }
