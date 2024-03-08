@@ -9,6 +9,7 @@ interface EventoBoda {
   titulo: string;
   descripcion: string;
   tipo: keyof typeof IconosEvento;
+  imageUrl?: string;
 }
 
 const TimelineBoda: React.FC = () => {
@@ -23,9 +24,7 @@ const TimelineBoda: React.FC = () => {
   const eventoRefs = useRef<(HTMLDivElement | null)[]>(new Array(eventos.length).fill(null));
 
   useEffect(() => {
-    // Crea una copia de la referencia actual para usar dentro de useEffect
     const currentRefs = [...eventoRefs.current];
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -43,36 +42,44 @@ const TimelineBoda: React.FC = () => {
       if (el) observer.observe(el);
     });
 
-    // Limpieza: desconectar el observer de todos los elementos observados usando la copia de las referencias
     return () => {
       currentRefs.forEach((el) => {
         if (el) observer.unobserve(el);
       });
     };
-  // Asegúrate de que las dependencias estén configuradas correctamente si tu lógica lo requiere
-  }, []); // Las dependencias vacías indican que el efecto se ejecuta solo en el montaje del componente
+  }, []);
 
   return (
-    <div className={styles.timeline}>
-      <div className={styles.lineaCentral}></div>
-      {eventos.map((evento, index) => (
-        <div
-          key={index}
-          ref={(el) => (eventoRefs.current[index] = el)}
-          className={`${styles.evento} ${index % 2 === 0 ? styles.left : styles.right}`}>
-          <div className={styles.iconoYHora}>
-            <div className={styles.icono}>
-              {IconosEvento[evento.tipo]()}
+    <div className={styles.container}>
+      <div className={styles.timelineContainer}>
+        <div className={styles.timeline}>
+          <div className={styles.lineaCentral}></div>
+          {eventos.map((evento, index) => (
+            <div
+              key={index}
+              ref={(el) => (eventoRefs.current[index] = el)}
+              className={`${styles.evento} ${index % 2 === 0 ? styles.left : styles.right}`}>
+              <div className={styles.iconoYHora}>
+                <div className={styles.icono}>
+                  {IconosEvento[evento.tipo]()}
+                </div>
+                <div className={styles.hora}>{evento.hora}</div>
+              </div>
+              <div className={styles.detalle}>
+                <div className={styles.titulo}>{evento.titulo}</div>
+                <div className={styles.descripcion}>{evento.descripcion}</div>
+              </div>
+              <div className={styles.conector}></div>
             </div>
-            <div className={styles.hora}>{evento.hora}</div>
-          </div>
-          <div className={styles.detalle}>
-            <div className={styles.titulo}>{evento.titulo}</div>
-            <div className={styles.descripcion}>{evento.descripcion}</div>
-          </div>
-          <div className={styles.conector}></div>
+          ))}
         </div>
-      ))}
+      </div>
+      <div className={styles.imageContainer}>
+        {/* Asegúrate de ajustar la ruta y dimensiones de la imagen según tus necesidades */}
+        <div style={{ position: 'relative', width: '500px', height: '931px' }}>
+      <Image src="/foto_lado.jpg" alt="Descripción" fill sizes='cover' style={{ objectFit: 'cover' }} />
+    </div>
+      </div>
     </div>
   );
 };

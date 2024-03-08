@@ -163,6 +163,42 @@
 }
 
 
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 2px 140px 40px 233px;
+  align-items: flex-start;
+}
+
+.timelineContainer {
+  flex: 1;
+}
+
+.imageContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden; /* Asegura que los efectos de la imagen no desborden el contenedor */
+}
+
+.imageContainer img {
+  transition: transform 0.5s ease, box-shadow 0.5s ease; /* Suaviza la transición de los efectos */
+  width: 100%; /* Hace la imagen responsiva */
+  max-width: 500px; /* Limita el tamaño máximo de la imagen */
+  height: auto; /* Mantiene la relación de aspecto */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Efecto de sombra suave */
+  zizes: cover;
+}
+
+.imageContainer img:hover {
+  transform: scale(1.05); /* Efecto de zoom ligero al pasar el mouse */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el mouse */
+}
+
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -175,7 +211,19 @@
 }
 
 
-@media (max-width: 768px) {
+
+
+
+@media (max-width: 1542px) {
+  .container {
+padding: 0px 0px 0px 0px;
+  }
+
+
+}
+
+
+@media (max-width: 1100px) {
   .timeline {
     padding: 20px 0; /* Reducir el padding superior e inferior para ahorrar espacio */
   }
@@ -210,5 +258,9 @@
 
   .conector {
     display: none; /* Los conectores no se muestran en dispositivos móviles */
+  }
+
+  .imageContainer{
+    display:none;
   }
 }
