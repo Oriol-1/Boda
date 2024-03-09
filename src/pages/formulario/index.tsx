@@ -62,6 +62,7 @@ export default function FormularioPage() {
   const [goodbyeMessage, setGoodbyeMessage] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
 
   // useEffect para cargar datos del localStorage
   useEffect(() => {
@@ -922,7 +923,7 @@ if (isSubmitted) {
           {/* Cálculo y muestra de cantidades de cada tipo de menú */}
 
           <div className="menu-summary">
-    <h3>Resumen de Menús Seleccionados</h3>
+    <h2 className='resumen'>Resumen de Menús Seleccionados</h2>
     
     {/* Resumen para el Invitado Principal */}
     <p>
@@ -1022,7 +1023,7 @@ Prefiero viajar en mi propio coche. */}
           </p>
 
           {/* Botones para confirmar o cancelar el envío */}
-          <button className="button button-destino" onClick={handleFinalSubmit}>Confirmar y Enviar</button>
+          <button className="button button-confirm button-destino" onClick={handleFinalSubmit}>Confirmar y Enviar</button>
           <button className="button" onClick={() => setShowSummary(false)}>Cancelar y Editar</button>
         </div>
       )}
