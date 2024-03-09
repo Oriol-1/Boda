@@ -257,8 +257,12 @@ const handleBackFromSummary = () => {
         }
         .button {
           // Estilos para los botones
-          background-color: #DAA520;
-          color: #000000;
+       
+          /* con degradado */
+        
+          background-image: linear-gradient(to right, #212121, #0b0b0b);
+        
+          color: #e7e7e7;
           border: none;
           padding: 10px 20px;
           border-radius: 5px;
@@ -266,10 +270,21 @@ const handleBackFromSummary = () => {
           /* en negrita */
           font-weight: bold;
           font-size: 25px;
+          transition: all 0.3s ease;
+          /* border negro 1 px */
+          box-shadow: 0 0 1px 1px rgba(1,1,1,0.2);
+
+      
+      
         }
         .button:hover {
-          background-color: #000000;
-          color: white;
+          /* con degradado */
+          background-image: linear-gradient(to right, #212121, #0b0b0b);
+          color: #DAA520;
+          /* sombra blanca en el texto */
+          text-shadow: 0.2px 0.2px 0.5px #ffffff;
+          
+       
         }
         .goodbyeMessage {
           text-align: center;
