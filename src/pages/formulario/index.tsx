@@ -516,7 +516,23 @@ const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuTy
 
     // En lugar de enviar el formulario directamente, muestra el resumen para revisión
     setShowSummary(true);
+
+    // Añade un breve retraso antes de hacer scroll para asegurar que el botón ha sido renderizado
+    setTimeout(() => {
+      const buttonDestino = document.querySelector(".button-destino");
+      if (buttonDestino) {
+        const buttonPosition = buttonDestino.getBoundingClientRect().top + window.scrollY;
+        const offset = window.innerHeight / 1.5; // Ajuste para centrar en la pantalla
+        const scrollToPosition = buttonPosition - offset;
+  
+        window.scrollTo({
+          top: scrollToPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 100); // El retraso garantiza que el botón destino ya esté renderizado y visible
   };
+
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1006,7 +1022,7 @@ Prefiero viajar en mi propio coche. */}
           </p>
 
           {/* Botones para confirmar o cancelar el envío */}
-          <button className="button" onClick={handleFinalSubmit}>Confirmar y Enviar</button>
+          <button className="button button-destino" onClick={handleFinalSubmit}>Confirmar y Enviar</button>
           <button className="button" onClick={() => setShowSummary(false)}>Cancelar y Editar</button>
         </div>
       )}
