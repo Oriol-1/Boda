@@ -35,11 +35,8 @@ interface GuestFormState {
   specialMenuAdults: SpecialMenuSelection[];
   specialMenuChildren: SpecialMenuSelection[];
   contactPhone: string;
+   transportOption: 'bus' | 'car' | null;
 
-}
-interface GuestFormState {
-  // ... otras propiedades ...
-  transportOption: 'bus' | 'car' | null;
 }
 
 interface FormErrors {
@@ -62,6 +59,10 @@ export default function FormularioPage() {
   const [goodbyeMessage, setGoodbyeMessage] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [showSummary, setShowSummary] = useState(false);
+
+  
   
 
   // useEffect para cargar datos del localStorage
@@ -86,6 +87,11 @@ export default function FormularioPage() {
     }
   }, [response]);
 
+  const handleBack = () => {
+    setShowForm(false);
+    setShowInput(false);
+  };
+
   const handleAccept = () => {
     setResponse("accepted");
     setShowForm(true);
@@ -99,6 +105,19 @@ export default function FormularioPage() {
     setShowInput(true);
     setGoodbyeMessage('');
   };
+
+  const resetState = () => {
+    setShowForm(false);
+    setShowInput(false);
+    setResponse(null); // Restablecer la decisión
+    setDeclinerName(''); // Limpiar nombre del declinador
+    setGoodbyeMessage(''); // Limpiar mensaje de despedida
+    // Restablece cualquier otro estado que necesites aquí
+};
+
+const handleBackFromSummary = () => {
+  setShowSummary(false); // Esto ocultaría el resumen y volvería al formulario
+};
 
   const handleDeclineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,18 +183,37 @@ export default function FormularioPage() {
   return (
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
-      <h3 className="headingh3"> Ayúdanos a no meter la pata en nuestra boda... ¡Tu opinión es oro! Échale un ojo a este cuestionario.</h3>
-       
-       
+  
+      {/* Botón de "Volver" que solo se muestra si el usuario está en uno de los formularios */}
+      {(!isSubmitted && (showForm || showInput || showSummary)) && (
+  <button 
+    onClick={() => {
+      if(showSummary) {
+        setShowSummary(false);
+      } else {
+        setShowForm(false);
+        setShowInput(false);
+        // Restablece aquí cualquier otro estado si es necesario
+      }
+    }} 
+    className="back-button" 
+    style={{ position: 'absolute', top: '20px', right: '20px' }}
+  >
+    Volver
+  </button>
+)}
 
-      {!showForm && !showInput && !response && (
-        <div className="button-container">
-          <button className="button" onClick={() => setShowForm(true)}>Ir a la Boda</button>
-          <button className="button" onClick={() => setShowInput(true)}>No Puedo Ir a la Boda</button>
-        </div>
-      )}
-
-      {showForm && <WeddingInvitationForm />} {/* Asegúrate de tener este componente definido */}
+{!showForm && !showInput && !response && (
+  <div className="button-container">
+    <button className="button" onClick={() => setShowForm(true)}>Ir a la Boda</button>
+    <button className="button" onClick={() => setShowInput(true)}>No Puedo Ir a la Boda</button>
+  </div>
+)}
+  
+      {/* Mostrar el formulario de invitación a la boda */}
+      {showForm && <WeddingInvitationForm />}
+      
+      {/* Mostrar el formulario de no asistencia */}
       {showInput && (
         <form onSubmit={handleDeclineSubmit} className="form">
           <input
@@ -188,22 +226,60 @@ export default function FormularioPage() {
           <button className="button" type="submit">Enviar</button>
         </form>
       )}
-
-      {response === "declined" && (
-        <p className="goodbyeMessage">
-          Lamentamos que no puedas asistir a la boda, <strong>{declinerName}</strong>. Te enviamos un abrazo.
-        </p>
+  
+      {/* Mensaje de confirmación o despedida basado en la respuesta del usuario */}
+      {response && isSubmitted && (
+        <div>
+          {response === "accepted" && (
+            <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>
+          )}
+          {response === "declined" && (
+            <p className="goodbyeMessage" dangerouslySetInnerHTML={{ __html: goodbyeMessage }}></p>
+          )}
+        </div>
       )}
-
+  
       <style jsx>{`
+        .back-button {
+          // Estilos para tu botón de "Volver"
+          cursor: pointer;
+          background-color: #f0f0f0;
+          border: 1px solid #ccc;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-size: 16px;
+        }
+        .button-container {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          margin-top: 20px;
+        }
+        .button {
+          // Estilos para los botones
+          background-color: #DAA520;
+          color: #000000;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          /* en negrita */
+          font-weight: bold;
+          font-size: 25px;
+        }
+        .button:hover {
+          background-color: #000000;
+          color: white;
+        }
         .goodbyeMessage {
           text-align: center;
-          font-size: 18px;
+          font-size: 20px;
           color: black;
+          font-weight: normal;
         }
         .goodbyeMessage strong {
-          font-weight: bold;
-          color: blue;
+          font-weight: bold; 
+          color: blue; 
         }
       `}</style>
     </div>
@@ -546,54 +622,56 @@ const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuTy
   const handleFinalSubmit = async () => {
     // Mapeo de childrenDetails a la estructura requerida
     const formattedChildrenDetails = guest.childrenDetails.map(child => ({
-      name: child.name,
-      menuType: child.menuType,
-      isSpecialMenu: child.isSpecialMenu ? 1 : 0,
-      specialMenuType: child.isSpecialMenu ? child.specialMenuType : null,
-      customMenuType: child.isSpecialMenu && child.specialMenuType === 'otro' ? child.customMenuType : null
+        name: child.name,
+        menuType: child.menuType,
+        isSpecialMenu: child.isSpecialMenu ? 1 : 0,
+        specialMenuType: child.isSpecialMenu ? child.specialMenuType : null,
+        customMenuType: child.isSpecialMenu && child.specialMenuType === 'otro' ? child.customMenuType : null
     }));
   
-    // Preparación de los datos del formulario para enviar
     const formData = {
-      name: guest.name,
-      menuType: guest.menuType || 'estandar',
-      specialMenuType: guest.menuType === 'especial' && guest.specialMenuType !== 'otro' ? guest.specialMenuType : null,
-      customMenuType: guest.menuType === 'especial' && guest.specialMenuType === 'otro' ? guest.customMenuType : null,
-      hasCompanion: guest.hasCompanion,
-      companionName: guest.hasCompanion ? guest.companionName : null,
-      companionMenuType: guest.hasCompanion ? guest.companionMenuType || 'estandar' : null,
-      companionSpecialMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' && guest.companionSpecialMenuType !== 'otro' ? guest.companionSpecialMenuType : null,
-      companionCustomMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' && guest.companionSpecialMenuType === 'otro' ? guest.companionCustomMenuType : null,
-      hasChildren: guest.hasChildren,
-      childrenCount: guest.hasChildren ? guest.childrenCount : null,
-      childrenDetails: formattedChildrenDetails,
-      hasFoodAllergy: guest.hasFoodAllergy || false,
-      allergyDetails: guest.hasFoodAllergy ? guest.allergyDetails : null,
-      contactPhone: guest.contactPhone,
-      transportOption: guest.transportOption
+        name: guest.name,
+        menuType: guest.menuType || 'estandar',
+        specialMenuType: guest.menuType === 'especial' && guest.specialMenuType !== 'otro' ? guest.specialMenuType : null,
+        customMenuType: guest.menuType === 'especial' && guest.specialMenuType === 'otro' ? guest.customMenuType : null,
+        hasCompanion: guest.hasCompanion,
+        companionName: guest.hasCompanion ? guest.companionName : null,
+        companionMenuType: guest.hasCompanion ? guest.companionMenuType || 'estandar' : null,
+        companionSpecialMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' && guest.companionSpecialMenuType !== 'otro' ? guest.companionSpecialMenuType : null,
+        companionCustomMenuType: guest.hasCompanion && guest.companionMenuType === 'especial' && guest.companionSpecialMenuType === 'otro' ? guest.companionCustomMenuType : null,
+        hasChildren: guest.hasChildren,
+        childrenCount: guest.hasChildren ? guest.childrenCount : null,
+        childrenDetails: formattedChildrenDetails,
+        hasFoodAllergy: guest.hasFoodAllergy || false,
+        allergyDetails: guest.hasFoodAllergy ? guest.allergyDetails : null,
+        contactPhone: guest.contactPhone,
+        transportOption: guest.transportOption
     };
   
     try {
-      const response = await fetch('/api/formularios/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+        const response = await fetch('/api/formularios/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
   
-      // Actualizar el estado y el localStorage para reflejar que el formulario ha sido enviado
-      localStorage.setItem("weddingResponse", "accepted");
-      localStorage.setItem("formSubmitted", "true");
-      setIsSubmitted(true); // Actualizar el estado para reflejar que se ha enviado
-      console.log('Formulario enviado con éxito');
-      // Aquí puedes agregar cualquier lógica adicional para manejar la respuesta exitosa, como mostrar un mensaje de confirmación.
+        // Aquí se maneja el envío exitoso del formulario
+        localStorage.setItem("weddingResponse", "accepted");
+        localStorage.setItem("formSubmitted", "true");
+        setIsSubmitted(true); // Actualizar el estado para reflejar que se ha enviado
+      
+        setShowSummary(false); // Asegurarse de ocultar el resumen si estaba siendo mostrado
+        console.log('Formulario enviado con éxito');
+         // Refrescar la página después del envío exitoso
+      window.location.reload();
     } catch (error) {
-      console.error('Error al enviar el formulario', error);
+        console.error('Error al enviar el formulario', error);
     }
   };
 

@@ -325,6 +325,7 @@
   text-align: center; /* Centrar el texto */
   font-size: 1.2em; /* Tamaño del texto, ajusta según necesites */
   /* Agrega aquí otros estilos que necesites para el mensaje */
+
 }
 
 /* Estilo para hacer que el nombre aparezca en negrita */
@@ -398,11 +399,17 @@
   font-size: 16px;
   margin: 4px 2px;
   transition-duration: 0.4s;
+  font-size: 25px;
+
+}
+/* hover */
+.button-confirm:hover {
+  background-color: #DAA520;
+  color: #000000;
+
 }
 
-.button-confirm:hover {
-  background-color: #45a049; /* Un verde un poco más oscuro */
-}
+
 
 
 
