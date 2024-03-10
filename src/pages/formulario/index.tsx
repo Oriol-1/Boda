@@ -186,7 +186,7 @@ const handleBackFromSummary = () => {
   
       {/* Botón de "Volver" que solo se muestra si el usuario está en uno de los formularios */}
       {(!isSubmitted && (showForm || showInput || showSummary)) && (
-  <button 
+  <button className="backButton"
     onClick={() => {
       if(showSummary) {
         setShowSummary(false);
@@ -196,8 +196,7 @@ const handleBackFromSummary = () => {
         // Restablece aquí cualquier otro estado si es necesario
       }
     }} 
-    className="back-button" 
-    style={{ position: 'absolute', top: '20px', right: '20px' }}
+  
   >
     Volver
   </button>
