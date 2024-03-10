@@ -89,7 +89,7 @@
         flex-direction: row; /* Cambiado para mejorar la disposición en pantallas más pequeñas */
         width: 96%;
         padding: 0px;
-        top:30%
+        top:52%
     }
     .image-bw, .image-color {
         height: 40vh; /* Ajuste de altura para pantallas más pequeñas */
