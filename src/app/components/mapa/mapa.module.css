@@ -1,0 +1,103 @@
+/* mapa.module.css */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #fff5f8; /* Un suave color de fondo rosa */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Una ligera sombra para dar profundidad */
+    margin: 20px;
+    overflow: hidden; /* Para asegurar que todos los componentes se mantengan dentro del borde redondeado */
+}
+
+.section {
+    flex: 1;
+    min-width: 300px; /* Para asegurar que en pantallas pequeñas los elementos se apilen verticalmente */
+    padding: 20px;
+    color: #383838; /* Un color oscuro para el texto que proporciona suficiente contraste */
+}
+
+.infoSection {
+    text-align: center; /* Centra el texto y la imagen en la sección de información */
+}
+
+.infoSection h2 {
+    font-family: 'Playfair Display', serif; /* Una tipografía elegante para los títulos */
+    color: #b85c5c; /* Un color que complementa el esquema de color suave */
+    margin-bottom: 15px;
+    /* tamaño del texto */
+    font-size: 2.5rem;
+}
+
+.infoSection p {
+    font-family: 'Lato', sans-serif; /* Una tipografía limpia y moderna para el cuerpo del texto */
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.imageSection {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 400px;
+    height: 206px;
+}
+.imageSection img {
+    object-fit: contain;
+    
+   
+}
+
+.mapSection {
+    border: none;
+    height: 100%;
+}
+
+.mapSection iframe {
+    border-radius: 8px; /* Bordes redondeados para el mapa */
+    width: 100%;
+    height: 400px; /* Altura fija para el mapa */
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Cambia la disposición a columna en dispositivos móviles */
+    }
+
+    .mapSection iframe {
+       
+        padding-top: 20px; /* Añade espacio entre el mapa y la sección de información */
+        width: 150%;
+        height: 300px;
+      
+    }
+
+
+    .infoSection h2 {
+        margin-bottom: 15px;
+        /* tamaño del texto */
+        font-size: 2rem;
+    }
+    
+    .infoSection p {
+    
+        font-size: 1rem;
+    }
+
+    
+    .imageSection {
+ 
+        width: 300px;
+        height: 106px;
+    }
+
+    .section {
+       
+        padding: 0px;
+       
+    }
+
+
+}

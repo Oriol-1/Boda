@@ -46,8 +46,12 @@ const PrimeraParte: React.FC = () => {
             <div className={styles['texto-anuncio']} ref={textoAnuncioRef}>
                 <div className={styles['decoracion-izquierda']}>
                     <Image src="/shape-1.png" alt="Decoración Izquierda" 
+                  
                     priority // Agrega esta línea para pre-cargar la imagen
-                    fill sizes="(max-width: 768px) 100px, 200px" />
+                    width={400} // Establece el ancho original de tu imagen
+                    height={206} // Establece la altura original de tu imagen
+                 
+                    />
                 </div>
                 <div>
                     <h1>NOS CASAMOS </h1>
