@@ -730,6 +730,7 @@ if (isSubmitted) {
               <label className="label">
                 <input
                   type="checkbox"
+                  style={{ marginRight: '7px' }}
                   checked={guest.menuType === 'especial'}
                   onChange={(e) => handleChangeInput({
                     ...e,
@@ -781,6 +782,7 @@ if (isSubmitted) {
               <label className="label">
                 <input
                   type="checkbox"
+                  style={{ marginRight: '7px' }}
                   name="hasCompanion"
                   checked={guest.hasCompanion}
                   onChange={handleChangeInput}
@@ -810,6 +812,7 @@ if (isSubmitted) {
                   <label className="label">
                     <input
                       type="checkbox"
+                      style={{ marginRight: '7px' }}
                       checked={guest.companionMenuType === 'especial'}
                       onChange={(e) => handleChangeInput({
                         ...e,
@@ -864,6 +867,7 @@ if (isSubmitted) {
             <label className="label">
               <input
                 type="checkbox"
+                style={{ marginRight: '7px' }}
                 name="hasChildren"
                 checked={guest.hasChildren}
                 onChange={handleChangeInput}
@@ -899,6 +903,7 @@ if (isSubmitted) {
                     <label className="label">
                       <input
                         type="checkbox"
+                        style={{ marginRight: '7px' }}
                         checked={child.isSpecialMenu}
                         onChange={(e) => handleChangeChildrenDetails(index, 'isSpecialMenu', e.target.checked)}
                       />

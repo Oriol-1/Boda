@@ -1,6 +1,7 @@
 /* Estilos generales de la página */
 .page {
-  background-color: #f9f9f9;
+ 
+  background-color: #e7e7e7;
   color: #333;
   font-family: 'Georgia', serif;
   max-width: 1000px;
@@ -25,6 +26,7 @@
   margin-bottom: 15px;
   font-size: 30px;
   z-index: 23;
+  padding-bottom: 28px;
 }
 .headingh3 {
   text-align: center;
@@ -44,7 +46,16 @@
   margin-bottom: 10px;
   font-size: 18px;
   color: #4a4e69;
+  font-weight: bold;
+  padding: 6px;
 }
+
+.label input[type="checkbox"] + text::before {
+  content: ""; /* Necesario para que el pseudo-elemento funcione */
+  display: inline-block; /* Hace que el espacio se pueda ajustar */
+  width: 8px; /* Este es el espacio que quieres agregar */
+}
+
 
 /* Estilos de los campos de entrada y selectores */
 .input, .select {
@@ -230,10 +241,7 @@
   margin: 5px;
 }
 
-/* Espaciado entre el label y el input */
-.label {
-  margin-right: 10px;
-}
+
 
 
 /* Estilos para la sección de resumen de menús */
