@@ -61,6 +61,16 @@
     height: 400px; /* Altura fija para el mapa */
 }
 
+
+.mapSection {
+    /* Estilos para la sección que contiene el mapa */
+    display: block; /* Ejemplo, asegúrate de reemplazar esto con tus propios estilos */
+  }
+  
+  .review-box {
+    display: none;
+  }
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column; /* Cambia la disposición a columna en dispositivos móviles */
