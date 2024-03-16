@@ -358,6 +358,14 @@
   
 
 
+
+.form-scroll-container {
+  max-height: 80vh; /* Ajusta la altura máxima del contenedor */
+  overflow-y: auto; /* Habilita el scroll vertical si el contenido excede la altura máxima */
+  padding: 20px; /* Espaciado interno para el contenedor */
+}
+
+
 /* Estilos responsivos para dispositivos móviles */
 @media (max-width: 768px) {
   /* Alineación de elementos en los detalles de los niños en dispositivos móviles */

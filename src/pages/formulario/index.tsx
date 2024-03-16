@@ -1,6 +1,6 @@
 
 "use client"
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 
 // Definiciones de interfaces para tipar los datos del formulario.
@@ -52,8 +52,6 @@ interface FormErrors {
 
 // Componente principal del formulario de invitación a la boda.
 export default function FormularioPage() {
-
-  
   // Declaración de estados
   const [showForm, setShowForm] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -64,13 +62,8 @@ export default function FormularioPage() {
 
   const [showSummary, setShowSummary] = useState(false);
 
-
-
-
   
-
-
-
+  
 
   // useEffect para cargar datos del localStorage
   useEffect(() => {
@@ -385,86 +378,127 @@ function WeddingInvitationForm() {
   };
 
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const { name, value, type } = e.target;
 
-    if (type === 'checkbox') {
-        const checked = (e.target as HTMLInputElement).checked;
+  if (type === 'checkbox') {
+    const checked = (e.target as HTMLInputElement).checked;
 
-        if (name === 'menuType') {
-            setGuest(prev => ({
-                ...prev,
-                menuType: checked ? 'especial' : 'estandar',
-                specialMenuType: checked ? 'vegetariano' : null
-            }));
-            // Eliminar mensaje de error para el menú especial del invitado principal si se desmarca
-            if (!checked) {
-                setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
-            }
-        } else if (name === 'companionMenuType') {
-            setGuest(prev => ({
-                ...prev,
-                companionMenuType: checked ? 'especial' : 'estandar',
-                companionSpecialMenuType: checked ? 'vegetariano' : null
-            }));
-            // Eliminar mensaje de error para el menú especial del acompañante si se desmarca
-            if (!checked) {
-                setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
-            }
-        } else {
-            setGuest(prev => ({
-                ...prev,
-                [name]: checked
-            }));
-        }
-    } else {
-        setGuest(prev => ({
-            ...prev,
-            [name]: value
+    if (name === 'hasChildren') {
+      setGuest(prev => ({
+        ...prev,
+        [name]: checked,
+        childrenDetails: checked ? prev.childrenDetails : [],
+        childrenCount: checked ? prev.childrenCount : 0,
+      }));
+
+      if (!checked) {
+        setErrors(prevErrors => ({
+          ...prevErrors,
+          childrenNameError: '',
+          childrenMenuError: '',
+          childSpecialMenuOtherError: '',
         }));
-
-        // Limpia el mensaje de error cuando se empieza a escribir en los campos de menú especial "otros"
-        if (name === 'customMenuType' && value.trim() !== '') {
-            setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
-        }
-        if (name === 'companionCustomMenuType' && value.trim() !== '') {
-            setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
-        }
-        if (name === 'transportOption' && value.trim() !== '') {
-            setErrors(prevErrors => ({ ...prevErrors, transportError: '' }));
-        }
+      }
+    } else if (name === 'menuType') {
+      setGuest(prev => ({
+        ...prev,
+        menuType: checked ? 'especial' : 'estandar',
+        specialMenuType: checked ? 'vegetariano' : null,
+      }));
+      if (!checked) {
+        setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
+      }
+    } else if (name === 'companionMenuType') {
+      setGuest(prev => ({
+        ...prev,
+        companionMenuType: checked ? 'especial' : 'estandar',
+        companionSpecialMenuType: checked ? 'vegetariano' : null,
+      }));
+      if (!checked) {
+        setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
+      }
+    } else {
+      setGuest(prev => ({
+        ...prev,
+        [name]: checked,
+      }));
     }
-};
+  } else {
+    setGuest(prev => ({
+      ...prev,
+      [name]: value,
+    }));
 
-const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: string | boolean) => {
-  setGuest(prevGuest => {
-      const updatedChildren = [...prevGuest.childrenDetails];
-      const updatedChild = { ...updatedChildren[index], [field]: value };
-      updatedChildren[index] = updatedChild;
+    if (name === 'customMenuType' && value.trim() !== '') {
+      setErrors(prevErrors => ({ ...prevErrors, specialMenuError: '' }));
+    }
+    if (name === 'companionCustomMenuType' && value.trim() !== '') {
+      setErrors(prevErrors => ({ ...prevErrors, companionSpecialMenuError: '' }));
+    }
+    if (name === 'transportOption' && value.trim() !== '') {
+      setErrors(prevErrors => ({ ...prevErrors, transportError: '' }));
+    }
 
-      return { ...prevGuest, childrenDetails: updatedChildren };
-  });
-
-  // Actualizar el estado de error para el menú especial "Otro"
-  if (field === 'customMenuType') {
-      const newError = typeof value === 'string' && value.trim() !== '' ? '' : 'Por favor, especifica el tipo de menú';
-      setErrors(prevErrors => {
-          const updatedErrors = { ...prevErrors };
-          updatedErrors.childSpecialMenuOtherError = newError;
-          return updatedErrors;
-      });
-  }
-
-  // Eliminar mensaje de error si se proporciona un nombre válido para el hijo
-  if (field === 'name' && typeof value === 'string' && value.trim() !== '') {
-      setErrors(prevErrors => ({ ...prevErrors, childrenNameError: '' }));
-  }
-
-  // Eliminar mensaje de error del menú especial para cada hijo si se selecciona correctamente
-  if (field === 'specialMenuType' && typeof value === 'string' && value.trim() !== '') {
-      setErrors(prevErrors => ({ ...prevErrors, childrenMenuError: '' }));
+    // Específico para manejar el error del nombre del acompañante
+    if (name === 'companionName' && value.trim() === '') {
+      setErrors(prevErrors => ({ ...prevErrors, companionNameError: 'Por favor, introduce el nombre del acompañante' }));
+    } else {
+      setErrors(prevErrors => ({ ...prevErrors, companionNameError: '' }));
+    }
   }
 };
+
+
+
+
+
+
+  const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuType, value: string | boolean) => {
+    setGuest(prevGuest => {
+        // Actualizar la información del hijo específico
+        const updatedChildrenDetails = prevGuest.childrenDetails.map((child, idx) => {
+          if (idx === index) {
+            return { ...child, [field]: value };
+          }
+          return child;
+        });
+  
+        return { ...prevGuest, childrenDetails: updatedChildrenDetails };
+    });
+  
+    // Actualizar los mensajes de error basados en los cambios
+    setErrors(prevErrors => {
+        let newErrors = { ...prevErrors };
+  
+        // Lógica para actualizar el error del nombre del hijo
+        if (field === 'name') {
+            if (typeof value === 'string' && value.trim() === '') {
+                newErrors.childrenNameError = 'El nombre del hijo es un campo obligatorio.';
+            } else {
+                // Limpiar el mensaje de error si el campo ahora es válido
+                newErrors.childrenNameError = '';
+            }
+        }
+  
+        // Manejar otros campos si es necesario
+        if (field === 'specialMenuType') {
+            if (typeof value === 'string' && value.trim() === '') {
+                newErrors.childrenMenuError = 'Por favor, selecciona el tipo de menú especial para el hijo.';
+            } else {
+                newErrors.childrenMenuError = '';
+            }
+        }
+  
+        // Similar para 'customMenuType' u otros campos relevantes
+        if (field === 'customMenuType') {
+            const newError = typeof value === 'string' && value.trim() !== '' ? '' : 'Por favor, especifica el tipo de menú especial.';
+            newErrors.childSpecialMenuOtherError = newError;
+        }
+  
+        return newErrors;
+    });
+  };
 
   const handleChangeMenuType = (isCompanion = false) => {
     setGuest(prev => {
@@ -495,10 +529,18 @@ const handleChangeChildrenDetails = (index: number, field: keyof ChildWithMenuTy
 
   const handleAddChild = () => {
     setGuest(prev => ({
-      ...prev,
-      childrenDetails: [...prev.childrenDetails, { name: '', menuType: 'infantil', isSpecialMenu: false }],
+        ...prev,
+        childrenDetails: [
+            ...prev.childrenDetails,
+            { name: '', menuType: 'infantil', isSpecialMenu: false, specialMenuType: null, customMenuType: null }
+        ]
     }));
-  };
+    // Añadir también un mensaje de error para el nuevo hijo
+    setErrors(prevErrors => ({
+        ...prevErrors,
+        childrenNameError: 'Por favor, introduce el nombre del hijo.'
+    }));
+};
 
   const handleSpecialMenusChange = (count: number, isAdultMenu: boolean) => {
     count = Math.min(count, isAdultMenu ? specialAdultMenuCount : specialChildMenuCount);
@@ -1042,15 +1084,16 @@ if (isSubmitted) {
 
     {/* Resumen para el Acompañante, si está presente */}
     {guest.hasCompanion && (
-      <p>
-        Acompañante: {guest.companionName} - Menú:
-        {guest.companionMenuType === 'especial'
-          ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}`
-          : 'Estándar'}
-        {errors.companionSpecialMenuError && (
-          <span className="error-message" style={{ color: 'red' }}> - {errors.companionSpecialMenuError}</span>
-        )}
-      </p>
+  <p>
+    Acompañante: {guest.companionName || "No especificado"} - Menú:
+    {guest.companionMenuType === 'especial'
+      ? `${guest.companionSpecialMenuType} ${guest.companionCustomMenuType ? `- ${guest.companionCustomMenuType}` : ''}`
+      : 'Estándar'}
+    {/* Aquí muestras el mensaje de error si existe */}
+    {errors.companionNameError && (
+      <span className="error-message" style={{ color: 'red' }}> - {errors.companionNameError}</span>
+    )}
+  </p>
     )}
 
     {/* Resumen para los Hijos */}
@@ -1107,12 +1150,14 @@ if (isSubmitted) {
 
           {/* Resumen para los Hijos */}
           {guest.childrenDetails.map((child, index) => (
-            <p key={`child-menu-summary-${index}`}>
-              Hijo {index + 1}: {child.name} - Tipo de Menú: {child.menuType}
-              {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
-              {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
-            </p>
-          ))}
+    <p key={`child-menu-summary-${index}`}>
+        Hijo {index + 1}: {child.name || "No especificado"} - Tipo de Menú: {child.menuType}
+        {child.isSpecialMenu && ` - Menú Especial: ${child.specialMenuType}`}
+        {child.specialMenuType === 'otro' && child.customMenuType && ` - Detalles: ${child.customMenuType}`}
+        {/* Mostrar el mensaje de error si el nombre del hijo está vacío */}
+        {!child.name && <span className="error-message" style={{ color: 'red' }}> - Por favor, introduce el nombre del hijo.</span>}
+    </p>
+))}
 
           {/* resumen de numero de telefono */}
           <p>
