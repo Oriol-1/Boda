@@ -158,7 +158,7 @@ const handleBackFromSummary = () => {
       <div className="page">
         <h1 className="heading">Formulario de Invitación a la Boda</h1>
         {response === "accepted" && (
-           <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>
+           <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Os esperamos el 1 de noviembre en la boda.</p>
         )}
         {response === "declined" && (
           <p className="goodbyeMessage" dangerouslySetInnerHTML={{ __html: goodbyeMessage }}></p>
@@ -230,7 +230,7 @@ const handleBackFromSummary = () => {
       {response && isSubmitted && (
         <div>
           {response === "accepted" && (
-            <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Los esperamos el 1 de noviembre en la boda.</p>
+            <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Os esperamos el 1 de noviembre en la boda.</p>
           )}
           {response === "declined" && (
             <p className="goodbyeMessage" dangerouslySetInnerHTML={{ __html: goodbyeMessage }}></p>
