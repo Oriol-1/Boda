@@ -1,6 +1,6 @@
 
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './styles.css';
 
 // Definiciones de interfaces para tipar los datos del formulario.
@@ -52,6 +52,8 @@ interface FormErrors {
 
 // Componente principal del formulario de invitación a la boda.
 export default function FormularioPage() {
+
+  
   // Declaración de estados
   const [showForm, setShowForm] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -62,7 +64,40 @@ export default function FormularioPage() {
 
   const [showSummary, setShowSummary] = useState(false);
 
+
+
+
   
+    // Tus estados y lógicas previas permanecen sin cambios...
+  
+    // Añadir una referencia al botón de enviar
+    const enviarButtonRef = useRef<HTMLButtonElement>(null);
+  
+    // Implementa una función para limitar el scroll
+    const limitScroll = () => {
+      if (enviarButtonRef.current) {
+        const bottomPosition = enviarButtonRef.current.getBoundingClientRect().bottom + window.scrollY;
+  
+        if (window.scrollY > bottomPosition - window.innerHeight) {
+          window.scrollTo(0, bottomPosition - window.innerHeight);
+        }
+      }
+    };
+  
+    // Añadir el efecto para controlar el evento de scroll
+    useEffect(() => {
+      // Solo aplica el límite de scroll si el formulario está visible y aún no se ha enviado
+      if (!isSubmitted && showForm) {
+        window.addEventListener('scroll', limitScroll);
+      }
+  
+      // Función de limpieza para remover el evento de scroll
+      return () => {
+        window.removeEventListener('scroll', limitScroll);
+      };
+    }, [isSubmitted, showForm]); 
+
+
   
 
   // useEffect para cargar datos del localStorage
@@ -1075,7 +1110,7 @@ if (isSubmitted) {
           </div>
 
           {/* Botón de Enviar para revisar */}
-          <button className="button" type="submit">Revisar Invitación</button>
+          <button className="button" type="submit">Enviar</button>
         </form>
       ) : (
         <div className="menu-summary">
