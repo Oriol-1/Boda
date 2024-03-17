@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-    background-color: #fff5f8; /* Un suave color de fondo rosa */
+    background-color:#fff5f84a; /* Un suave color de fondo rosa */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Una ligera sombra para dar profundidad */
     margin: 20px;

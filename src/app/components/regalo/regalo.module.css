@@ -1,0 +1,108 @@
+.wrapper {
+  position: relative;
+  background-image: url('/fondo.jpg'); /* Asegúrate de que la ruta es correcta */
+  background-size: cover;
+  text-align: center;
+  color: #000;
+  padding-top: 22px;
+  padding-bottom: 68px;
+}
+
+.wrapper::before,
+.wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100px; /* Controla el área difuminada */
+  pointer-events: none; /* Evita interferencias con la interactividad */
+}
+
+.wrapper::before {
+  top: 0;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.wrapper::after {
+  bottom: 0;
+  background-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.imageContainer {
+  position: relative;
+  width: 71%; /* Controla el ancho del contenedor de la imagen */
+  height: 447px; /* Controla la altura */
+  overflow: hidden;
+  margin: auto;
+  display: flex;
+  justify-content: center; /* Alinea horizontalmente */
+}
+
+/* La clase .responsiveImage es opcional y solo necesaria si deseas aplicar estilos directamente a la imagen de Next.js */
+
+.title1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  margin-top: 60px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 60px;
+}
+
+.description {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.button, .closeButton {
+  background-color: #DAA520; /* Color dorado para el botón */
+  color: #fff;
+  border: none;
+  padding: 10px 36px;
+  font-size: 1.9rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover, .closeButton:hover {
+  background-color: #b98c1e;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  color: #000;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.modalText {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+
+@media (max-width: 1000px) {
+  .imageContainer {
+    width: 93%;
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .imageContainer {
+    width: 93%;
+    height: 180px;
+  }
+}

@@ -7,6 +7,7 @@ import FormularioPage from './../pages/formulario/index'
 import FechaBodaPage from './../pages/fechaBoda/fechaBoda'
 import LiniDeTiempo from '@/pages/liniaTiempo'
 import ElMapa from '@/pages/elMapa/elMapa'
+import PaginaRegalo from '@/pages/regalos';
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <br></br>
         <FormularioPage />
         <FechaBodaPage />
+        <PaginaRegalo />
         <LiniDeTiempo />
         <ElMapa />
       </div>
