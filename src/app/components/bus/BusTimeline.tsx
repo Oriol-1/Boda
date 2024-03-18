@@ -16,17 +16,19 @@ const BusTimeline = () => {
         {stops.map((stop, index) => (
           <div key={stop.key} className={`${styles.stop} ${index === stops.length - 1 ? styles.last : ''}`}>
             <div style={{ position: 'relative', width: '69px', height: '70px' }}>
+            <div className={styles.iconContainer}> 
   <Image
-     src="/icono-bus.png"
-     alt="Icono del Bus"
-     fill
-      sizes="(max-width: 768px) 100vw, 768px" // Ejemplo de valor de 'sizes' personalizado
-      style={{ objectFit: 'cover' }}
-
-      
+  src="/icono-bus.png"
+  alt="Icono del Bus"
+  // Removido layout="fill"
+  // Usa un enfoque de estilo para 'objectFit'
+  style={{ objectFit: 'cover' }}
+  width={69} // Especifica el ancho si es conocido
+  height={70} // Especifica la altura si es conocida
  
 
   />
+  </div>
 </div>
             <div className={styles.stopInfo}>
               <div className={styles.stopName}>{stop.name}</div>
@@ -40,9 +42,11 @@ const BusTimeline = () => {
         <Image
   src="/buss.png"
   alt="Bus Route Map"
-  fill
-  sizes="(max-width: 768px) 100vw, 768px" // Ejemplo de valor de 'sizes'
+  width={768} // Ancho original de la imagen
+  height={432} // Alto original de la imagen, ajustado para mantener la relación de aspecto
   style={{ objectFit: 'cover' }}
+ 
+
 />
       </div>
     </div>

@@ -1,4 +1,3 @@
-/* BusTimeline.module.css */
 .container {
   display: flex;
   flex-direction: column;
@@ -10,6 +9,27 @@
   background-size: cover;
   background-position: center;
   min-height: 74vh;
+  position: relative; /* Necesario para posicionar los pseudo-elementos correctamente */
+  overflow: hidden; /* Evita que los gradientes se extiendan fuera del contenedor */
+}
+
+.container::before, .container::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100px; /* Ajusta este valor según la intensidad del efecto deseado */
+  z-index: 2; /* Asegúrate de que esté por encima del contenido del contenedor */
+}
+
+.container::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.container::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 }
 
 .title1 {
@@ -71,25 +91,90 @@
   width: 100%; /* O cualquier otro tamaño que necesites */
   height: 400px;
 }
+.mapContainer img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Permite que el contenedor se ajuste */
+  max-width: 70px; /* Máximo tamaño del icono */
+  height: auto; /* Permite que la altura se ajuste según el ancho para mantener la proporción */
+}
+
 
 /* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
-
-  .container {
- 
-    min-height: 70vh;
+  .stopName, .stopTime {
+    text-align: center;
+  }
+ .iconContainer{
+  width: 70%;
+    max-width: 50px; /* Tamaño más pequeño para móviles */
+  }
+  .title1 {
+    font-size: 1.5rem; /* Tamaño de fuente reducido para móviles */
+    padding: 10px 20px; /* Ajuste de padding para un look más refinado */
+    margin: 20px 0 30px; /* Ajuste de márgenes para centrar y dar espacio */
+    background-color: rgba(0, 0, 0, 0.6); /* Un poco más de transparencia para el fondo */
+    border-radius: 15px; /* Bordes más redondeados para un look suave */
   }
 
-
-
   .busTimelineContainer, .mapContainer {
-    flex-direction: column; /* Cambia la disposición a vertical en pantallas pequeñas */
-    width: 100%; /* Utiliza todo el ancho disponible */
-    max-width: none; /* Elimina el ancho máximo */
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; /* Asegura el centrado en dispositivos móviles */
+  }
+
+  .stop {
+    flex-direction: column;
+    align-items: center; /* Centra iconos y texto verticalmente */
+    gap: 10px; /* Ajuste del espacio entre iconos y texto */
+  }
+
+  .stopInfo {
+    align-items: center; /* Asegura que la información del stop esté centrada */
   }
 
   .mapContainer {
-    width: 100%;
-    height: 127px;
+    height: 200px; /* Altura ajustada */
+    border-radius: 15px; /* Bordes redondeados para el contenedor del mapa */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .iconContainer {
+    width: 74%;
+    max-width: 60px; /* Tamaño intermedio para tablets */
+  }
+  .title1 {
+    font-size: 1.75rem; /* Ajuste del tamaño de fuente para tablets */
+    padding: 15px 25px; /* Padding más generoso para un look destacado */
+    margin: 25px 0 40px; /* Más espacio alrededor del título */
+    background-color: rgba(0, 0, 0, 0.6); /* Consistencia con el estilo móvil */
+    border-radius: 15px; /* Bordes redondeados para suavizar */
+  }
+
+  .busTimelineContainer {
+    flex-direction: column; /* Mantener la consistencia del diseño móvil */
+    gap: 20px; /* Espaciado ajustado para tablets */
+    align-items: center; /* Centrado de elementos */
+  }
+
+  .stop {
+    align-items: center; /* Centrado de iconos y texto */
+  }
+
+  .stopInfo {
+    align-items: center; /* Centrado de la información del stop */
+  }
+
+  .mapContainer {
+    height: 300px; /* Altura ajustada para tablets */
+    border-radius: 15px; /* Bordes redondeados para el mapa */
   }
 }

@@ -10,7 +10,7 @@
   z-index: 22;
   background-color: #fff;
   padding-top: 70px;
-  padding-bottom: 70px;
+  padding-bottom: 15px;
 
 }
 
@@ -87,6 +87,9 @@
 }
 
 @media (max-width: 768px) {
+  .calendarContainer {
+    display:none;
+     }
   .countdown {
     display: ruby-text; 
   }
@@ -126,6 +129,7 @@
 }
 
 @media (max-width: 480px) {
+
   .invitationContent h1 {
     font-size: 2.5rem;
   }
