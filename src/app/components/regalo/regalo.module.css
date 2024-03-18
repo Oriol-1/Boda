@@ -30,12 +30,17 @@
 
 .imageContainer {
   position: relative;
-  width: 71%; /* Controla el ancho del contenedor de la imagen */
-  height: 447px; /* Controla la altura */
+  width: 60%;
+  height: 352px;
   overflow: hidden;
   margin: auto;
   display: flex;
-  justify-content: center; /* Alinea horizontalmente */
+  justify-content: center;
+}
+.mapContainer {
+  position: relative; /* Necesario para que layout='fill' funcione correctamente */
+  width: 100%; /* Ajusta según necesidades */
+  height: 400px; /* Ajusta según necesidades */
 }
 
 /* La clase .responsiveImage es opcional y solo necesaria si deseas aplicar estilos directamente a la imagen de Next.js */
@@ -105,4 +110,15 @@
     width: 93%;
     height: 180px;
   }
+
+  .title1 {
+    font-size: 2.5rem;
+
+  }
+  
+.title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 24px;
+}
 }

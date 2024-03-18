@@ -8,6 +8,7 @@ import FechaBodaPage from './../pages/fechaBoda/fechaBoda'
 import LiniDeTiempo from '@/pages/liniaTiempo'
 import ElMapa from '@/pages/elMapa/elMapa'
 import PaginaRegalo from '@/pages/regalos';
+import BusRoutePage from '@/pages/buses';
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
         <PaginaRegalo />
         <LiniDeTiempo />
         <ElMapa />
+        <BusRoutePage />
       </div>
     </main>
   );

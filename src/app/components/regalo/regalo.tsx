@@ -13,7 +13,13 @@ const Regalo = () => {
     <div className={styles.wrapper}>
      <p className={styles.title1}>Regalo para los Novios</p>
       <div className={styles.imageContainer}>
-      <Image src="/regalo.png" alt="Regalo" fill className={styles.responsiveImage} />
+      <Image
+  src="/regalo.png"
+  alt="Regalo"
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  style={{ objectFit: 'cover' }}
+/>
       </div>
       <p className={styles.title}>Si deseas regalarnos algo y no sabes qué, puedes ayudarnos con nuestro viaje de bodas.</p>
       <button className={styles.button} onClick={toggleModal}>Regalo</button>
