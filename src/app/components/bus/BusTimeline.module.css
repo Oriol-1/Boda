@@ -114,6 +114,8 @@
   }
  .iconContainer{
   width: 70%;
+  position: absolute;
+  left: 12px;
     max-width: 50px; /* Tamaño más pequeño para móviles */
   }
   .title1 {
