@@ -44,26 +44,25 @@ const PrimeraParte: React.FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles['texto-anuncio']} ref={textoAnuncioRef}>
-                <div className={styles['decoracion-izquierda']}>
-                    <Image src="/shape-1.png" alt="Decoración Izquierda" 
-                  
-                    priority // Agrega esta línea para pre-cargar la imagen
-                    width={400} // Establece el ancho original de tu imagen
-                    height={206} // Establece la altura original de tu imagen
-                 
-                    />
-                </div>
-                <div>
-                    <h1>NOS CASAMOS </h1>
-                    <h2>Sandra & Oriol</h2>
-                    <p>¿Te vienes a la fiesta?</p>
-                </div>
-                <div className={styles['decoracion-derecha']}>
-                    <Image src="/shape-2.png" alt="Decoración Derecha" 
-                    priority // Agrega esta línea para pre-cargar la imagen
-                    fill sizes="(max-width: 768px) 100px, 200px" />
-                </div>
-            </div>
+    <div className={styles['decoracion-izquierda']}>
+        <Image src="/inferior.png" alt="Decoración Izquierda"
+            priority
+            width={400}
+            height={206}
+        />
+    </div>
+    <div className={styles['texto-contenido']}> {/* Nuevo div para el texto con degradado */}
+        <h1>NOS CASAMOS</h1>
+        <h2>Sandra & Oriol</h2>
+        <p>¿Te vienes a la fiesta?</p>
+    </div>
+    <div className={styles['decoracion-derecha']}>
+        <Image src="/superior.png" alt="Decoración Derecha"
+            priority
+            fill sizes="(max-width: 768px) 100px, 200px"
+        />
+    </div>
+</div>
             <div className={styles['image-bw']}>
                 <Image src="/masia1.jpg" alt="Imagen en Blanco y Negro" fill priority />
             </div>

@@ -28,10 +28,27 @@
     z-index: 2; /* Asegura que la imagen a color esté encima de la en blanco y negro, inicialmente oculta */
     opacity: 0;
 }
+.texto-contenido {
+    position: relative; /* Posicionamiento relativo para el correcto funcionamiento del degradado */
+    text-align: center; /* Alineación del texto */
+    display: flex; /* Uso de Flexbox para alinear y justificar el contenido */
+    flex-direction: column; /* Orientación vertical del Flexbox */
+    justify-content: center; /* Centrado del contenido a lo largo del eje principal (vertical) */
+    align-items: center; /* Centrado de elementos a lo largo del eje cruzado (horizontal) */
+    padding: 20px; /* Espaciado interno para dar espacio alrededor del texto */
+    margin: 0 auto; /* Margen automático para centrar el div si es necesario */
+    width: 100%; /* Ancho del contenedor de texto para ocupar el espacio disponible */
+    max-width: 600px; /* Máximo ancho para mantener el texto legible */
+    background: linear-gradient(to top, rgb(255 255 255 / 90%) 0%, rgba(255, 255, 255, 0.7) 50%, rgb(255 255 255 / 75%) 100%); /* Degradado de transparente a blanco y de nuevo a transparente */
+    border-radius: 15px; /* Bordes redondeados para suavizar el contenedor */
+    z-index: 2; /* Z-index para asegurar que el texto se muestre por encima de otros elementos si es necesario */
+    overflow: hidden; /* Oculta cualquier contenido que se extienda fuera de los bordes redondeados */
+}
+
 
 /* Estilos para el anuncio de texto */
 .texto-anuncio {
-    position: fixed; /* Cambiado dinámicamente por JS para detener el scroll */
+    position: fixed;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -46,17 +63,33 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: rgba(255, 255, 255, 0.7); /* Añadido para mejorar la legibilidad */
+ 
     z-index: 3;
+    overflow: hidden; /* Importante para mantener el degradado dentro de los bordes */
 }
+
+
+
 
 /* Estilos para las decoraciones */
 .decoracion-izquierda, .decoracion-derecha {
-    flex: 0 0 100px;
+    flex: 0 0 80px;
     position: relative;
-    height: 128%;
+    height: 124%;
     width: 130px;
     transition: transform 1s ease-in-out;
+    overflow: hidden; /* Previene que el degradado se extienda fuera del contenedor */
+}
+
+.decoracion-izquierda::after, .decoracion-derecha::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+   
+    mix-blend-mode: screen;
 }
 
 /* Estilos para los títulos y texto */
@@ -80,7 +113,31 @@
 }
 
 /* Ajustes para dispositivos más pequeños */
+
+@media (max-width: 1200px) {
+    .texto-anuncio h1 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .texto-anuncio h2 {
+        font-size: 1.9rem;
+        font-weight: bold;
+    }
+
+}
+
+
 @media (max-width: 768px) {
+
+    .texto-anuncio h1 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .texto-anuncio h2 {
+        font-size: 1.9rem;
+        font-weight: bold;
+    }
+
     .container {
         height: 50vh;
       

@@ -1,28 +1,39 @@
-/* Estilos generales de la página */
 .page {
- 
-  background-color: #e7e7e7;
+  background: linear-gradient(135deg, #ffedb8 0%, #ffeab8 100%); /* Degradado sutil para el fondo */
   color: #333;
-  font-family: 'Georgia', serif;
+  font-family: 'Lato', sans-serif;
   max-width: 1000px;
-  margin: 0  auto;
+  margin: 20px auto; /* Agrega algo de margen superior e inferior */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-/* que este por ensima de cualquier elemento */
+  border: 1px solid #f0e9d2; /* Borde sutil que complementa el fondo */
   position: relative;
-  box-shadow: 0.7px 1px 3px 2px rgba(0.5,0.5,0.5,0.2);
   z-index: 23;
+  
+  /* Añadiendo un pseudo-elemento para un efecto de borde más elaborado */
+  position: relative;
+ 
+}
 
- 
- 
+.page::before {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px; bottom: -2px; left: -2px; /* Cubre completamente el contenedor */
+  z-index: -1; /* Se asegura de que el efecto esté detrás del contenido */
+  background: linear-gradient(135deg, #fdebb8 0%, #f0e9d2 100%);
+  border-radius: 11px; /* Un poco más grande que el border-radius del contenedor para que se vea desde dentro */
+  padding: 1px; /* Crea un efecto de borde interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada para dar más profundidad */
   
 }
 
+
 /* Estilos del encabezado */
 .heading {
+  font-family: 'Playfair Display', serif; 
   text-align: center;
-  color: #6d6875;
+  color: #6D6875;
   margin-bottom: 15px;
   font-size: 30px;
   z-index: 23;
@@ -76,24 +87,25 @@
 
 /* Estilos de los botones */
 .button {
-  flex: 1;
-  margin: 5px;
-  background-color: #4a4e69;
-  padding: 15px 20px; /* Tamaño más grande para mejorar la interacción táctil */
-  font-size: 18px;
-  color: white;
- 
-  border: none;
-  border-radius: 5px;
+  background-color: #000000; /* Fondo blanco para un look fresco y limpio */
+  color: #FFFFFF; /* Un color de texto que ofrezca contraste sin ser demasiado agresivo */
+  padding: 10px 25px; /* Ajustamos el relleno para que el botón sea fácil de interactuar */
+  font-size: 18px; /* Un tamaño de fuente que asegure legibilidad y elegancia */
+  font-weight: 600; /* Fuente seminegrita para destacar el texto sin sobrecargar */
+  border: 1px solid #4A4E69; /* Un borde sutil que armoniza con el color del texto */
+  border-radius: 8px; /* Bordes altamente redondeados para un aspecto moderno y suave */
   cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease; /* Transición suave para todos los cambios de estilo */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16); /* Sombra ligera para añadir profundidad */
 }
 
-/* Estilos de los botones al pasar el cursor */
 .button:hover {
-  background-color: #373a40;
+  background-color: #4A4E69; /* Color principal al pasar el cursor */
+  color: #FFFFFF; /* Texto en blanco para el efecto de inversión y facilidad de lectura */
+  border-color: #4A4E69; /* El borde cambia para mantener la cohesión del diseño */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra más prominente para un efecto elevado */
 }
+
 
 /* Secciones de casillas de verificación y selectores */
 .checkbox-section, .select-section {
@@ -193,34 +205,43 @@
 
 /* Botón para agregar */
 .add-button {
-  background-color: green;
+  background-color: #4CAF50; /* Un verde más vibrante y moderno */
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px; /* Aumentamos el relleno para un mejor manejo y vista */
   margin-left: 10px;
   cursor: pointer;
+  font-weight: bold; /* Texto en negrita para darle más presencia */
+  border-radius: 5px; /* Esquinas redondeadas para un look más moderno */
+  transition: background-color 0.3s, box-shadow 0.2s, transform 0.1s; /* Transiciones suaves para interactividad */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra ligera para profundidad */
 }
 
-/* Estilos para el botón "Agregar" al pasar el cursor */
 .add-button:hover {
-  background-color: darkgreen;
+  background-color: #367B48; /* Un verde oscuro para el hover, manteniendo la paleta de colores */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada en hover para efecto de elevación */
+  transform: translateY(-2px); /* Pequeña elevación al pasar el cursor para sensación de "click" */
 }
 
 /* Botón para eliminar */
 .remove-button {
-  background-color: red;
+  background-color: #E57373; /* Un rojo más suave y elegante */
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px; /* Un poco más de relleno para una mejor apariencia y sensación al tacto */
   margin-left: 10px;
   cursor: pointer;
+  font-weight: bold; /* Hace que el texto destaque un poco más */
+  border-radius: 5px; /* Esquinas redondeadas para un diseño más moderno y suave */
+  transition: background-color 0.3s, box-shadow 0.2s, transform 0.1s; /* Suaviza las transiciones para una mejor experiencia de usuario */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Añade una sombra ligera para profundidad */
 }
 
-/* Estilos para el botón "Eliminar" al pasar el cursor */
 .remove-button:hover {
-  background-color: darkred;
+  background-color: #D32F2F; /* Un tono de rojo oscuro más elegante para cuando se pasa el cursor */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada para efecto de elevación */
+  transform: translateY(-2px); /* Una ligera elevación para indicar la acción de manera intuitiva */
 }
-
 /* Detalles de los niños */
 .child-detail {
   display: flex;
@@ -365,10 +386,38 @@
   padding: 20px; /* Espaciado interno para el contenedor */
 }
 
+.button-confirm {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  font-size: 25px;
+
+}
+/* hover */
+.button-confirm:hover {
+  background-color: #DAA520;
+  color: #000000;
+
+}
+
 
 /* Estilos responsivos para dispositivos móviles */
 @media (max-width: 768px) {
   /* Alineación de elementos en los detalles de los niños en dispositivos móviles */
+
+
+
+  .form-section, .checkbox-section, .select-section, .button-container {
+    flex-direction: column;
+  }
   .child-detail {
     flex-direction: column;
   }
@@ -416,27 +465,7 @@
 
 }
 
-.button-confirm {
-  background-color: #4CAF50; /* Verde */
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  font-size: 25px;
 
-}
-/* hover */
-.button-confirm:hover {
-  background-color: #DAA520;
-  color: #000000;
-
-}
 
 
 
