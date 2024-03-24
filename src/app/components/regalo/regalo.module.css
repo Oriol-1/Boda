@@ -6,6 +6,7 @@
   color: #000;
   padding-top: 22px;
   padding-bottom: 68px;
+  z-index: 24;
 }
 
 .wrapper::before,
