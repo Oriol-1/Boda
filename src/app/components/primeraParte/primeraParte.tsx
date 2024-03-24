@@ -51,18 +51,18 @@ const PrimeraParte: React.FC = () => {
             height={206}
         />
     </div>
-    <div className={styles['texto-contenido']}> {/* Nuevo div para el texto con degradado */}
-        <h1>NOS CASAMOS</h1>
-        <h2>Sandra & Oriol</h2>
-        <p>¿Te vienes a la fiesta?</p>
+        <div className={styles['texto-contenido']}> {/* Nuevo div para el texto con degradado */}
+        <h1 className={styles.tituloPrincipal}>NOS CASAMOS</h1>
+    <h2 className={styles.subtitulo}>Sandra & Oriol</h2>
+    {/* <p className={styles.invitacion}>Celebrad con nosotros<br />este momento inolvidable</p> */}
+        </div>
+        <div className={styles['decoracion-derecha']}>
+            <Image src="/superior.png" alt="Decoración Derecha"
+                priority
+                fill sizes="(max-width: 768px) 100px, 200px"
+            />
+        </div>
     </div>
-    <div className={styles['decoracion-derecha']}>
-        <Image src="/superior.png" alt="Decoración Derecha"
-            priority
-            fill sizes="(max-width: 768px) 100px, 200px"
-        />
-    </div>
-</div>
             <div className={styles['image-bw']}>
                 <Image src="/masia1.jpg" alt="Imagen en Blanco y Negro" fill priority />
             </div>

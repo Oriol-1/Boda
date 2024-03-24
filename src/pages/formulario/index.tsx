@@ -157,6 +157,9 @@ const handleBackFromSummary = () => {
     return (
       <div className="page">
         <h1 className="heading">Formulario de Invitación a la Boda</h1>
+  
+    
+
         {response === "accepted" && (
            <p className="goodbyeMessage">¡Invitación Confirmada! ¡Gracias! Os esperamos el 1 de noviembre en la boda.</p>
         )}
@@ -183,6 +186,13 @@ const handleBackFromSummary = () => {
   return (
     <div className="page">
       <h1 className="heading">Formulario de Invitación a la Boda</h1>
+            {/* separador con ralla corazon ralya */}
+            <div className="separador">
+  <div className="linea"></div>
+  <div className="corazon">&#10084;</div>
+  <div className="linea"></div>
+</div>
+      
   
       {/* Botón de "Volver" que solo se muestra si el usuario está en uno de los formularios */}
       {(!isSubmitted && (showForm || showInput || showSummary)) && (
@@ -204,8 +214,8 @@ const handleBackFromSummary = () => {
 
 {!showForm && !showInput && !response && (
   <div className="button-container">
-    <button className="button" onClick={() => setShowForm(true)}>Ir a la Boda</button>
-    <button className="button" onClick={() => setShowInput(true)}>No Puedo Ir a la Boda</button>
+    <button className="button" onClick={() => setShowForm(true)}>SI Puedo Ir a la Boda</button>
+    <button className="button" onClick={() => setShowInput(true)}>NO Puedo Ir a la Boda</button>
   </div>
 )}
   
@@ -249,10 +259,14 @@ const handleBackFromSummary = () => {
           font-size: 16px;
         }
         .button-container {
+        /* mover a la derecha */
+
+
           display: flex;
           justify-content: center;
           gap: 20px;
           margin-top: 20px;
+          margin-left: 20px;
         }
         .button {
           // Estilos para los botones

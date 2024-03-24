@@ -86,6 +86,9 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Sombra más suave */
 }
 
+
+
+
 @media (max-width: 1100px) {
   .countdown {
     display: ruby-text;

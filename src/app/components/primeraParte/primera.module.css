@@ -1,7 +1,11 @@
 /* Importación de fuentes */
 /* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:wght@400;700&display=swap');
 
 /* Contenedor principal */
+
+
+
 .container {
     position: relative;
     height: 107vh;
@@ -29,20 +33,47 @@
     opacity: 0;
 }
 .texto-contenido {
-    position: relative; /* Posicionamiento relativo para el correcto funcionamiento del degradado */
-    text-align: center; /* Alineación del texto */
-    display: flex; /* Uso de Flexbox para alinear y justificar el contenido */
-    flex-direction: column; /* Orientación vertical del Flexbox */
-    justify-content: center; /* Centrado del contenido a lo largo del eje principal (vertical) */
-    align-items: center; /* Centrado de elementos a lo largo del eje cruzado (horizontal) */
-    padding: 20px; /* Espaciado interno para dar espacio alrededor del texto */
-    margin: 0 auto; /* Margen automático para centrar el div si es necesario */
-    width: 100%; /* Ancho del contenedor de texto para ocupar el espacio disponible */
-    max-width: 600px; /* Máximo ancho para mantener el texto legible */
-    background: linear-gradient(to top, rgb(255 255 255 / 90%) 0%, rgba(255, 255, 255, 0.7) 50%, rgb(255 255 255 / 75%) 100%); /* Degradado de transparente a blanco y de nuevo a transparente */
-    border-radius: 15px; /* Bordes redondeados para suavizar el contenedor */
-    z-index: 2; /* Z-index para asegurar que el texto se muestre por encima de otros elementos si es necesario */
-    overflow: hidden; /* Oculta cualquier contenido que se extienda fuera de los bordes redondeados */
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    
+    width: 100%;
+    max-width: 600px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.75) 100%);
+    border-radius: 0px;
+    z-index: 2;
+    overflow: hidden;
+    font-family: 'Lora', serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.tituloPrincipal {
+    font-family: 'Playfair Display', serif; /* Una fuente con serifs para un toque clásico y elegante */
+    font-size: 3.5rem; /* Un tamaño más grande para hacer el título principal más imponente */
+    color: #DAA520;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Sombra sutil para dar profundidad sin restar elegancia */
+    margin-top:35px
+   
+}
+.subtitulo {
+    font-family: 'Playfair Display', serif; /* Mantenemos la misma familia de fuentes para coherencia */
+    font-size: 2.5rem; /* Un tamaño que complementa el título sin competir por la atención */
+    color: #000000; /* Un tono morado suave que añade un contraste delicado */
+    font-weight: 500; /* Peso de la fuente moderado para equilibrar la jerarquía visual */
+    margin-top: 10px;
+    margin-bottom: 35px;
+   
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 
@@ -54,8 +85,8 @@
     transform: translate(-50%, -50%);
     z-index: 4;
     text-align: center;
-    max-width: 600px;
-    height: 210px;
+    max-width: 803px;
+    height: 232px;
     margin: auto;
     padding: 20px;
     transition: transform 1s ease-in-out, opacity 1s ease-in-out, top 1s ease-in-out;
@@ -115,6 +146,13 @@
 /* Ajustes para dispositivos más pequeños */
 
 @media (max-width: 1200px) {
+
+    .texto-anuncio {
+        max-width: 564px;
+        height: 292px;
+    }
+
+
     .texto-anuncio h1 {
         font-size: 2rem;
         font-weight: bold;
