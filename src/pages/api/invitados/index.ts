@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../../app/libs/mysql';
+import { RowDataPacket } from 'mysql2/promise';
 
 interface ChildDetail {
   id: number;
@@ -8,7 +9,7 @@ interface ChildDetail {
   menuEspecial: boolean;
   menuEspecialTipo?: 'vegetariano' | 'gluten' | 'otro';
   menuEspecialTipoOtro?: string;
-  opcionTransporte?: 'bus' | 'car'; // Agregar opcionTransporte aquí
+  opcionTransporte?: 'bus' | 'car';
 }
 
 interface Invitado {
@@ -22,12 +23,16 @@ interface Invitado {
   menuAcompananteTipoEspecial?: 'vegetariano' | 'gluten' | 'otro';
   telefonoContacto?: string;
   opcionTransporte?: 'bus' | 'car';
-  hijosDetalles?: ChildDetail[];
+  hijosDetalles: ChildDetail[];
 }
+
+type ApiResponse =
+  | { invitados: Invitado[]; totalNombres: number; totalAcompanantes: number; totalNinos: number; totalBus: number; totalNombresYAcompanantes: number }
+  | { message: string; error?: string }; // Inclusión del campo `error` opcional aquí
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<{ invitados: Invitado[]; totalNombres: number; totalAcompanantes: number; totalNinos: number; totalBus: number; totalNombresYAcompanantes: number } | { message: string }>
+  res: NextApiResponse<ApiResponse>
 ) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Método no permitido' });
@@ -39,7 +44,7 @@ export default async function handler(
       return res.status(500).json({ message: 'No se pudo conectar a la base de datos' });
     }
 
-    const [rows] = await db.query(`
+    const [rows] = await db.query<RowDataPacket[]>(`
       SELECT i.id, i.nombre, i.menu_principal_tipo, i.menu_principal_tipo_especial,
              i.acompanante, i.nombre_acompanante, i.telefono_contacto, i.opcion_transporte,
              h.id AS hijo_id, h.nombre AS hijo_nombre, h.tipo_menu AS hijo_tipo_menu,
@@ -50,88 +55,51 @@ export default async function handler(
     `);
 
     const invitadosMap: Record<number, Invitado> = {};
-    for (const row of rows as any) {
-      const { id, nombre, menu_principal_tipo, menu_principal_tipo_especial,
-              acompanante, nombre_acompanante, telefono_contacto, opcion_transporte,
-              hijo_id, hijo_nombre, hijo_tipo_menu, menu_especial, menu_especial_tipo,
-              menu_especial_tipo_otro, menu_acompanante_tipo, menu_acompanante_tipo_especial } = row;
-
-      if (!invitadosMap[id]) {
-        invitadosMap[id] = {
-          id,
-          nombre,
-          menuPrincipalTipo: menu_principal_tipo,
-          menuPrincipalTipoEspecial: menu_principal_tipo_especial,
-          acompanante: acompanante === 1,
-          nombreAcompanante: nombre_acompanante,
-          telefonoContacto: telefono_contacto,
-          opcionTransporte: opcion_transporte,
-          menuAcompananteTipo: menu_acompanante_tipo,
-          menuAcompananteTipoEspecial: menu_acompanante_tipo_especial,
+    rows.forEach(row => {
+      if (!invitadosMap[row.id]) {
+        invitadosMap[row.id] = {
+          id: row.id,
+          nombre: row.nombre,
+          menuPrincipalTipo: row.menu_principal_tipo,
+          menuPrincipalTipoEspecial: row.menu_principal_tipo_especial,
+          acompanante: row.acompanante === 1,
+          nombreAcompanante: row.nombre_acompanante,
+          telefonoContacto: row.telefono_contacto,
+          opcionTransporte: row.opcion_transporte,
+          menuAcompananteTipo: row.menu_acompanante_tipo,
+          menuAcompananteTipoEspecial: row.menu_acompanante_tipo_especial,
           hijosDetalles: [],
         };
       }
 
-      if (hijo_nombre) {
-        invitadosMap[id].hijosDetalles?.push({
-          id: hijo_id,
-          nombre: hijo_nombre,
-          tipoMenu: hijo_tipo_menu,
-          menuEspecial: menu_especial === 1,
-          menuEspecialTipo: menu_especial_tipo,
-          menuEspecialTipoOtro: menu_especial_tipo_otro,
-        });
-      }
-    }
-
-    const invitados = Object.values(invitadosMap);
-
-    // Calcular totales
-    let totalNombres = 0;
-    let totalAcompanantes = 0;
-    let totalNinos = 0;
-    let totalBus = 0;
-
-    invitados.forEach((invitado) => {
-      // Contar al invitado principal
-      totalNombres++;
-
-      // Sumar al total de acompañantes
-      if (invitado.acompanante) {
-        totalAcompanantes++;
-      }
-
-      // Sumar al total de niños
-      if (invitado.hijosDetalles && invitado.hijosDetalles.length > 0) {
-        totalNinos += invitado.hijosDetalles.length;
-        totalNombres += invitado.hijosDetalles.length;
-      }
-
-      // Sumar al total de personas que van en bus (solo para invitados principales)
-      if (invitado.opcionTransporte === 'bus') {
-        totalBus++;
-      }
-
-      // Sumar al total de personas que van en bus (acompañantes)
-      if (invitado.acompanante && invitado.opcionTransporte === 'bus') {
-        totalBus++;
-      }
-
-      // Sumar al total de personas que van en bus (hijos)
-      if (invitado.hijosDetalles) {
-        invitado.hijosDetalles.forEach((hijo) => {
-          if (hijo.opcionTransporte === 'bus') {
-            totalBus++;
-          }
+      if (row.hijo_id) {
+        invitadosMap[row.id].hijosDetalles.push({
+          id: row.hijo_id,
+          nombre: row.hijo_nombre,
+          tipoMenu: row.hijo_tipo_menu,
+          menuEspecial: row.menu_especial === 1,
+          menuEspecialTipo: row.menu_especial_tipo,
+          menuEspecialTipoOtro: row.menu_especial_tipo_otro,
+          opcionTransporte: row.opcion_transporte, // Aquí asumimos que los hijos siguen la elección de transporte del invitado
         });
       }
     });
 
-    let totalNombresYAcompanantes = totalNombres + totalAcompanantes;
+    const invitados = Object.values(invitadosMap);
+    const totalNombres = invitados.length;
+    const totalAcompanantes = invitados.filter(invitado => invitado.acompanante).length;
+    const totalNinos = invitados.reduce((acc, curr) => acc + curr.hijosDetalles.length, 0);
+    const totalBus = invitados.reduce((acc, invitado) => {
+      let subtotal = invitado.opcionTransporte === 'bus' ? 1 : 0; // Cuenta al invitado si va en bus
+      subtotal += invitado.acompanante && invitado.opcionTransporte === 'bus' ? 1 : 0; // Cuenta al acompañante si existe y ambos van en bus
+      subtotal += invitado.hijosDetalles.length; // Cuenta a los hijos
+      return acc + subtotal;
+    }, 0);
+    const totalNombresYAcompanantes = totalNombres + totalAcompanantes;
 
     res.status(200).json({ invitados, totalNombres, totalAcompanantes, totalNinos, totalBus, totalNombresYAcompanantes });
   } catch (error) {
     console.error('Error al obtener los datos de los invitados:', error);
-    res.status(500).json({ message: 'Error interno del servidor' });
+    res.status(500).json({ message: 'Error interno del servidor', error: error instanceof Error ? error.message : 'Un error desconocido ocurrió' });
   }
 }
