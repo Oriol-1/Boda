@@ -1,4 +1,3 @@
-"use client"
 import React, { useEffect, useState } from 'react';
 
 interface ChildDetail {
@@ -8,21 +7,23 @@ interface ChildDetail {
   menuEspecial: boolean;
   menuEspecialTipo?: 'vegetariano' | 'gluten' | 'otro';
   menuEspecialTipoOtro?: string;
-  opcionTransporte?: 'bus' | 'car'; // Añadido para considerar la opción de transporte del hijo
+  opcionTransporte?: 'bus' | 'car';
 }
 
 interface Invitado {
   id: number;
   nombre: string;
-  menuPrincipalTipo?: 'estandar' | 'especial';
+  menuPrincipalTipo?: 'estandar' | 'especial' | 'otro';
   menuPrincipalTipoEspecial?: 'vegetariano' | 'gluten' | 'otro';
+  menuPrincipalTipoOtro?: string | undefined;
   acompanante?: boolean;
   nombreAcompanante?: string;
-  menuAcompananteTipo?: 'estandar' | 'especial';
+  menuAcompananteTipo?: 'estandar' | 'especial' | 'otro';
   menuAcompananteTipoEspecial?: 'vegetariano' | 'gluten' | 'otro';
+  menuAcompananteTipoOtro?: string | undefined;
   telefonoContacto?: string;
   opcionTransporte?: 'bus' | 'car';
-  hijosDetalles?: ChildDetail[];
+  hijosDetalles: ChildDetail[];
 }
 
 const VerInvitados = () => {
@@ -32,6 +33,7 @@ const VerInvitados = () => {
   const [totalAcompanantes, setTotalAcompanantes] = useState<number>(0);
   const [totalNinos, setTotalNinos] = useState<number>(0);
   const [totalBus, setTotalBus] = useState<number>(0);
+  const [totalCar, setTotalCar] = useState<number>(0);
 
   useEffect(() => {
     const fetchInvitados = async () => {
@@ -44,12 +46,9 @@ const VerInvitados = () => {
         setTotalAcompanantes(data.totalAcompanantes);
         setTotalNinos(data.totalNinos);
         setTotalBus(data.totalBus);
+        setTotalCar(data.totalCar);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError('Ocurrió un error desconocido');
-        }
+        setError(error instanceof Error ? error.message : 'Ocurrió un error desconocido');
       }
     };
 
@@ -62,49 +61,64 @@ const VerInvitados = () => {
       {error ? (
         <p>{error}</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', marginTop: '20px' }}>
-          <thead>
-            <tr>
-              <th style={{ textAlign: 'center' }}>ID</th>
-              <th style={{ textAlign: 'center' }}>Nombre</th>
-              <th style={{ textAlign: 'center' }}>Menu Principal</th>
-              <th style={{ textAlign: 'center' }}>Nombre Acompañante</th>
-              <th style={{ textAlign: 'center' }}>Menu Acompañante</th>
-              <th style={{ textAlign: 'center' }}>Detalles Hijos</th>
-              <th style={{ textAlign: 'center' }}>Opción de Transporte</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invitados.map((invitado) => (
-              <tr key={invitado.id}>
-                <td style={{ textAlign: 'center' }}>{invitado.id}</td>
-                <td style={{ textAlign: 'center' }}>{invitado.nombre}</td>
-                <td style={{ textAlign: 'center' }}>{`${invitado.menuPrincipalTipo}${invitado.menuPrincipalTipoEspecial ? ` (${invitado.menuPrincipalTipoEspecial})` : ''}`}</td>
-                <td style={{ textAlign: 'center' }}>{invitado.acompanante ? invitado.nombreAcompanante || 'N/A' : 'Sin acompañante'}</td>
-                <td style={{ textAlign: 'center' }}>{invitado.acompanante ? `${invitado.menuAcompananteTipo}${invitado.menuAcompananteTipoEspecial ? ` (${invitado.menuAcompananteTipoEspecial})` : ''}` : 'N/A'}</td>
-                <td style={{ textAlign: 'center' }}>
-                  {invitado.hijosDetalles && invitado.hijosDetalles.length > 0 ? (
-                    invitado.hijosDetalles.map((hijo, index) => (
-                      <p key={index}>
-                        {`${hijo.nombre}: ${hijo.tipoMenu}${hijo.menuEspecial ? `, ${hijo.menuEspecialTipo}${hijo.menuEspecialTipoOtro ? ` (${hijo.menuEspecialTipoOtro})` : ''}` : ''}`}
-                      </p>
-                    ))
-                  ) : 'Sin hijos'}
-                </td>
-                <td style={{ textAlign: 'center' }}>{invitado.opcionTransporte || 'N/A'}</td>
+        <>
+          <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', marginTop: '20px' }}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Menú Principal</th>
+                <th>Menú Principal Especial Otro</th>
+                <th>Nombre Acompañante</th>
+                <th>Menú Acompañante</th>
+                <th>Menú Acompañante Especial Otro</th>
+                <th>Detalles Hijos</th>
+                <th>Opción de Transporte</th>
               </tr>
-            ))}
-            <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>Total Acompañantes: {totalAcompanantes}</td>
-            </tr>
-            <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>Total Hijos: {totalNinos}</td>
-            </tr>
-            <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>Total en Bus: {totalBus}</td>
-            </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {invitados.map((invitado, index) => (
+                <React.Fragment key={index}>
+                  <tr>
+                    <td>{invitado.id}</td>
+                    <td>{invitado.nombre}</td>
+                    <td>
+                      {invitado.menuPrincipalTipo === 'otro'
+                        ? invitado.menuPrincipalTipoOtro
+                        : `${invitado.menuPrincipalTipo || ''} ${invitado.menuPrincipalTipoEspecial ? `(${invitado.menuPrincipalTipoEspecial})` : ''}`}
+                    </td>
+                    <td>{invitado.menuPrincipalTipoEspecial === 'otro' && invitado.menuPrincipalTipoOtro ? `"${invitado.menuPrincipalTipoOtro}"` : ''}</td>
+                    <td>{invitado.acompanante ? invitado.nombreAcompanante : 'Sin acompañante'}</td>
+                    <td>
+                      {invitado.acompanante
+                        ? (invitado.menuAcompananteTipo === 'otro'
+                            ? invitado.menuAcompananteTipoOtro
+                            : `${invitado.menuAcompananteTipo || ''} ${invitado.menuAcompananteTipoEspecial ? `(${invitado.menuAcompananteTipoEspecial})` : ''}`)
+                        : 'N/A'}
+                    </td>
+                    <td>{invitado.menuAcompananteTipoEspecial === 'otro' && invitado.menuAcompananteTipoOtro ? `"${invitado.menuAcompananteTipoOtro}"` : ''}</td>
+                    <td>
+                      {invitado.hijosDetalles.map((hijo, hijoIndex) => (
+                        <div key={hijoIndex}>
+                          {`${hijo.nombre}: ${hijo.tipoMenu}${hijo.menuEspecial ? ` (${hijo.menuEspecialTipo}${hijo.menuEspecialTipo === 'otro' ? `: ${hijo.menuEspecialTipoOtro}` : ''})` : ''}`}
+                        </div>
+                      ))}
+                    </td>
+                    <td>{invitado.opcionTransporte}</td>
+                  </tr>
+                  {index < invitados.length - 1 && <tr style={{ height: '10px', background: '#eee' }}><td colSpan={9}></td></tr>}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+          <div style={{ marginTop: '20px' }}>
+            <p>Total Nombres: {totalNombres}</p>
+            <p>Total Acompañantes: {totalAcompanantes}</p>
+            <p>Total Niños: {totalNinos}</p>
+            <p>Total en Bus: {totalBus}</p>
+            <p>Total en Car: {totalCar}</p>
+          </div>
+        </>
       )}
     </div>
   );
