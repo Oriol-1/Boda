@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { SpecialMenuSelection, ChildWithMenuType, GuestFormState } from '../app/types/formTypes';
 
 interface ChildDetail {
   id: number;
@@ -15,12 +16,10 @@ interface Invitado {
   nombre: string;
   menuPrincipalTipo?: 'estandar' | 'especial' | 'otro';
   menuPrincipalTipoEspecial?: 'vegetariano' | 'gluten' | 'otro';
-  menuPrincipalTipoOtro?: string | undefined;
   acompanante?: boolean;
   nombreAcompanante?: string;
   menuAcompananteTipo?: 'estandar' | 'especial' | 'otro';
   menuAcompananteTipoEspecial?: 'vegetariano' | 'gluten' | 'otro';
-  menuAcompananteTipoOtro?: string | undefined;
   telefonoContacto?: string;
   opcionTransporte?: 'bus' | 'car';
   hijosDetalles: ChildDetail[];
@@ -68,10 +67,8 @@ const VerInvitados = () => {
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Menú Principal</th>
-                <th>Menú Principal Especial Otro</th>
                 <th>Nombre Acompañante</th>
                 <th>Menú Acompañante</th>
-                <th>Menú Acompañante Especial Otro</th>
                 <th>Detalles Hijos</th>
                 <th>Opción de Transporte</th>
               </tr>
@@ -80,33 +77,21 @@ const VerInvitados = () => {
               {invitados.map((invitado, index) => (
                 <React.Fragment key={index}>
                   <tr>
-                    <td>{invitado.id}</td>
-                    <td>{invitado.nombre}</td>
-                    <td>
-                      {invitado.menuPrincipalTipo === 'otro'
-                        ? invitado.menuPrincipalTipoOtro
-                        : `${invitado.menuPrincipalTipo || ''} ${invitado.menuPrincipalTipoEspecial ? `(${invitado.menuPrincipalTipoEspecial})` : ''}`}
-                    </td>
-                    <td>{invitado.menuPrincipalTipoEspecial === 'otro' && invitado.menuPrincipalTipoOtro ? `"${invitado.menuPrincipalTipoOtro}"` : ''}</td>
-                    <td>{invitado.acompanante ? invitado.nombreAcompanante : 'Sin acompañante'}</td>
-                    <td>
-                      {invitado.acompanante
-                        ? (invitado.menuAcompananteTipo === 'otro'
-                            ? invitado.menuAcompananteTipoOtro
-                            : `${invitado.menuAcompananteTipo || ''} ${invitado.menuAcompananteTipoEspecial ? `(${invitado.menuAcompananteTipoEspecial})` : ''}`)
-                        : 'N/A'}
-                    </td>
-                    <td>{invitado.menuAcompananteTipoEspecial === 'otro' && invitado.menuAcompananteTipoOtro ? `"${invitado.menuAcompananteTipoOtro}"` : ''}</td>
-                    <td>
+                    <td style={{ textAlign: 'center' }}>{invitado.id}</td>
+                    <td style={{ textAlign: 'center' }}>{invitado.nombre}</td>
+                    <td style={{ textAlign: 'center' }}>{invitado.menuPrincipalTipo || ''} {invitado.menuPrincipalTipoEspecial ? `(${invitado.menuPrincipalTipoEspecial})` : ''}</td>
+                    <td style={{ textAlign: 'center' }}>{invitado.acompanante ? invitado.nombreAcompanante : 'Sin acompañante'}</td>
+                    <td style={{ textAlign: 'center' }}>{invitado.acompanante ? (invitado.menuAcompananteTipo || '') + ' ' + (invitado.menuAcompananteTipoEspecial ? `(${invitado.menuAcompananteTipoEspecial})` : '') : 'N/A'}</td>
+                    <td style={{ textAlign: 'center' }}>
                       {invitado.hijosDetalles.map((hijo, hijoIndex) => (
                         <div key={hijoIndex}>
-                          {`${hijo.nombre}: ${hijo.tipoMenu}${hijo.menuEspecial ? ` (${hijo.menuEspecialTipo}${hijo.menuEspecialTipo === 'otro' ? `: ${hijo.menuEspecialTipoOtro}` : ''})` : ''}`}
+                          {`${hijo.nombre}: ${hijo.tipoMenu}${hijo.menuEspecial ? ` (${hijo.menuEspecialTipo}${hijo.menuEspecialTipo === 'otro' ? `: ${hijo.menuEspecialTipoOtro || 'No especificado'}` : ''})` : ''}`}
                         </div>
                       ))}
                     </td>
-                    <td>{invitado.opcionTransporte}</td>
+                    <td style={{ textAlign: 'center' }}>{invitado.opcionTransporte}</td>
                   </tr>
-                  {index < invitados.length - 1 && <tr style={{ height: '10px', background: '#eee' }}><td colSpan={9}></td></tr>}
+                  {index < invitados.length - 1 && <tr style={{ height: '10px', background: '#eee' }}><td colSpan={7}></td></tr>}
                 </React.Fragment>
               ))}
             </tbody>
