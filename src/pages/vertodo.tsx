@@ -55,7 +55,7 @@ const VerInvitados = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <h1>Lista de Invitados</h1>
       {error ? (
         <p>{error}</p>
@@ -105,7 +105,7 @@ const VerInvitados = () => {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 };
 
