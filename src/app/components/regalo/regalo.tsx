@@ -21,7 +21,7 @@ const Regalo = () => {
   style={{ objectFit: 'cover' }}
 />
       </div>
-      <p className={styles.title}>Si deseas regalarnos algo y no sabes qué, puedes ayudarnos con nuestro viaje de bodas.</p>
+      <p className={styles.title}>Si quieres hacernos un regalo y no se te ocurre nada, te proponemos una idea: ayudarnos con nuestro viaje de luna de miel. Sería un detalle genial y muy práctico que seguro recordaremos siempre.</p>
       <button className={styles.button} onClick={toggleModal}>Regalo</button>
       {isModalOpen && (
         <div className={styles.modal}>
