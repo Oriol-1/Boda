@@ -2,22 +2,21 @@ const nextConfig = {
     reactStrictMode: true,
     poweredByHeader: false,
     images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'www.sandraioriol.net',
-        },
-      ],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'www.sandraioriol.net',
+            },
+        ],
     },
     env: {
-      DATABASE_HOST: process.env.DATABASE_HOST,
-      DATABASE_PORT: process.env.DATABASE_PORT,
-      DATABASE_USER: process.env.DATABASE_USER,
-      DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-      DATABASE_NAME: process.env.DATABASE_NAME,
+        host: 'instanciadbboda.c74u0c4wuzrm.eu-west-1.rds.amazonaws.com',
+        port: 3306,
+        user: 'admin',
+        password: 'oriol1983',
+        database: 'bodas'
     },
     // Agrega aquí cualquier otra configuración específica de Next.js que necesites
-  };
-  
-  module.exports = nextConfig;
-  
+};
+
+module.exports = nextConfig;
