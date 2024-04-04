@@ -10,11 +10,11 @@ const nextConfig = {
         ],
     },
     env: {
-        host: 'instanciadbboda.c74u0c4wuzrm.eu-west-1.rds.amazonaws.com',
-        port: 3306,
-        user: 'admin',
-        password: 'oriol1983',
-        database: 'bodas'
+        DATABASE_HOST: 'instanciadbboda.c74u0c4wuzrm.eu-west-1.rds.amazonaws.com',
+        DATABASE_PORT: '3306', // Asegúrate de que el puerto esté definido como una cadena
+        DATABASE_USER: 'admin',
+        DATABASE_PASSWORD: 'oriol1983',
+        DATABASE_NAME: 'bodas'
     },
     // Agrega aquí cualquier otra configuración específica de Next.js que necesites
 };
