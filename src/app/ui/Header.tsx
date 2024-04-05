@@ -8,7 +8,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['formulario', 'fechaBoda', 'liniaTiempo', 'elMapa', 'buses'];
+      const sections = ['formulario', 'fecha Boda', 'regalos', 'horas', 'mapa', 'buses'];
       let currentSectionId = '';
 
       sections.forEach((sectionId) => {
@@ -54,7 +54,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white w-full fixed top-0 left-0 z-50">
+    <header className="bg-white w-full fixed top-0 left-0 z-50 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 w-full">
           <div className="flex-shrink-0 flex items-center mt-2">
@@ -76,17 +76,17 @@ const Header = () => {
               )}
             </button>
           </div>
-          <nav className={`${isMenuOpen ? 'block' : 'hidden'} flex flex-col sm:hidden bg-white absolute top-full left-0 right-0 w-full shadow-md`}>
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {['inicio', 'formulario', 'fechaBoda', 'liniaTiempo', 'elMapa', 'buses'].map((section) => (
-                <a key={section} onClick={() => handleScrollToSection(section)} className={linkClass(section)}>
+          <nav className={`${isMenuOpen ? 'block' : 'hidden'} sm:hidden bg-white absolute top-full right-0 mr-2 mt-2 shadow-md`}>
+            <div className="flex flex-col bg-white rounded-md shadow-lg overflow-hidden">
+              {['formulario', 'fecha Boda','regalos', 'horas', 'mapa', 'buses'].map((section) => (
+                <a key={section} onClick={() => handleScrollToSection(section)} className={`${linkClass(section)} block py-2 px-4 hover:bg-gray-100`}>
                   {section.charAt(0).toUpperCase() + section.slice(1)}
                 </a>
               ))}
             </div>
           </nav>
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            {['formulario', 'fechaBoda', 'liniaTiempo', 'elMapa', 'buses'].map((section) => (
+            {['formulario', 'fecha Boda', 'regalos', 'horas', 'mapa', 'buses'].map((section) => (
               <a key={section} onClick={() => handleScrollToSection(section)} className={linkClass(section)}>
                 {section.charAt(0).toUpperCase() + section.slice(1)}
               </a>

@@ -26,16 +26,16 @@ export default function Home() {
         <div id="formulario">
           <FormularioPage />
         </div>
-        <div id="fechaBoda">
+        <div id="fecha Boda">
           <FechaBodaPage />
         </div>
         <div id="regalos">
           <PaginaRegalo />
         </div>
-        <div id="liniaTiempo">
+        <div id="horas">
           <LiniDeTiempo />
         </div>
-        <div id="elMapa">
+        <div id="mapa">
           <ElMapa />
         </div>
         <div id="buses">
