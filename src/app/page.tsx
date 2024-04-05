@@ -10,19 +10,37 @@ import ElMapa from '@/pages/elMapa/elMapa'
 import PaginaRegalo from '@/pages/regalos';
 import BusRoutePage from '@/pages/buses';
 
+
 export default function Home() {
   return (
     <main>
       <div>
         <Header />
-        <PrimeraParte />
+      
+        {/* Cada sección ahora tiene un ID que puede ser utilizado para el desplazamiento suave */}
+        <div id="primeraParte">
+        
+          <PrimeraParte />
+        </div>
         <br></br>
-        <FormularioPage />
-        <FechaBodaPage />
-        <PaginaRegalo />
-        <LiniDeTiempo />
-        <ElMapa />
-        <BusRoutePage />
+        <div id="formulario">
+          <FormularioPage />
+        </div>
+        <div id="fechaBoda">
+          <FechaBodaPage />
+        </div>
+        <div id="regalos">
+          <PaginaRegalo />
+        </div>
+        <div id="liniaTiempo">
+          <LiniDeTiempo />
+        </div>
+        <div id="elMapa">
+          <ElMapa />
+        </div>
+        <div id="buses">
+          <BusRoutePage />
+        </div>
       </div>
     </main>
   );
