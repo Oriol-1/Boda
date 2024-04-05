@@ -194,6 +194,7 @@
     }
     .image-bw, .image-color {
         height: 40vh; /* Ajuste de altura para pantallas más pequeñas */
+        margin-top: 50px;
     }
     .texto-anuncio h1, .texto-anuncio h2, .texto-anuncio p {
         font-size: reducido según el dispositivo; /* Ajustes específicos más abajo */
