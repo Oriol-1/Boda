@@ -144,6 +144,15 @@
 
 @media (max-width: 1200px) {
 
+    .decoracion-izquierda, .decoracion-derecha {
+        flex: 0 0 80px;
+        position: relative;
+        height: 83%;
+        width: 130px;
+        transition: transform 1s ease-in-out;
+        overflow: hidden; /* Previene que el degradado se extienda fuera del contenedor */
+    }
+
     .texto-anuncio {
         max-width: 564px;
         height: 292px;
@@ -181,7 +190,7 @@
         flex-direction: row; /* Cambiado para mejorar la disposición en pantallas más pequeñas */
         width: 96%;
         padding: 0px;
-        top:52%
+        top:43%
     }
     .image-bw, .image-color {
         height: 40vh; /* Ajuste de altura para pantallas más pequeñas */
