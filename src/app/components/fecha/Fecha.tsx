@@ -34,7 +34,7 @@ const Invitation: React.FC<InvitationProps> = ({ countdown, weddingDate }) => {
         <div className={styles.container}>
             <section className={styles.countdownSection}>
                 <h1>¡Nuestro Gran Día!</h1>
-                <p>Únete a nosotros para celebrar nuestro amor el {formattedWeddingDate}.</p>
+                <p>¡Celebra a lo grande con nosotros! Guarda la fecha: {formattedWeddingDate}.</p>
                 <div className={styles.countdown}>
                     <div className={styles.countdownItem}>
                         <span className={styles.countdownTime}>{days}</span>

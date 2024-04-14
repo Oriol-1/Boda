@@ -33,6 +33,7 @@
 }
 
 .title1 {
+  font-family: 'Montserrat', sans-serif;
   font-size: 2rem;
   color: #fff;
   text-align: center;
@@ -46,6 +47,7 @@
 }
 
 .busTimelineContainer, .mapContainer {
+  font-family: 'Montserrat', sans-serif;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

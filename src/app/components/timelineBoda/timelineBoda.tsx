@@ -14,11 +14,11 @@ interface EventoBoda {
 
 const TimelineBoda: React.FC = () => {
   const eventos: EventoBoda[] = [
-    { hora: '11:30 PM', titulo: 'Bienvenida', descripcion: 'Recepción de invitados en el jardín.', tipo: 'Bienvenida' },
-    { hora: '12:00 PM', titulo: 'Ceremonia', descripcion: 'Ceremonia.', tipo: 'Ceremonia' },
-    { hora: '1:00 PM', titulo: 'Aperitivo', descripcion: 'Aperitivo y cóctel en el jardín.', tipo: 'Aperitivo' },
-    { hora: '3:00 PM', titulo: 'Banquete', descripcion: 'Banquete en el salón de eventos.', tipo: 'Banquete' },
-    { hora: '5:30 PM', titulo: 'Baile', descripcion: 'Baile y fiesta en el salón.', tipo: 'Baile' },
+    { hora: '11:30 ', titulo: 'Bienvenida', descripcion: 'Recepción de invitados en el jardín.', tipo: 'Bienvenida' },
+    { hora: '12:00 ', titulo: 'Ceremonia', descripcion: 'Ceremonia.', tipo: 'Ceremonia' },
+    { hora: '13:00 ', titulo: 'Aperitivo', descripcion: 'Aperitivo y cóctel en el jardín.', tipo: 'Aperitivo' },
+    { hora: '15:00 ', titulo: 'Banquete', descripcion: 'Banquete en el salón de eventos.', tipo: 'Banquete' },
+    { hora: '17:30 PM', titulo: 'Baile', descripcion: 'Baile y fiesta en el salón.', tipo: 'Baile' },
   ];
 
   const eventoRefs = useRef<(HTMLDivElement | null)[]>(new Array(eventos.length).fill(null));

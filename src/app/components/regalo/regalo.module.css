@@ -49,12 +49,14 @@
 /* La clase .responsiveImage es opcional y solo necesaria si deseas aplicar estilos directamente a la imagen de Next.js */
 
 .title1 {
+  font-family: 'Montserrat', sans-serif;
   font-size: 3.5rem;
   margin-bottom: 20px;
   margin-top: 60px;
 }
 
 .title {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 20px;
@@ -66,11 +68,13 @@
 
 
 .description {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.25rem;
   margin-bottom: 20px;
 }
 
 .button, .closeButton {
+  font-family: 'Montserrat', sans-serif;
   background-color: #A89D12; /* Color dorado para el botón */
   color: #fff;
   border: none;
@@ -99,6 +103,7 @@
 }
 
 .modalText {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 20px;

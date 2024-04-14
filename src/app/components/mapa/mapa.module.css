@@ -23,15 +23,15 @@
 }
 
 .infoSection h2 {
-    font-family: 'Playfair Display', serif; /* Una tipografía elegante para los títulos */
-    color: #b85c5c; /* Un color que complementa el esquema de color suave */
+    font-family: 'Montserrat', sans-serif;
+    color: #A89D12; /* Un color que complementa el esquema de color suave */
     margin-bottom: 15px;
     /* tamaño del texto */
     font-size: 2.5rem;
 }
 
 .infoSection p {
-    font-family: 'Lato', sans-serif; /* Una tipografía limpia y moderna para el cuerpo del texto */
+    font-family: 'Montserrat', sans-serif;
     margin-bottom: 20px;
     font-size: 1.2rem;
 }

@@ -1,6 +1,7 @@
 /* src/app/components/boda/boda.module.css */
 
 .container {
+ font-family: 'Montserrat', sans-serif;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -27,10 +28,12 @@
 }
 
 .countdownSection h1, .countdownSectionp {
+  
   color: #A89D12; /* Color más oscuro para mejor contraste */
 }
 
 .countdownSection h1 {
+  font-family: 'Montserrat', sans-serif;
   font-size: 3rem; /* Título más grande */
   font-weight: 300; /* Más ligero */
   margin-bottom: 30px;
@@ -40,6 +43,7 @@
 }
 
 .countdownSection p {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.4rem; /* Texto más grande */
   margin-bottom: 40px;
   line-height: 1.8; /* Espaciado de línea aumentado */
@@ -61,6 +65,7 @@
 }
 
 .countdownItem {
+  font-family: 'Montserrat', sans-serif;
   text-align: center;
   padding: 15px; /* Más espacio */
   background-color: #ffffff; /* Fondo blanco */
@@ -75,11 +80,13 @@
 }
 
 .countdownLabel {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.2rem; /* Etiquetas más grandes */
   color: #666; /* Color más suave */
 }
 
 .calendarContainer {
+  
   padding: 20px;
   background-color: #ffffff; /* Fondo blanco para el calendario */
   border-radius: 20px; /* Bordes redondeados */
