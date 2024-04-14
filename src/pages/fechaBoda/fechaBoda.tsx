@@ -13,6 +13,7 @@ const FechaBodaPage = () => {
     <div className="container">
       <Invitation countdown={countdown} weddingDate={weddingDate} />
     </div>
+    
   );
 };
 
