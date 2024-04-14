@@ -15,7 +15,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background-color: #333;
+  background-color: #A89D12;
   z-index: 1; /* Asegúrate de que la línea central esté debajo de los eventos */
 }
 
@@ -91,7 +91,7 @@
 .titulo {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #DAA520;
+  color: #A89D12;
   text-align: center;
   margin: 10px 0;
 
@@ -103,7 +103,7 @@
 .conector {
   position: absolute;
   height: 2px;
-  background-color: #333;
+  background-color: #A89D12;
   /* Ajustamos el ancho del conector para que sea suficiente para llegar al centro y añadir la flecha */
   width: 20%; /* Ajuste según necesites */
   top: 50%;
@@ -122,7 +122,7 @@
 /* Flecha para el lado izquierdo */
 .left .conector::before {
   left: 0; /* Alinea la flecha al inicio del conector */
-  border-color: transparent transparent transparent #333; /* Solo bordes necesarios para la flecha */
+  border-color: transparent transparent transparent #A89D12; /* Solo bordes necesarios para la flecha */
 }
 
 
@@ -130,7 +130,7 @@
 .left .conector::before {
   left: 0;
   border-width: 5px 10px 5px 0; /* Crea la forma de flecha */
-  border-color: transparent #333 transparent transparent; /* Color de la flecha */
+  border-color: transparent #A89D12 transparent transparent; /* Color de la flecha */
 }
 
 /* Elimina el after del lado izquierdo si solo deseas una flecha */
@@ -149,7 +149,7 @@
 .right .conector::after {
   right: 0;
   border-width: 5px 0 5px 10px; /* Crea la forma de flecha */
-  border-color: transparent transparent transparent #333; /* Color de la flecha */
+  border-color: transparent transparent transparent #A89D12; /* Color de la flecha */
 }
 
 /* Elimina el before del lado derecho si solo deseas una flecha */

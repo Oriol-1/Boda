@@ -47,7 +47,7 @@ const Header = () => {
   };
 
   const linkClass = (sectionId: string) => {
-    return `cursor-pointer px-3 py-2 text-sm font-medium ${
+    return `cursor-pointer px-3 py-2 text-sm font-sans font-medium ${
       currentSection === sectionId
         ? 'text-[#DAA520] font-bold underline decoration-[#DAA520] underline-offset-4'
         : 'text-gray-900 hover:text-gray-800'}`;
@@ -59,7 +59,7 @@ const Header = () => {
         <div className="flex justify-between items-center h-20 w-full">
           <div className="flex-shrink-0 flex items-center mt-2">
             <a onClick={handleLogoClick} className="cursor-pointer">
-              <Image src="/Logo.svg" alt="Logo" width={100} height={100} style={{ width: '150px', height: 'auto' }} />
+              <Image src="/Logo.png" alt="Logo" width={100} height={100} style={{ width: '90px', height: 'auto', margin:'10px' }} />
             </a>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">

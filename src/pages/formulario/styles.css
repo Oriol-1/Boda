@@ -1,7 +1,7 @@
 .page {
   background: linear-gradient(135deg, #ffedb8 0%, #ffeab8 100%); /* Degradado sutil para el fondo */
   color: #333;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   max-width: 140vh;
   margin: 0px auto; /* Agrega algo de margen superior e inferior */
   padding: 20px;
@@ -31,7 +31,7 @@
 
 /* Estilos del encabezado */
 .heading {
-  font-family: 'Playfair Display', serif; 
+  font-family: 'Montserrat', sans-serif;
   text-align: center;
   color: #6D6875;
   margin-bottom: 15px;
@@ -39,6 +39,8 @@
   z-index: 23;
  
 }
+
+
 .headingh3 {
   text-align: center;
   color: #6d6875;
@@ -100,7 +102,7 @@
 }
 
 .button:hover {
-  background-color: #4A4E69; /* Color principal al pasar el cursor */
+  background-color: #A89D12; /* Color principal al pasar el cursor */
   color: #FFFFFF; /* Texto en blanco para el efecto de inversión y facilidad de lectura */
   border-color: #4A4E69; /* El borde cambia para mantener la cohesión del diseño */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra más prominente para un efecto elevado */
@@ -205,8 +207,9 @@
 
 /* Botón para agregar */
 .add-button {
-  background-color: #4CAF50; /* Un verde más vibrante y moderno */
+  background-color: #A89D12; /* Un verde más vibrante y moderno */
   color: white;
+  font-weight: bold;
   border: none;
   padding: 10px 15px; /* Aumentamos el relleno para un mejor manejo y vista */
   margin-left: 10px;

@@ -27,7 +27,7 @@
 }
 
 .countdownSection h1, .countdownSectionp {
-  color: #333; /* Color más oscuro para mejor contraste */
+  color: #A89D12; /* Color más oscuro para mejor contraste */
 }
 
 .countdownSection h1 {
@@ -70,7 +70,7 @@
 
 .countdownTime {
   font-size: 2.5rem; /* Números más grandes */
-  color: #DAA520; /* Color mantenimiento para un toque elegante */
+  color: #A89D12; /* Color mantenimiento para un toque elegante */
   font-weight: bold;
 }
 

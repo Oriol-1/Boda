@@ -13,8 +13,13 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'], // Montserrat como la fuente sans-serif predeterminada
+        serif: ['Higuen', 'serif'] // Higuen como la fuente serif predeterminada
+      }
     },
   },
   plugins: [],
 }
-export default config
+
+export default config;

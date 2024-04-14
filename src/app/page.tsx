@@ -9,6 +9,7 @@ import LiniDeTiempo from '@/pages/liniaTiempo'
 import ElMapa from '@/pages/elMapa/elMapa'
 import PaginaRegalo from '@/pages/regalos';
 import BusRoutePage from '@/pages/buses';
+import './globals.css'
 
 
 export default function Home() {
