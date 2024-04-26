@@ -151,19 +151,21 @@
     transform: translateY(-50%);
  
     animation: primera_sway__0GD05 3s ease-in-out infinite;
+ 
     z-index: 50;
-
+   
 }
 
 .plantaGeneral {
     position: fixed;
-    top: 60px;
+    top: 80px;
    
-    animation: sway 9s ease-in-out infinite;
+    animation: sway 2s ease-in-out infinite;
+
     
     z-index: 50;
     /* trasparencia */
-    opacity: 0.8;
+    opacity: 0.7;
    
 }
 
@@ -195,7 +197,7 @@
         transform: rotate(0deg);
     }
     50% {
-        transform: rotate(2deg);
+        transform: rotate(1deg);
     }
 }
 
@@ -227,7 +229,7 @@
         position: relative;
         height: 83%;
         width: 130px;
-        transition: transform 1s ease-in-out;
+        transition: transform 2s ease-in-out;
         overflow: hidden; /* Previene que el degradado se extienda fuera del contenedor */
     }
 

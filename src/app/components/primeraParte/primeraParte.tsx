@@ -44,17 +44,17 @@ const PrimeraParte: React.FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.planta}>
-                <Image src="/fondo-planta.png" alt="Planta de fondo" width={100} height={100}  priority />
+                <Image src="/fondo-planta.png" alt="Planta de fondo" width={170} height={100}  priority />
             </div>
 
             <div className={`${styles.plantaGeneral} ${styles.plantaArribaDerecha}`}>
-                <Image src="/planta-3.png" alt="Planta 3 arriba derecha" width={100} height={100}  priority />
+                <Image src="/planta-3.png" alt="Planta 3 arriba derecha" width={170} height={100}  priority />
             </div>
             <div className={`${styles.plantaGeneral} ${styles.plantaCentroIzquierda}`}>
-                <Image src="/planta-2.png" alt="Planta 2 centro izquierda" width={100} height={100}  priority/>
+                <Image src="/planta-2.png" alt="Planta 2 centro izquierda" width={170} height={100}  priority/>
             </div>
             <div className={`${styles.plantaGeneral} ${styles.plantaAbajoIzquierda}`}>
-                <Image src="/planta-1.png" alt="Planta 1 abajo izquierda" width={80} height={80}   priority/>
+                <Image src="/planta-1.png" alt="Planta 1 abajo izquierda" width={170} height={100}   priority/>
             </div>
 
             <div className={styles['texto-anuncio']} ref={textoAnuncioRef}>
