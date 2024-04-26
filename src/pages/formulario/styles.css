@@ -9,7 +9,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #f0e9d2; /* Borde sutil que complementa el fondo */
   position: relative;
-  z-index: 23;
+  z-index: 50;
   
   /* Añadiendo un pseudo-elemento para un efecto de borde más elaborado */
   position: relative;
@@ -36,7 +36,7 @@
   color: #6D6875;
   margin-bottom: 15px;
   font-size: 30px;
-  z-index: 23;
+  z-index: 50;
  
 }
 
