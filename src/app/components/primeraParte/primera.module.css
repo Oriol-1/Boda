@@ -255,15 +255,15 @@
 
     .planta {
     
-        width: 90px;
-        height: 70px;
+        width: 70px;
+        height: 50px;
         z-index: 24;
     }
 
     .plantaGeneral {
       
-        top: 130px;
-        width: 90px;
+        top: 120px;
+        width: 80px;
         height: 70px;
         z-index: 24;
     }
