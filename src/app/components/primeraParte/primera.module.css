@@ -159,7 +159,7 @@
 .plantaGeneral {
     position: fixed;
     top: 60px;
-    width: 110px;
+    width: 100px;
     height: 90px;
     animation: sway 3s ease-in-out infinite;
     z-index: 50;
