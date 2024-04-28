@@ -25,7 +25,7 @@ const Regalo = () => {
       <button className={styles.button} onClick={toggleModal}>Regalo</button>
       {isModalOpen && (
         <div className={styles.modal}>
-          <p className={styles.modalText}>Número de cuenta: XXXX-XXXX-XXXX-XXXX</p>
+          <p className={styles.modalText}>Número de cuenta:<br></br><b> ES91 2100 0722 5901 0118 6723</b></p>
           <button className={styles.closeButton} onClick={toggleModal}>Cerrar</button>
          
         </div>

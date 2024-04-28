@@ -266,7 +266,6 @@ const handleBackFromSummary = () => {
           justify-content: center;
           gap: 20px;
           margin-top: 20px;
-          margin-left: 20px;
         }
         .button {
           // Estilos para los botones
