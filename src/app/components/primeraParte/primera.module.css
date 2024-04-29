@@ -251,7 +251,7 @@
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
 
 
@@ -266,7 +266,7 @@
     .plantaGeneral {
       
         top: 120px;
-        width: 70px;
+        width: 80px;
         height: 70px;
         z-index: 24;
     }
