@@ -153,6 +153,10 @@
 
 @media (max-width: 480px) {
 
+  .countdown {
+    display: unset;
+  }
+
   .invitationContent h1 {
     font-size: 2.5rem;
   }
@@ -163,5 +167,15 @@
 
   .countdownTime, .countdownLabel {
     font-size: 2rem; /* Ajuste para dispositivos más pequeños */
+  }
+
+
+
+
+}
+
+@media (max-width: 320px) {
+  .countdown {
+    display: unset;
   }
 }

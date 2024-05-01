@@ -447,13 +447,30 @@
 
 }
 
+@media (max-width: 812px) {
+  .page {
+  
+    max-width: 90%;
+
+  }
+  .button {
+
+    font-size: 18px!important;
+  
+  }
+}
+
 
 @media (max-width: 768px) {
+  .button {
 
+    font-size: 18px!important;
+  
+  }
 
   .page {
   
-    max-width: 65vh;
+    max-width: 53vh;
 
   }
 
@@ -518,6 +535,21 @@ magin-left:0px;
 
 
 
+@media (max-width: 320px) {
+  .page {
+  
+    max-width: 90%;
+
+  }
+
+  .button {
+
+    font-size: 16px!important;
+  
+  }
+}
+
+
 
 
 
@@ -567,7 +599,32 @@ magin-left:0px;
     font-size: 14px;
   }
   
-  
-
-
 }
+
+@media (max-width: 390px) {
+  .page {
+  
+    max-width: 90%;
+
+  }
+  .button {
+
+    font-size: 18px;
+  
+  }
+}
+
+@media (max-width: 375px) {
+  .page {
+  
+    max-width: 90%;
+
+  }
+
+  .button {
+
+    font-size: 18px!important;
+  
+  }
+}
+
