@@ -154,7 +154,7 @@
 @media (max-width: 480px) {
 
   .countdown {
-    display: unset;
+    display: revert-layer;
   }
 
   .invitationContent h1 {
@@ -176,6 +176,6 @@
 
 @media (max-width: 320px) {
   .countdown {
-    display: unset;
+    display: revert-layer;
   }
 }
