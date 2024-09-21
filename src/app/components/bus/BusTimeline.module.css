@@ -45,6 +45,28 @@
   margin-bottom: 50px;
   margin-top: 30px;
 }
+.title2{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  color: #000000;
+  text-align: center;
+  border-radius: 8px;
+  width: auto;
+
+  
+}
+
+.title3{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  color: #000000;
+  text-align: center;
+  border-radius: 8px;
+  width: auto;
+  margin-bottom: 40px;
+  /* negrita */
+  font-weight: bold;
+}
 
 .busTimelineContainer, .mapContainer {
   font-family: 'Montserrat', sans-serif;
@@ -126,6 +148,17 @@
     margin: 20px 0 30px; /* Ajuste de márgenes para centrar y dar espacio */
     background-color: rgba(0, 0, 0, 0.6); /* Un poco más de transparencia para el fondo */
     border-radius: 15px; /* Bordes más redondeados para un look suave */
+  }
+  .title2{
+    font-size: 1.5rem; /* Tamaño de fuente reducido para móviles */
+
+  
+  }
+  .title3{
+    font-size: 1.9rem; /* Tamaño de fuente reducido para móviles */
+    padding: 10px 20px; /* Ajuste de padding para un look más refinado */
+    margin: 20px 0 30px; /* Ajuste de márgenes para centrar y dar espacio */
+  
   }
 
   .busTimelineContainer, .mapContainer {

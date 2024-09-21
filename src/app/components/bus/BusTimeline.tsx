@@ -4,7 +4,7 @@ import styles from './BusTimeline.module.css'; // Asegúrate de que la ruta es c
 
 const BusTimeline = () => {
   const stops = [
-    { name: "Estació d'Autobusos de Fabra i Puig", time: "Llegada a las 9:30", key: "fabra-i-puig" },
+    { name: "Estació d'Autobusos de Fabra i Puig", time: "Llegada a las 10:00", key: "fabra-i-puig" },
     { name: "Carrer de Lluís Companys, 2, 08290 Cerdanyola del Vallès, Barcelona", time: "Llegada a las 10:30", key: "lluís-companys" },
     { name: "Carrer del Mil·lenari de Catalunya, 29, 08530 La Garriga, Barcelona", time: "Llegar a las 11:15", key: "mil-lenari" }
   ];
@@ -12,6 +12,10 @@ const BusTimeline = () => {
   return (
     <div className={styles.container}>
       <p className={styles.title1}>Ruta del Bus</p>
+      {/* si tienen problemas para llegar a tiempo llamar por telefono a Daniel Alonso  ponerlo en negrita centrado y que senote con el texto un poco mas grande */}
+      <p className={styles.title2}>Si tienen problemas para llegar a tiempo llamar por teléfono a</p>
+      <p className={styles.title3}>Daniel Alonso tel: 661 10 93 92</p>
+     
       <div className={styles.busTimelineContainer}>
         {stops.map((stop, index) => (
           <div key={stop.key} className={`${styles.stop} ${index === stops.length - 1 ? styles.last : ''}`}>
