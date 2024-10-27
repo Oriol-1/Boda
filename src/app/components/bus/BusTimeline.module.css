@@ -82,6 +82,18 @@
   width: 30%; /* Tres columnas en escritorio */
 }
 
+@media (max-width: 1024px) {
+  .busTimelineContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stop {
+    width: 100%; /* Se convierte en una columna al reducir el ancho */
+    margin-bottom: 20px;
+  }
+}
+
 .stopInfo {
   text-align: center;
   margin-bottom: 10px;
@@ -121,16 +133,13 @@
 }
 
 @media (max-width: 768px) {
-
-
-
   .busTimelineContainer {
     width: 100%;
+    flex-direction: column;
+    align-items: center;
   }
 
-
   .title1 {
-  
     width: 80%;
   }
 
@@ -150,12 +159,8 @@
     font-weight: bold; /* Negrita */
   }
 
-  .busTimelineContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .stop {
-    width: 90%; /* Una columna en dispositivos móviles */
+    width: 100%; /* Una columna en dispositivos móviles */
+    margin-bottom: 20px;
   }
-} 
+}

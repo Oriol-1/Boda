@@ -8,14 +8,14 @@ const BusTimeline = () => {
       time: "Llegada a las 10:00",
       key: "fabra-i-puig",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d189.29361974513156!2d2.1829090665052897!3d41.4314369454268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bd27e9d6852d%3A0xbfcdd71e37580e45!2sFabra%20I%20Puig!5e1!3m2!1ses!2ses!4v1730028925610!5m2!1ses!2ses",
-      link: "https://maps.app.goo.gl/ZwTNkRPjcibKfj4D7"
+      link: "https://maps.app.goo.gl/64F5v2THCWKrFEBAA"
     },
     {
       name: "St. Casimir (Mercat Serraperera)",
       time: "Llegada a las 10:20",
       key: "lluís-companys",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7089.825409603935!2d2.133298!3d41.494163199999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4960f07a21ec1%3A0xa4963dd5df03a3fb!2sSt.%20Casimir%20(Mercat%20Serraperera)!5e1!3m2!1ses!2ses!4v1730027584278!5m2!1ses!2ses",
-      link: "https://maps.app.goo.gl/5672GScxNkfe5qCZ9"
+      link: "https://maps.app.goo.gl/fWZKTPtK8oSFnoyQ7"
     },
     {
       name: "Carrer del Mil·lenari de Catalunya, 29, 08530 La Garriga, Barcelona",
@@ -37,8 +37,8 @@ const BusTimeline = () => {
             <div className={styles.stop}>
               <div className={styles.stopInfo}>
                 <div className={styles.stopName}>{stop.name}</div>
-                <div className={styles.stopTime} style={{ fontWeight: 'bold' }}>{stop.time}</div>
-                <a href={stop.link} target="_blank" rel="noopener noreferrer" className={styles.mapLink}>
+                <div className={styles.stopTime} style={{fontWeight: 'bold'}}>{stop.time}</div>
+                <a href={stop.link} target="_blank" className={styles.mapLink}>
                   Ver en Google Maps →
                 </a>
               </div>
@@ -46,7 +46,7 @@ const BusTimeline = () => {
                 src={stop.map}
                 width="100%"
                 height="400"
-                style={{ border: '0' }}
+                style={{border: '0'}}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
