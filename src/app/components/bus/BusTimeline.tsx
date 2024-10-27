@@ -29,7 +29,7 @@ const BusTimeline = () => {
   return (
     <div className={styles.container}>
       <p className={styles.title1}>Ruta del Bus</p>
-      <p className={styles.title2}>Si tienen problemas para llegar a tiempo llamar por teléfono a</p>
+      <p className={styles.title2}>Si tienes problemas para llegar a tiempo, llama por teléfono a</p>
       <p className={styles.title3}>Daniel Alonso tel: 661 10 93 92</p>
       <div className={styles.busTimelineContainer}>
         {stops.map((stop, index) => (
