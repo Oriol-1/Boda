@@ -79,8 +79,8 @@ const Header = () => {
           </div>
           <nav className={`${isMenuOpen ? 'block' : 'hidden'} sm:hidden bg-white absolute top-full right-0 mr-2 mt-2 shadow-md`}>
             <div className="flex flex-col bg-white rounded-md shadow-lg overflow-hidden">
-              {['buses', 'fecha Boda', 'regalos', 'horas', 'mapa'].map((section) => (
-                //  {['formulario', 'fecha Boda','regalos', 'horas', 'mapa', 'buses'].map((section) => (
+              {/* {['buses', 'fecha Boda', 'regalos', 'horas', 'mapa'].map((section) => ( */}
+                 {['formulario', 'fecha Boda','regalos', 'horas', 'mapa', 'buses'].map((section) => (
                 <a key={section} onClick={() => handleScrollToSection(section)} className={`${linkClass(section)} block py-2 px-4 hover:bg-gray-100`}>
                   {section.charAt(0).toUpperCase() + section.slice(1)}
                 </a>
@@ -88,8 +88,8 @@ const Header = () => {
             </div>
           </nav>
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            {['buses', 'fecha Boda', 'regalos', 'horas', 'mapa'].map((section) => (
-              //  {['formulario', 'fecha Boda', 'regalos', 'horas', 'mapa', 'buses'].map((section) => (
+            {/* {['buses', 'fecha Boda', 'regalos', 'horas', 'mapa'].map((section) => ( */}
+               {['formulario', 'fecha Boda', 'regalos', 'horas', 'mapa', 'buses'].map((section) => (
               <a key={section} onClick={() => handleScrollToSection(section)} className={linkClass(section)}>
                 {section.charAt(0).toUpperCase() + section.slice(1)}
               </a>

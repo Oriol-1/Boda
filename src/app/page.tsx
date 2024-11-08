@@ -24,13 +24,11 @@ export default function Home() {
           <PrimeraParte />
         </div>
         <br></br>
-        <div id="buses">
-          <BusRoutePage />
-        </div>
+      
         
-        {/* <div id="formulario">
+        <div id="formulario">
           <FormularioPage />
-        </div> */}
+        </div>
         <div id="fecha Boda">
           <FechaBodaPage />
         </div>
@@ -42,6 +40,9 @@ export default function Home() {
         </div>
         <div id="mapa">
           <ElMapa />
+        </div>
+        <div id="buses">
+          <BusRoutePage />
         </div>
       
       </div>
